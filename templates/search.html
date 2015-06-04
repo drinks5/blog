@@ -1,0 +1,33 @@
+<div class="sidebar pure-u-1 pure-u-md-1-4">
+        <div class="header">
+            <h1 class="brand-title"><a href="{% url 'home' %}">Andrew Liu Blog</a></h1>
+            <h2 class="brand-tagline">雪忆 - Snow Memory</h2>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a class="button-success pure-button" href="/">主页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="button-success pure-button" href="{% url 'archives' %}">归档</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="pure-button" href="https://github.com/Andrew-liu/my_blog_tutorial">Github</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="button-error pure-button" href="http://weibo.com/dinosaurliu">Weibo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="button-success pure-button" href="/">专题</a>
+                    </li>
+                    <li>
+                    <form class="pure-form" action="/search/" method="get">
+                    <input class="pure-input-3-3" type="text" name="s" placeholder="search">
+                    </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="button-success pure-button" href="{% url 'about_me' %}">About Me</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>

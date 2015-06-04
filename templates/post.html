@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load custom_markdown %}
+{% block content %}
+<div class="posts">
+    <section class="post">
+        <header class="post-header">
+            <h2 class="post-title">{{ post.title }}</h2>
+        </header>
+        <div class="post-description">
+            <p>
+                {{ post.content|custom_markdown|safe }}
+            </p>
+            <p class="post-meta">
+                Time:  {{ post.timestamp|date:'Y /m /d'}}
+            </p>
+        </div>
+    </section>
+    {% include "multi_speak.html" %}
+</div><!-- /.blog-post -->
+{% endblock %}

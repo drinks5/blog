@@ -1,0 +1,43 @@
+<!--home.html-->
+{% extends "base.html" %}
+{% load custom_markdown %}
+
+{% block content %}
+
+<div class="posts">
+    {% if error %}
+        <h2 class="post-title">没有相关文章题目</a></h2>
+    {% else %}
+    {% for post in post_list %}
+        <section class="post">
+            <div class="post-header">
+                <p class="post-title">
+                    <a href="{% url 'detail' my_args=post.id %}">{{ post.title }}</a>
+                    Time: {{ post.timestamp |date:'Y /m /d'}}
+                </p>
+            </div>
+            <div class = "post-truncatewords">
+                {{ post.category }}
+            </div>
+            <div class="post-description">
+                <p>{{  post.content|custom_markdown  }}</p>
+            </div>
+        </section>
+    {% endfor %}
+    {% endif %}
+
+    {% if post_list.object_list and post_list.paginator.num_pages > 1 %}
+      <div>
+        <ul class="pager">
+          {% if post_list.has_previous %}
+            <li><a href="?page={{ post_list.previous_page_number }}">上一页</a></li>
+          {% endif %}
+
+          {% if post_list.has_next %}
+            <li><a href="?page={{ post_list.next_page_number }}">下一页</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    {% endif %}
+</div><!-- /.blog-post -->
+{% endblock %}
