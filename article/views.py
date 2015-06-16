@@ -26,7 +26,7 @@ def home(request):
 def detail(request,my_args):
     try:
         post = Article.objects.get(id=int(my_args))
-        messages.success(request, "My success message")
+     #   messages.success(request, "My success message")
 
      #   post = BlogPost.objects.all()[int(my_args)]
     except Article.DoesNotExist:
