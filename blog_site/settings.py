@@ -41,7 +41,7 @@ MESSAGE_TAGS = {
 INSTALLED_APPS = (
     #'django_admin_bootstrapped.bootstrap2',
     #'django_admin_bootstrapped',
-    'bootstrap_admin',
+    #'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
+    'imagekit',
     #'bootstrap_toolkit',
     'article',
 )
