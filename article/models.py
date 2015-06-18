@@ -10,6 +10,12 @@ class Article(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField(blank=True,null=True) 
 
+    avatar = models.ImageField(upload_to = 'avatars')
+    avatar_thumbnail = ImageSpecField(source = 'avatar',
+                                      processors=[ResizeToFill(100, 50)],
+                                      format='JPEG',
+                                      options={'quality': 60})
+
     def get_absolute_url(self):
     	#path = reverse('detail', kwargs={'id':self.id})
        
@@ -23,17 +29,10 @@ class Article(models.Model):
         ordering = ['-timestamp']   
 
 class Profile(models.Model):
-    avatar = models.ImageField(upload_to = 'avatars')
+    pass
 
-    avatar_thumbnail = ImageSpecField(source = 'avatar',
-                                      processors=[ResizeToFill(100, 50)],
-                                      format='JPEG',
-                                      options={'quality': 60})
-"""
-profile = Profile.objects.all()[0]
-print profile.avatar_thumbnail.url
-print profile.avatar_thumbnail.width
-"""
+
+
  #   link = models.URLField()    
  #   tags = models.CharField(max_length=10)
 

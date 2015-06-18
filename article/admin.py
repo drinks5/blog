@@ -2,7 +2,8 @@ from django.contrib import admin
 from article.models import Article
 #from blog.models import BlogPost,BlogPostAdmin
 from django_admin_bootstrapped.admin.models import SortableInline
-from models import Article,Profile
+from models import Article
+from models import Profile
 
 # Register your models here.
 admin.site.register(Article)
