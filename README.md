@@ -2,6 +2,7 @@
 my blog_site in ubuntu14.04
 
 I. configure　the env
+=
 1.create the virtual environment by the VIUTUALENV
 (1)pip install virtualenv     #install virtualenv
 (2)virtualenv -p /home/Desktop/project/blog_site ENV   #enter the software directory
