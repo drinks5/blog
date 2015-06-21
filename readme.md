@@ -24,7 +24,7 @@ sudo apt-get install python-mysqldb
 sudo python manage.py syncdb                    #sync the db
 ```
 
-* Install the app in `setting.py`.
+* Install the app included in `setting.py`.
 ```
 sudo pip install django_admin_bootstrapped   #use the bootstap for beautify the admin-backstage
 sudo pip install bootstrap3                  #use the bootstrap for beautify the frontpage
