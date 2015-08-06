@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 
 #bootstrap
 DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
+
 from django.contrib import messages
 MESSAGE_TAGS = {
             messages.SUCCESS: 'alert-success success',
@@ -39,8 +40,6 @@ MESSAGE_TAGS = {
 # Application definition
 
 INSTALLED_APPS = (
-    #'django_admin_bootstrapped.bootstrap2',
-    #'django_admin_bootstrapped',
     'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -109,6 +108,7 @@ DATABASES = {
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 
 
 # Internationalization

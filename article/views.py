@@ -9,6 +9,7 @@ from django.contrib.syndication.views import Feed
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.contrib import messages
+from markdown import markdown
 
 # Create your views here.
 def home(request):
@@ -26,8 +27,8 @@ def home(request):
 def detail(request,my_args):
     try:
         post = Article.objects.get(id=int(my_args))
+     #   post.content = markdown(post.content)
      #   messages.success(request, "My success message")
-
      #   post = BlogPost.objects.all()[int(my_args)]
     except Article.DoesNotExist:
         raise Http404
