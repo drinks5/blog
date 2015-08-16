@@ -29,4 +29,5 @@ sudo python manage.py syncdb                    #sync the db
 sudo pip install django_admin_bootstrapped   #use the bootstap for beautify the admin-backstage
 sudo pip install bootstrap3                  #use the bootstrap for beautify the frontpage
 sudo pip install imagekit                    #use imagekit to finish the work which is image
+sudi pip install django-bootstrap3
 ```
