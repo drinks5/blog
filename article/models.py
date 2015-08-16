@@ -12,7 +12,7 @@ class Article(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField(blank=True,null=True) 
     #  position = models.PositiveSmallIntegerField("Position")
-    avatar = models.ImageField(upload_to = 'avatars')
+   # avatar = models.ImageField(upload_to = 'avatars')
     #avatar_thumbnail = ProcessedImageField(upload_to = 'avatars'        # source = 'avatar',
    #                                   processors = [ResizeToFill(100, 50)],
     #                                  format = 'JPEG',
