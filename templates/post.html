@@ -13,7 +13,13 @@
 
         <p class="blog-post-meta"><span class="label label-info">Time: {{ post.timestamp |date:'Y.m.d'}}</span> <a href="/"><span class="label label-primary">DrinkSober</span></a>
         </p>
-
+        <img src="{{ post.avatar_thumbnail.url }}" class="img-responsive" alt="Responsive image">
+        {% if post.tags %}
+             {% for tag in post.tags.all %}
+                     <span class="label label-primary">  {{ tag }}   </span>   
+                    {% if not forloop.last %}  {% endif%}
+              {% endfor %}
+        {% endif %}
         <div class="blog-post">
         {{ post.content|custom_markdown }}
         </div><!-- /.blog-post -->

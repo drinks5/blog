@@ -63,12 +63,9 @@
             <div class="row">
                 <div class="col-sm-12">
 
-                    <h1><span class="hide">Laravel - </span>drinksober|小橙子_caroline</h1>
-                    
-
+                    <h1><span class="hide">Laravel - </span>drinksober</h1>
                     <img src="Laravel-%E7%AE%80%E6%B4%81%E3%80%81%E4%BC%98%E9%9B%85%E7%9A%84PHP%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%28PHP%20Web%20Framework%29%E3%80%82-%20Laravel%E4%B8%AD%E6%96%87%E7%BD%91%EF%BC%88Laravel%E4%B8%AD%E5%9B%BD%E7%A4%BE%E5%8C%BA%EF%BC%89_files/4e4bd788405aab87f03d26edc4ab4.png" alt="Laravel" class="hide">
                 </div>
-
             </div>
         </div>
     </header>
@@ -108,8 +105,8 @@
             {% if error %}
                 <h1 class="post-title">没有相关文章题目</a></h1>
             {% else %}
-                {% for post in post_list %}   
 
+                {% for post in post_list %}   
                 <article id="{{post.id}}" class="post tag-laravel tag-laravel-5-1 tag-xin-ban-ben-fa-bu">
                 <div class="post-head">
                     <h1 class="post-title"><a href="{% url 'detail' my_args=post.id %}"> {{ post.title }} </a></h1>
@@ -120,17 +117,16 @@
                 </div>
 
     <!--插入图片-->
- 
-    <!--div class="featured-media">
+    <div class="featured-media">
     <style type="text/css" src="{% static 'bootstrap/css/bootstrap.css' %}"></style>
-        <a href="{% url 'detail' my_args=post.id %}"><img src="{{ article.avatar.thumbnail.url }}" / alt="{{post.title}}"></a>
-    </div-->    
+        <a href="{% url 'detail' my_args=post.id %}"><img src="{{ post.avatar_thumbnail.url }}" class="img-responsive" alt="Responsive image"/ alt="{{post.title}}"></a>
+    </div>    
      
-                    <div  class="post_original" >
-                        {{post.content|custom_markdown|slice:"100"}}
+                    <div  class="post_original" display:none>
+                        {{ post.summary|custom_markdown }}
                     </div>
-                    <div  class="post_trunckwords" display:none>
-                        {{post.content|custom_markdown|slice:"100:"}}
+                    <div  class="post_trunckwords" >
+                        {{ post.content|custom_markdown }}
                     </div>
 
     <!--div class="post-permalink">
@@ -160,19 +156,18 @@
             </main>
             <aside class="col-md-4 sidebar">
 
-<!-- start tag cloud widget >
-<div class="widget">
-	<h4 class="title">社区</h4>
-	<div class="content community">
-		<p>QQ群：462694081</p>
-		<p><a href="http://wenda.golaravel.com/" title="Laravel中文网问答社区" target="_blank" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '问答社区'])"><i class="fa fa-comments"></i> 问答社区</a></p>
-	</div>
-</div>
-<end tag cloud widget -->	
+            <!-- start tag cloud widget-- >
+            <div class="widget">
+                <h4 class="title">微博</h4>
+                <div class="content community">
+                            <p>asad</p>
+                </div>
+            </div>
+            <!--end tag cloud widget -->	
 
 <!-- start widget -->
                 <div class="widget">
-                	<h4 class="title">暂时没想好</h4>
+                	<h4 class="title">最新评论</h4>
                 </div>
 <!-- end widget -->	
 
@@ -193,7 +188,9 @@
     </div>
 </section>
 
-    <!---footer class="main-footer">
+
+
+    <!--footer class="main-footer">
         <div class="container">
             <div class="row">
                 <div class="col-sm-4">
@@ -202,7 +199,6 @@
                         <div class="content recent-post"><div class="recent-single-post"><a href="http://www.golaravel.com/post/laravel-5-1-is-released/" class="post-title">Laravel 5.1 LTS 版本正式发布</a><div class="date">June 9, 2015</div></div><div class="recent-single-post"><a href="http://www.golaravel.com/post/symfony-2-7-0-released/" class="post-title">Symfony 2.7.0 LTS 正式版已经发布，Laravel 5.1 LTS 版本定于6月9号发布</a><div class="date">June 2, 2015</div></div><div class="recent-single-post"><a href="http://www.golaravel.com/post/laravel-announces-v5-1-will-be-the-first-lts/" class="post-title">Laravel 创始人宣布 Laravel 5.1 将会是首个 LTS（长期支持）版本</a><div class="date">May 3, 2015</div></div></div>
                     </div>
                 </div>
-
                 <div class="col-sm-4">
                     <div class="widget">
                         <h4 class="title">标签云</h4>
@@ -222,13 +218,10 @@
 <a href="http://www.golaravel.com/tag/lumen/">Lumen</a>
 <a href="http://www.golaravel.com/tag/ming-ming-kong-jian/">命名空间</a>
 <a href="http://www.golaravel.com/tag/laravel4/">Laravel4</a>
-
-
                             <a href="http://www.golaravel.com/tag-cloud/">...</a>
                         </div>
                     </div>
                 </div>
-
                 <div class="col-sm-4">
                     <div class="widget">
                         <h4 class="title">合作伙伴</h4>
@@ -240,7 +233,8 @@
                             <a href="https://www.upyun.com/" title="又拍云" onclick="_hmt.push(['_trackEvent', 'link', 'click', 'upyun'])" target="_blank">又拍云</a>
                             <a href="http://www.ucloud.cn/" title="UCloud" onclick="_hmt.push(['_trackEvent', 'link', 'click', 'ucloud'])" target="_blank">UCloud</a>
                         </div>
-                </div></div>
+                </div>
+                </div>
             </div>
         </div>
     </footer-->
@@ -250,7 +244,6 @@
             <div class="row">
                 <div class="col-sm-12" align="center">
                     <p class="text-muted"><a href="#">Blog for DrinkSober</a></p>
-                
                 </div>
             </div>
         </div>
