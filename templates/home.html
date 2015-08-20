@@ -120,11 +120,10 @@
                 </div>
 
     <!--插入图片-->
- 
-    <!--div class="featured-media">
+    <div class="featured-media">
     <style type="text/css" src="{% static 'bootstrap/css/bootstrap.css' %}"></style>
-        <a href="{% url 'detail' my_args=post.id %}"><img src="{{ article.avatar.thumbnail.url }}" / alt="{{post.title}}"></a>
-    </div-->    
+        <a href="{% url 'detail' my_args=post.id %}"><img src="{{ post.avatar_thumbnail.url }}" / alt="{{post.title}}"></a>
+    </div>    
      
                     <div  class="post_original" >
                         {{post.content|custom_markdown|slice:"100"}}
