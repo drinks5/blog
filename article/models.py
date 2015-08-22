@@ -5,8 +5,7 @@ from imagekit.processors import ResizeToFill
 from django.core.urlresolvers import reverse
 from django_admin_bootstrapped.widgets import GenericContentTypeSelect
 from taggit.managers import TaggableManager
-
-
+from taggit.models import  Tag
 
 
 class Article(models.Model):
@@ -32,12 +31,6 @@ class Article(models.Model):
     
     class Meta:
         ordering = ['-timestamp']   
-
-
-
-
-
-
 
 
 

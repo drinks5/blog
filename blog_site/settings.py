@@ -39,6 +39,7 @@ MESSAGE_TAGS = {
 
 # Application definition
 
+
 AUTHENTICATION_BACKENDS = (
     'userena.backends.UserenaAuthenticationBackend',
     'guardian.backends.ObjectPermissionBackend',
@@ -66,7 +67,6 @@ INSTALLED_APPS = (
     'accounts',
     'article',
 )
-
 
 from django.conf import global_settings
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
@@ -115,7 +115,6 @@ WSGI_APPLICATION = 'blog_site.wsgi.application'
 
 DATABASES = {
     'default': {
-
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
@@ -126,6 +125,7 @@ DATABASES = {
         'USER'  : 'root',
         'PASSWORD': 'drinks',
         'HOST'  : 'localhost',
+
         #'PORT'  : '',
 """
 
@@ -156,6 +156,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'yourgmailaccount@gmail.com'  
 EMAIL_HOST_PASSWORD = 'yourgmailpassword'  
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
@@ -167,8 +168,9 @@ STATICFILES_DIRS = (
     ('css',os.path.join(STATIC_ROOT,'css').replace('\\','/') ),
     ('js',os.path.join(STATIC_ROOT,'js').replace('\\','/') ),
     ('images',os.path.join(STATIC_ROOT,'images').replace('\\','/') ),
-       #     ('upload',os.path.join(STATIC_ROOT,'upload').replace('\\','/') ),
-       )
+    ('upload',os.path.join(STATIC_ROOT,'upload').replace('\\','/') ),
+)
 
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(os.path.dirname(__file__),'media')
+
