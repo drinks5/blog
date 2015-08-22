@@ -13,7 +13,7 @@ class Article(models.Model):
     summary = models.TextField(blank=True,null=True,max_length=400) 
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField(blank=True,null=True) 
-    tags_post = TaggableManager()
+  #  tags = TaggableManager()
     #  position = models.PositiveSmallIntegerField("Position")
    # avatar = models.ImageField(upload_to = 'avatars')
     avatar_thumbnail = ProcessedImageField(upload_to = 'avatars'  ,      # source = 'avatar',

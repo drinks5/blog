@@ -46,7 +46,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 ANONYMOUS_USER_ID = -1
-AUTH_PROFILE_MODULE = 'accounts.MyProfile'
+
 
 INSTALLED_APPS = (
     'django_admin_bootstrapped',
@@ -72,6 +72,7 @@ from django.conf import global_settings
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.request','django.core.context_processors.static',
 )
+
 BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
 #TEMPLATE_DIRS = (
   #  os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
@@ -115,20 +116,16 @@ WSGI_APPLICATION = 'blog_site.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    'ENGINE': 'django.db.backends.mysql',
+    'NAME'  : 'mysql',
+    'USER'  : 'root',
+    'PASSWORD': '',
+    'HOST'  : 'localhost',
+    'PORT'  : '',
+      #  'ENGINE': 'django.db.backends.sqlite3',
+       # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}
-"""
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME'  : 'mysql',
-        'USER'  : 'root',
-        'PASSWORD': 'drinks',
-        'HOST'  : 'localhost',
-
-        #'PORT'  : '',
-"""
-
+    }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -156,7 +153,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'yourgmailaccount@gmail.com'  
 EMAIL_HOST_PASSWORD = 'yourgmailpassword'  
 
-
+SITE_ID=2
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
