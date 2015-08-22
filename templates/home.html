@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+{% load custom_markdown %}
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Blog For Drinksober</title>
+
+    <meta name="description" content="DrinkSober是个人技术与生活分享的博客">
+    <meta name="keywords" content="Blog,django,python,DrinkSober">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="http://www.golaravel.com/assets/favicon.ico">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'css/monokai_sublime.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/screen.css' %}">
+
+    <script src="{% static "bootstrap/js/jquery-2.1.4.min.js" %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".post_original").click(function(){  
+               $(this).next().slideToggle("slow");
+                                        });
+                                     });
+    </script>
+
+
+    <script>
+    /*====================================================
+      THEME SETTINGS & GLOBAL VARIABLES
+    ====================================================*/
+ 
+    //  1. Sidebar Position
+    var sidebar_left = false; // Set true or flase for positioning sidebar on left
+    
+    //  2. Recent Post count
+    var recent_post_count = 3;
+    
+    </script>
+
+    <script>
+      var _hmt = _hmt || [];
+    </script>
+
+    <link rel="canonical" href="http://www.golaravel.com/">
+    <link rel="next" href="http://www.golaravel.com/page/2/">
+    <meta name="generator" content="Ghost 0.6">
+
+    <link rel="alternate" type="application/rss+xml" title="DrinkSober" href="/">
+<style id="fit-vids-style">.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style>
+</head>
+<body class="home-template">
+
+    <!-- start header -->
+    <header class="main-header" style="background-image: url(http://image.golaravel.com/5/c9/44e1c4e50d55159c65da6a41bc07e.jpg)" "="">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <h1><span class="hide">Laravel - </span>drinksober|小橙子_caroline</h1>
+                    
+
+                    <img src="Laravel-%E7%AE%80%E6%B4%81%E3%80%81%E4%BC%98%E9%9B%85%E7%9A%84PHP%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%28PHP%20Web%20Framework%29%E3%80%82-%20Laravel%E4%B8%AD%E6%96%87%E7%BD%91%EF%BC%88Laravel%E4%B8%AD%E5%9B%BD%E7%A4%BE%E5%8C%BA%EF%BC%89_files/4e4bd788405aab87f03d26edc4ab4.png" alt="Laravel" class="hide">
+                </div>
+
+            </div>
+        </div>
+    </header>
+    <!-- end header -->
+
+    <!-- start navigation -->
+    <nav class="main-navigation">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="navbar-header">
+                        <span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu">
+                        <span class="sr-only">Toggle navigation</span>
+                        <i class="fa fa-bars"></i>
+                        </span>
+                    </div>
+                    <div class="collapse navbar-collapse" id="main-menu">
+    <ul class="menu">
+        <li class="nav-current" role="presentation"><a href="/">Home</a></li>
+        <li role="presentation"><a href="http://lumen.golaravel.com/" title="About Me" target="_blank">About Me</a></li>
+        <li role="presentation"><a href="http://wenda.golaravel.com/" title="Contact" target="_blank">Contact</a></li>
+    </ul>   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- end navigation -->
+
+
+    <!-- start site's main content area -->
+<section class="content-wrap">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-8 main-content">
+
+            {% if error %}
+                <h1 class="post-title">没有相关文章题目</a></h1>
+            {% else %}
+                {% for post in post_list %}   
+
+                <article id="{{post.id}}" class="post tag-laravel tag-laravel-5-1 tag-xin-ban-ben-fa-bu">
+                <div class="post-head">
+                    <h1 class="post-title"><a href="{% url 'detail' my_args=post.id %}"> {{ post.title }} </a></h1>
+                    <div class="post-meta">
+                        <span class="author">作者：<a href="/">DrinkSober</a></span> •
+                        <time class="post-date" datetime="{{post.timestamp}}" title="post.timestamp">{{ post.timestamp |date:'Y年m月d日'}}</time>
+                    </div>
+                </div>
+
+    <!--插入图片-->
+    <div class="featured-media">
+    <style type="text/css" src="{% static 'bootstrap/css/bootstrap.css' %}"></style>
+        <a href="{% url 'detail' my_args=post.id %}"><img src="{{ post.avatar_thumbnail.url }}" / alt="{{post.title}}"></a>
+    </div>    
+     
+                    <div  class="post_original" >
+                        {{post.content|custom_markdown|slice:"100"}}
+                    </div>
+                    <div  class="post_trunckwords" display:none>
+                        {{post.content|custom_markdown|slice:"100:"}}
+                    </div>
+
+    <!--div class="post-permalink">
+        <a href="http://www.golaravel.com/post/laravel-5-1-is-released/" class="btn btn-default">阅读全文</a>
+    </div-->
+
+                    <footer class="post-footer clearfix">
+                        <div class="pull-left tag-list">
+                            <i class="fa fa-folder-open-o"></i>
+                            <a href="http://www.golaravel.com/tag/laravel/">{{post.category}}</a>
+                        </div>
+                        <div class="pull-right share">
+                        </div>
+                    </footer>
+                </article>
+
+                {% endfor %}
+            {% endif %}
+
+            <nav>
+              <ul class="pager">
+                <li><a href="#">Previous</a></li>
+                <li><a href="#">Next</a></li>
+              </ul>
+            </nav>
+
+            </main>
+            <aside class="col-md-4 sidebar">
+
+<!-- start tag cloud widget >
+<div class="widget">
+	<h4 class="title">社区</h4>
+	<div class="content community">
+		<p>QQ群：462694081</p>
+		<p><a href="http://wenda.golaravel.com/" title="Laravel中文网问答社区" target="_blank" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '问答社区'])"><i class="fa fa-comments"></i> 问答社区</a></p>
+	</div>
+</div>
+<end tag cloud widget -->	
+
+<!-- start widget -->
+                <div class="widget">
+                	<h4 class="title">暂时没想好</h4>
+                </div>
+<!-- end widget -->	
+
+
+<!-- start tag cloud widget -->
+                <div class="widget">
+	               <h4 class="title">标签云</h4>
+	               <div class="content tag-cloud">
+                		<a href="/">python</a>
+                        <a href="/">Django</a>
+                        <a href="/">linux环境编程</a>
+                		<a href="/">...</a>
+	               </div>
+                </div>
+<!-- end tag cloud widget -->	
+            </aside>
+        </div>
+    </div>
+</section>
+
+    <!---footer class="main-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="widget">
+                        <h4 class="title">最新文章</h4>
+                        <div class="content recent-post"><div class="recent-single-post"><a href="http://www.golaravel.com/post/laravel-5-1-is-released/" class="post-title">Laravel 5.1 LTS 版本正式发布</a><div class="date">June 9, 2015</div></div><div class="recent-single-post"><a href="http://www.golaravel.com/post/symfony-2-7-0-released/" class="post-title">Symfony 2.7.0 LTS 正式版已经发布，Laravel 5.1 LTS 版本定于6月9号发布</a><div class="date">June 2, 2015</div></div><div class="recent-single-post"><a href="http://www.golaravel.com/post/laravel-announces-v5-1-will-be-the-first-lts/" class="post-title">Laravel 创始人宣布 Laravel 5.1 将会是首个 LTS（长期支持）版本</a><div class="date">May 3, 2015</div></div></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="widget">
+                        <h4 class="title">标签云</h4>
+                        <div class="content tag-cloud">
+                            <a href="http://www.golaravel.com/tag/laravel/">Laravel</a>
+<a href="http://www.golaravel.com/tag/laravel-5/">Laravel 5</a>
+<a href="http://www.golaravel.com/tag/getting-started-with-laravel/">Laravel入门教程</a>
+<a href="http://www.golaravel.com/tag/eloquent/">Eloquent</a>
+<a href="http://www.golaravel.com/tag/laravle5/">laravle5</a>
+<a href="http://www.golaravel.com/tag/laravel-5-1/">Laravel 5.1</a>
+<a href="http://www.golaravel.com/tag/orm/">ORM</a>
+<a href="http://www.golaravel.com/tag/xin-ban-ben-fa-bu/">新版本发布</a>
+<a href="http://www.golaravel.com/tag/lts/">LTS</a>
+<a href="http://www.golaravel.com/tag/php/">PHP</a>
+<a href="http://www.golaravel.com/tag/composer/">Composer</a>
+<a href="http://www.golaravel.com/tag/wei-kuang-jia/">微框架</a>
+<a href="http://www.golaravel.com/tag/lumen/">Lumen</a>
+<a href="http://www.golaravel.com/tag/ming-ming-kong-jian/">命名空间</a>
+<a href="http://www.golaravel.com/tag/laravel4/">Laravel4</a>
+
+
+                            <a href="http://www.golaravel.com/tag-cloud/">...</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="widget">
+                        <h4 class="title">合作伙伴</h4>
+                        <div class="content tag-cloud friend-links">
+                            <a href="http://www.bootcss.com/" title="Bootstrap中文网" onclick="_hmt.push(['_trackEvent', 'link', 'click', 'bootcsscom'])" target="_blank">Bootstrap中文网</a>
+                            <a href="http://www.bootcdn.cn/" title="开放CDN服务" onclick="_hmt.push(['_trackEvent', 'link', 'click', 'bootcdncn'])" target="_blank">开放CDN服务</a>
+                            <a href="http://www.gruntjs.net/" title="Grunt中文网" onclick="_hmt.push(['_trackEvent', 'link', 'click', 'gruntjsnet'])" target="_blank">Grunt中文网</a>
+                            <hr>
+                            <a href="https://www.upyun.com/" title="又拍云" onclick="_hmt.push(['_trackEvent', 'link', 'click', 'upyun'])" target="_blank">又拍云</a>
+                            <a href="http://www.ucloud.cn/" title="UCloud" onclick="_hmt.push(['_trackEvent', 'link', 'click', 'ucloud'])" target="_blank">UCloud</a>
+                        </div>
+                </div></div>
+            </div>
+        </div>
+    </footer-->
+
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12" align="center">
+                    <p class="text-muted"><a href="#">Blog for DrinkSober</a></p>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static "js/jquery_002.js" %}"></script>
+    <script src="{% static "bootstrap/js/bootstrap.js" %}"></script>
+    <script src="{% static "js/jquery.js" %}"></script>
+    <script src="{% static "js/highlight.js" %}"></script>
+    <script src="{% static "js/main.js" %}"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    
+
+    </body>
+</html>

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load custom_markdown %}
+
+{% block title %}
+{{ post.title }}
+{% endblock   %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8 blog-main">
+        <h2 class="blog-post-title" align="center">{{ post.title }}</h2>
+
+        <p class="blog-post-meta"><span class="label label-info">Time: {{ post.timestamp |date:'Y.m.d'}}</span> <a href="/"><span class="label label-primary">DrinkSober</span></a>
+        </p>
+
+        <div class="blog-post">
+        {{ post.content|custom_markdown }}
+        </div><!-- /.blog-post -->
+        {% if post.tags_post.all %}
+                {% for tag in post.tags_post.all %}
+                        {{ tag }}
+                {% endfor %}
+        {% endif %}
+
+
+      <nav>
+        <ul class="pager">
+          <li><a href="#">Previous</a></li>
+          <li><a href="#">Next</a></li>
+        </ul>
+      </nav>
+    </div><!-- /.blog-main --> 
+
+    <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+      <div class="sidebar-module sidebar-module-inset">
+        <h4>About</h4>
+          <p>something about here</p>
+        </div>
+      <div class="sidebar-module">
+            <h4>Archives</h4>
+            <ol class="list-unstyled">
+              <li><a href="#">March 2014</a></li>
+              <li><a href="#">February 2014</a></li>
+              <li><a href="#">January 2014</a></li>
+
+            </ol>
+      </div>
+
+    </div><!-- /.blog-sidebar -->
+  </div><!-- /.row -->
+</div><!-- /.container -->
+
+{% endblock %}
+<!--div class="posts">
+    <section class="post">
+        <header class="post-header">
+            <h2 class="post-title">{{ post.title }}</h2>
+        </header>
+        <div class="post-description">
+            <p>
+                {{ post.content|custom_markdown|safe }}
+            </p>
+            <p class="post-meta">
+                Time:  {{ post.timestamp|date:'Y /m /d'}}
+            </p>
+        </div>
+    </section>
+
+</div>< /.blog-post -->
