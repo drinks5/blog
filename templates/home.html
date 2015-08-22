@@ -131,10 +131,10 @@
     </div>    
      
                     <div  class="post_original" >
-                        {{post.content|custom_markdown|slice:"100"}}
+                        {{post.summary|custom_markdown}}
                     </div>
                     <div  class="post_trunckwords" display:none>
-                        {{post.content|custom_markdown|slice:"100:"}}
+                        {{post.content|custom_markdown }}
 
                     </div>
 
@@ -166,7 +166,7 @@
             <aside class="col-md-4 sidebar">
 
 
-<!-- start tag cloud widget >
+<start tag cloud widget >
 <div class="widget">
 	<h4 class="title">社区</h4>
 	<div class="content community">
@@ -174,7 +174,7 @@
 		<p><a href="http://wenda.golaravel.com/" title="Laravel中文网问答社区" target="_blank" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '问答社区'])"><i class="fa fa-comments"></i> 问答社区</a></p>
 	</div>
 </div>
-<end tag cloud widget -->	
+<end tag cloud widget >	
 
 <!-- start widget >
                 <div class="widget">
@@ -204,7 +204,8 @@
                 		<a href="/">python</a>
                         <a href="/">Django</a>
                         <a href="/">linux环境编程</a>
-                		<a href="/">...</a>
+                	<a href="/">...</a>
+                                 {{ article.tags.all }}
 	               </div>
                 </div>
 <!-- end tag cloud widget -->	
@@ -287,7 +288,6 @@
             <div class="row">
                 <div class="col-sm-12" align="center">
                     <p class="text-muted"><a href="#">Blog for DrinkSober</a></p>
-
                 </div>
             </div>
         </div>
