@@ -3,6 +3,7 @@
 *    This project is build  in *ubuntu15.04*
 *    The django version is 1.82
 
+
 ####Configuration
 
 * Clone this project
