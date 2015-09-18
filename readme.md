@@ -30,19 +30,11 @@
 
 * Install the app included in `setting.py`.
 
-        sudo pip install django_admin_bootstrapped   #use the bootstap for beautify the admin-backstage
-<<<<<<< HEAD
-        sudi pip install django-bootstrap3              #use the bootstrap for beautify the frontpage
-        sudo pip install django-taggit
-        sudo pip install imagekit                    #use imagekit to finish the work which is image
-        sudo pip install pillow
-        sudo pip install django-taggit
-        sudo pip install mysql-python
-        sudo pip install markdown
-=======
-        pip install  pillow
-        sudo pip install bootstrap3                  #use the bootstrap for beautify the frontpage
-        sudo pip install imagekit                    #use imagekit to finish the work which is image
-        sudi pip install django-bootstrap3
-
->>>>>>> tmp
+        pip install django_admin_bootstrapped   #use the bootstap for beautify the admin-backstage
+        pip install django-bootstrap3              #use the bootstrap for beautify the frontpage
+        pip install django-taggit
+        pip install django-imagekit                    #use imagekit to finish the work which is image
+        pip install pillow
+        pip install mysql-python
+        pip install markdown
+        pip install djang-userena

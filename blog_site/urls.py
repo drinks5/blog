@@ -4,16 +4,18 @@ from article.views import RSSFeed
 from django.conf import settings
 
 urlpatterns = patterns('',
-	url(r'^admin/', include(admin.site.urls)),
-    	url(r'^$', 'article.views.home',name='home'),
-   	 url(r'^(?P<my_args>\d+)/$', 'article.views.detail', name='detail'),
-    	url(r'^archive/', 'article.views.archive', name = 'archive'),
-   	 url(r'^search/$','article.views.blog_search', name = 'search'),
-   	 url(r'^feed/$', RSSFeed(),name = 'RSS'),
-   	 url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT }),   
-   	 url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.STATIC_ROOT}),
-   	 url(r'^accounts/', include('userena.urls')),  
-)
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', 'article.views.home',name='home'),
+     url(r'^(?P<my_args>\d+)/$', 'article.views.detail', name='detail'),
+    url(r'^archive/', 'article.views.archive', name = 'archive'),
+    url(r'^search/$','article.views.blog_search', name = 'search'),
+    url(r'^meta/$', 'article.views.display_meta', name = 'meta'),
+
+    url(r'^feed/$', RSSFeed(),name = 'RSS'),
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT }),
+    url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.STATIC_ROOT}),
+   	 #url(r'^accounts/', include('userena.urls')),
+                       )
 
 # Examples:
 #    url(r'^$', 'mywebsite.views.home', name='home'),

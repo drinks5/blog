@@ -40,12 +40,12 @@ MESSAGE_TAGS = {
 # Application definition
 
 
-AUTHENTICATION_BACKENDS = (
-    'userena.backends.UserenaAuthenticationBackend',
-    'guardian.backends.ObjectPermissionBackend',
-    'django.contrib.auth.backends.ModelBackend',
-)
-ANONYMOUS_USER_ID = -1
+#AUTHENTICATION_BACKENDS = (
+#    'userena.backends.UserenaAuthenticationBackend',
+#    'guardian.backends.ObjectPermissionBackend',
+ #   'django.contrib.auth.backends.ModelBackend',
+#)
+#ANONYMOUS_USER_ID = -1
 
 
 INSTALLED_APPS = (
@@ -60,11 +60,10 @@ INSTALLED_APPS = (
     'bootstrap3',
     'imagekit',
     'taggit',
-    'userena',
-    'guardian',
-    'easy_thumbnails',
-    #'bootstrap_toolkit',
-    'accounts',
+#    'userena',
+#    'guardian',
+#    'easy_thumbnails',
+#    'accounts',
     'article',
 )
 
@@ -117,15 +116,16 @@ WSGI_APPLICATION = 'blog_site.wsgi.application'
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.mysql',
-    'NAME'  : 'mysql',
+    'NAME'  : 'mysql_test',
     'USER'  : 'root',
-    'PASSWORD': '',
+    'PASSWORD': 'drinks',
     'HOST'  : 'localhost',
     'PORT'  : '',
       #  'ENGINE': 'django.db.backends.sqlite3',
        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
     }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -140,25 +140,26 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+"""
+AUTH_PROFILE_MODULE = 'accounts.MyProfile'
 
-AUTH_PROFILE_MODULE = 'accounts.MyProfile'  
-      
-LOGIN_REDIRECT_URL = '/accounts/%(username)s/'  
-LOGIN_URL = '/accounts/signin/'  
-LOGOUT_URL = '/accounts/signout/'  
+LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
+LOGIN_URL = '/accounts/signin/'
+LOGOUT_URL = '/accounts/signout/'
 
-EMAIL_USE_TLS = True  
-EMAIL_HOST = 'smtp.gmail.com'  
-EMAIL_PORT = 587  
-EMAIL_HOST_USER = 'yourgmailaccount@gmail.com'  
-EMAIL_HOST_PASSWORD = 'yourgmailpassword'  
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'yourgmailaccount@gmail.com'
+EMAIL_HOST_PASSWORD = 'yourgmailpassword'
 
-SITE_ID=2
+#SITE_ID=2
+"""
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'  
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(__file__),'static')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
@@ -170,4 +171,3 @@ STATICFILES_DIRS = (
 
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(os.path.dirname(__file__),'media')
-

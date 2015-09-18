@@ -9,6 +9,7 @@ from django.contrib.syndication.views import Feed
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.contrib import messages
+from django.shortcuts import get_object_or_404, get_list_or_404, render, redirect
 from markdown import markdown
 
 # Create your views here.
@@ -16,49 +17,41 @@ def home(request):
     post_list = Article.objects.all()
     paginator = Paginator(post_list,5)
     page = request.GET.get('page')
+    tags = Article.tags.all()
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.paginator(paginator.num_pages)
-    return render(request,'home.html',{'post_list':posts})
+    return render(request,'home.html',{'post_list':posts, 'tag_list':tags })
 
 def detail(request,my_args):
-    try:
-        post = Article.objects.get(id=int(my_args))
-     #   post.content = markdown(post.content)
-     #   messages.success(request, "My success message")
-     #   post = BlogPost.objects.all()[int(my_args)]
-    except Article.DoesNotExist:
-        raise Http404
-   # str = ("title = %s, body =%s ,timestamp = %s" % (post.title,post.body,post.timestamp))
-   # return HttpResponse(str)
+    post = get_object_or_404(Article,id=int(my_args) )
     return render(request,'post.html',{'post':post})
 
 def archive(request):
-    try:
-        post_list = Article.objects.all()
-    except Article.DoesNotExist :
-        raise Http404
+    post_list = get_list_or_404(Article)
+
     return render(request,'archive.html',{'post_list':post_list,'error':False})
 
 def blog_search(request):
-    if 's' in request.GET:
-        s = request.GET['s']
-        if not s:
-            return render(request,'home.html')
+    errors = []
+    test = ['test','test2']
+    if 'q' in request.GET:
+        q = request.GET[ 'q']
+        if not q:
+            errors.append('please enter a search word...')
+        elif len(q) > 20:
+            errors.append( 'please enter at most 20 characters...')
         else:
-            post_list = Article.objects.filter(title__icontains = s)
-            if len(post_list) == 0 :
-                return render(request,'archive.html', {'post_list' : post_list,
-                                                    'error' : True})
-            else :
-                return render(request,'archive.html', {'post_list' : post_list,
-                                                    'error' : False})
-    return redirect('/')
+            post_list = Article.objects.filter(title__icontains = q)
+            if len( post_list) == 0:
+                errors.append( 'no post was found...')
+            else:
+                return render( request, 'archive.html', { 'post_list': post_list, 'query':q})       
+    return render( request, 'archive.html', { 'errors': errors, 'test':test })
 
-#this function hasn't finished
 class RSSFeed(Feed) :
     title = "RSS feed - Article"
     link = "feeds/posts/"
@@ -73,6 +66,10 @@ class RSSFeed(Feed) :
     def item_description(self, item):
         return item.content
 
-   # def item_link(self,item):
-   #     return item.get_absolute_url()
-      #  return reverse('news-item', args=[item.id])
+def display_meta(request):
+    values = request.META.items()
+    values.sort()
+    html = []
+    for k,v in values:
+        html.append( '<tr><td>%s</td><td>%s</td></tr>' % (k,v ) )
+    return HttpResponse( '<table>%s</table> ' % '\n'.join(html))

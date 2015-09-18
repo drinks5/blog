@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-
 {% load custom_markdown %}
 <html lang="zh-CN">
 <head>
@@ -15,7 +14,7 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="shortcut icon" href="http://www.golaravel.com/assets/favicon.ico">
+    <link rel="shortcut icon" href="% static 'images/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
     <link rel="stylesheet" href="{% static 'css/monokai_sublime.css' %}">
@@ -29,8 +28,6 @@
                                         });
                                      });
     </script>
-
-
     <script>
     /*====================================================
       THEME SETTINGS & GLOBAL VARIABLES
@@ -62,15 +59,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-
-<<<<<<< HEAD
                     <h1><span class="hide">Laravel - </span>drinksober</h1>
-                    
-
                     <img src="Laravel-%E7%AE%80%E6%B4%81%E3%80%81%E4%BC%98%E9%9B%85%E7%9A%84PHP%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%28PHP%20Web%20Framework%29%E3%80%82-%20Laravel%E4%B8%AD%E6%96%87%E7%BD%91%EF%BC%88Laravel%E4%B8%AD%E5%9B%BD%E7%A4%BE%E5%8C%BA%EF%BC%89_files/4e4bd788405aab87f03d26edc4ab4.png" alt="Laravel" class="hide">
                 </div>
-
-
             </div>
         </div>
     </header>
@@ -113,7 +104,6 @@
 
                 {% for post in post_list %}   
 
-
                 <article id="{{post.id}}" class="post tag-laravel tag-laravel-5-1 tag-xin-ban-ben-fa-bu">
                 <div class="post-head">
                     <h1 class="post-title"><a href="{% url 'detail' my_args=post.id %}"> {{ post.title }} </a></h1>
@@ -132,10 +122,16 @@
      
                     <div  class="post_original" >
                         {{post.summary|custom_markdown}}
+                    {% if post.tags %}
+                        {% for tag in post.tags.all %}
+                        <span class="label label-primary">  {{ tag }} </span>   
+                        {% if not forloop.last %} &nbsp;{% endif%}
+                        {% endfor %}
+                   {% endif %}
                     </div>
-                    <div  class="post_trunckwords" display:none>
-                        {{post.content|custom_markdown }}
 
+                    <div  class="hidden" >
+                        {{post.content|custom_markdown }}
                     </div>
 
     <!--div class="post-permalink">
@@ -157,8 +153,14 @@
 
             <nav>
               <ul class="pager">
-                <li><a href="#">Previous</a></li>
-                <li><a href="#">Next</a></li>
+              {% if  post_list.has_previous %}
+                <li><a href="{{ post_list.previous_page_number }}">Previous</a></li>
+              {% endif %}
+
+              {% if post_list.has_next %}
+                <li><a href="{{ post_list.next_page_number }}">Next</a></li>
+              {% endif %}
+
               </ul>
             </nav>
 
@@ -166,61 +168,60 @@
             <aside class="col-md-4 sidebar">
 
 
-<start tag cloud widget >
+<!-- start tag cloud widget -->
 <div class="widget">
-	<h4 class="title">社区</h4>
+	<h4 class="title">WeiBo</h4>
 	<div class="content community">
-		<p>QQ群：462694081</p>
-		<p><a href="http://wenda.golaravel.com/" title="Laravel中文网问答社区" target="_blank" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '问答社区'])"><i class="fa fa-comments"></i> 问答社区</a></p>
+<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=1&uid=2476067225&verifier=3c08c88d&colors=ffc20e,ffffff,000000,0082cb,ecfbfd&dpc=1"></iframe>
 	</div>
 </div>
-<end tag cloud widget >	
-
-<!-- start widget >
-                <div class="widget">
-                	<h4 class="title">暂时没想好</h4>
-
-            <!-- start tag cloud widget-- >
-            <div class="widget">
-                <h4 class="title">微博</h4>
-                <div class="content community">
-                            <p>asad</p>
-                </div>
-            </div>
-            <!--end tag cloud widget -->	
-
-<!-- start widget -->
-                <div class="widget">
-                	<h4 class="title">最新评论</h4>
-
-                </div>
-<end widget -->	
-
+<!-- end tag cloud widget -->	
 
 <!-- start tag cloud widget -->
-                <div class="widget">
-	               <h4 class="title">标签云</h4>
-	               <div class="content tag-cloud">
-                		<a href="/">python</a>
-                        <a href="/">Django</a>
-                        <a href="/">linux环境编程</a>
-                	<a href="/">...</a>
-                                 {{ article.tags.all }}
-	               </div>
-                </div>
-<!-- end tag cloud widget -->	
+        <div class="widget">
+	<h4 class="title">CloudTag</h4>
+	<div class="content tag-cloud">
+                    {% for tag in tag_list %}
+                        <span class="label label-primary">  {{ tag }} &nbsp;</span>  
+                    {% if forloop.counter|divisibleby:4 %}
+                    <br>
+                    {% endif %}
+                    {% endfor %}
+
+	</div>
+        </div>
+<!--end tag cloud widget -->
+
+<!-- start tag cloud widget -->
+    <div class="widget">
+        <form action="/search/" method="get">
+            <input type="text" name="q">
+            <input type="submit" value="Search">
+        </form>
+        <div class="content community">
+            <p>ABout WeiBo</p>
+        </div>
+    </div>
+<!-- end tag cloud widget --> 	
+
+    <div class="widget">
+        <form action="/contact/" method="post">
+            <p>Subject: <input type="text" name="Subject"</p>
+            <p>Your e-mail (optional) : <input type="text" name="email"</p>
+            <p>Message: <textarea name="message" row="10" clos="50"></textarea></p>
+            <input type="submit" value="Submit">
+        </form>
+        <div class="content community">
+            <p>ABout WeiBo</p>
+        </div>
+    </div>
+<!-- end tag cloud widget --> 
+
             </aside>
         </div>
     </div>
 </section>
-
-
-    <!---footer class="main-footer">
-
-
-
     <!--footer class="main-footer">
->>>>>>> tmp
         <div class="container">
             <div class="row">
                 <div class="col-sm-4">
@@ -229,8 +230,6 @@
                         <div class="content recent-post"><div class="recent-single-post"><a href="http://www.golaravel.com/post/laravel-5-1-is-released/" class="post-title">Laravel 5.1 LTS 版本正式发布</a><div class="date">June 9, 2015</div></div><div class="recent-single-post"><a href="http://www.golaravel.com/post/symfony-2-7-0-released/" class="post-title">Symfony 2.7.0 LTS 正式版已经发布，Laravel 5.1 LTS 版本定于6月9号发布</a><div class="date">June 2, 2015</div></div><div class="recent-single-post"><a href="http://www.golaravel.com/post/laravel-announces-v5-1-will-be-the-first-lts/" class="post-title">Laravel 创始人宣布 Laravel 5.1 将会是首个 LTS（长期支持）版本</a><div class="date">May 3, 2015</div></div></div>
                     </div>
                 </div>
-
-
 
                 <div class="col-sm-4">
                     <div class="widget">
@@ -251,18 +250,10 @@
 <a href="http://www.golaravel.com/tag/lumen/">Lumen</a>
 <a href="http://www.golaravel.com/tag/ming-ming-kong-jian/">命名空间</a>
 <a href="http://www.golaravel.com/tag/laravel4/">Laravel4</a>
-
-
-
-
-
                             <a href="http://www.golaravel.com/tag-cloud/">...</a>
                         </div>
                     </div>
                 </div>
-
-
-
                 <div class="col-sm-4">
                     <div class="widget">
                         <h4 class="title">合作伙伴</h4>
@@ -274,15 +265,11 @@
                             <a href="https://www.upyun.com/" title="又拍云" onclick="_hmt.push(['_trackEvent', 'link', 'click', 'upyun'])" target="_blank">又拍云</a>
                             <a href="http://www.ucloud.cn/" title="UCloud" onclick="_hmt.push(['_trackEvent', 'link', 'click', 'ucloud'])" target="_blank">UCloud</a>
                         </div>
-
-   
                 </div>
                 </div>
-
             </div>
         </div>
-    </footer-->
-
+</footer-->
     <div class="copyright">
         <div class="container">
             <div class="row">
@@ -292,14 +279,11 @@
             </div>
         </div>
     </div>
-
     <script src="{% static "js/jquery_002.js" %}"></script>
     <script src="{% static "bootstrap/js/bootstrap.js" %}"></script>
     <script src="{% static "js/jquery.js" %}"></script>
     <script src="{% static "js/highlight.js" %}"></script>
     <script src="{% static "js/main.js" %}"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    
-
     </body>
 </html>

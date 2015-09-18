@@ -2,8 +2,12 @@
 {% load custom_markdown %}
 {% block content %}
 <div class="posts">
-    {% if error %}
-        <h2 class="post-title">没有相关文章题目</a></h2>
+    {% if  errors %}
+                <ul>
+                    {% for error in errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
     {% else %}
       {% for post in post_list %}
           <section class="post">

@@ -16,14 +16,16 @@
         </p>
         <div class="blog-post">
 
+        <div align="center" class = "content">
         <img src="{{ post.avatar_thumbnail.url }}" class="img-responsive" alt="Responsive image">
+        </div>
         {% if post.tags %}
              {% for tag in post.tags.all %}
                      <span class="label label-primary">  {{ tag }}   </span>   
                     {% if not forloop.last %}  {% endif%}
               {% endfor %}
         {% endif %}
-        {{ article.tags.all }}
+        
         <div class="blog-post">
         {{ post.content|custom_markdown }}
         </div><!-- /.blog-post -->
@@ -36,7 +38,7 @@
         </ul>
       </nav>
     </div><!-- /.blog-main --> 
-
+</div>
     <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
       <div class="sidebar-module sidebar-module-inset">
         <h4>About</h4>
@@ -48,28 +50,12 @@
               <li><a href="#">March 2014</a></li>
               <li><a href="#">February 2014</a></li>
               <li><a href="#">January 2014</a></li>
-
             </ol>
       </div>
 
     </div><!-- /.blog-sidebar -->
+    </div>
   </div><!-- /.row -->
 </div><!-- /.container -->
 
 {% endblock %}
-<!--div class="posts">
-    <section class="post">
-        <header class="post-header">
-            <h2 class="post-title">{{ post.title }}</h2>
-        </header>
-        <div class="post-description">
-            <p>
-                {{ post.content|custom_markdown|safe }}
-            </p>
-            <p class="post-meta">
-                Time:  {{ post.timestamp|date:'Y /m /d'}}
-            </p>
-        </div>
-    </section>
-
-</div>< /.blog-post -->
