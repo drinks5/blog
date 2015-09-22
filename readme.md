@@ -3,6 +3,7 @@
 *    This project is build  in *ubuntu15.04*
 *    The django version is 1.82
 
+
 ####Configuration
 
 * Clone this project
@@ -30,6 +31,7 @@
 
 * Install the app included in `setting.py`.
 
+
         pip install django_admin_bootstrapped   #use the bootstap for beautify the admin-backstage
         pip install django-bootstrap3              #use the bootstrap for beautify the frontpage
         pip install django-taggit
@@ -38,3 +40,5 @@
         pip install mysql-python
         pip install markdown
         pip install djang-userena
+
+
