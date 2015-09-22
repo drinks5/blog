@@ -1,26 +1,27 @@
 from django.conf.urls import patterns, include, url
+#from django.conf.urls.default import *
 from django.contrib import admin
 from article.views import RSSFeed
 from django.conf import settings
+#from article import views
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'article.views.home',name='home'),
-     url(r'^(?P<my_args>\d+)/$', 'article.views.detail', name='detail'),
-    url(r'^archive/', 'article.views.archive', name = 'archive'),
-    url(r'^search/$','article.views.blog_search', name = 'search'),
-    url(r'^meta/$', 'article.views.display_meta', name = 'meta'),
-
     url(r'^feed/$', RSSFeed(),name = 'RSS'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT }),
     url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.STATIC_ROOT}),
-   	 #url(r'^accounts/', include('userena.urls')),
                        )
 
-# Examples:
-#    url(r'^$', 'mywebsite.views.home', name='home'),
-#    url(r'^blog/', include('blog.urls')),
+urlpatterns += patterns('article.views',
+    url(r'^$', 'home',name='home'),
+    url(r'^archive/', 'archive', name = 'archive'),
+    url(r'^search/$','blog_search', name = 'search'),
+    url(r'^meta/$', 'display_meta', name = 'meta'),
+    url(r'^contact/$', 'contact', name = 'contact'),
+    url(r'^(?P<my_args>\d+)/$', 'detail', name='detail'),
+    )
 
-#    url(r'^test/$','blog.views.test'),
-#   url(r'^tag(?P<tag>\w+)/$', 'blog.views.search_tag', name = 'search_tag'),
-#   url(r'^display_meta/', 'blog.views.display_meta', name = 'display_meta'),
+
+"""
+the archive about all post
+"""

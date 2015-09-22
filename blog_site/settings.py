@@ -67,6 +67,13 @@ INSTALLED_APPS = (
     'article',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+)
+
 from django.conf import global_settings
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.request','django.core.context_processors.static',
@@ -82,6 +89,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+   # 'django.middleware.csrf.CsrfResponseMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -129,32 +137,33 @@ DATABASES = {
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+USE_TZ = False
+LANGUAGE_CODE = 'zh-hans'
+TIME_ZONE = 'Asia/Shanghai'
 
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
-"""
-AUTH_PROFILE_MODULE = 'accounts.MyProfile'
 
-LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
-LOGIN_URL = '/accounts/signin/'
-LOGOUT_URL = '/accounts/signout/'
+#AUTH_PROFILE_MODULE = 'accounts.MyProfile'
 
+#LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
+#LOGIN_URL = '/accounts/signin/'
+#LOGOUT_URL = '/accounts/signout/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'yourgmailaccount@gmail.com'
-EMAIL_HOST_PASSWORD = 'yourgmailpassword'
+EMAIL_HOST = 'smtp.sina.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'drinksober@sina.com'
+EMAIL_HOST_PASSWORD = 'drinks1993'
+SERVER_EMAIL = 'drinksober@sina.com'
+#DEFAULT_FROM_EMAIL = 'drinksober@sina.com'
 
 #SITE_ID=2
-"""
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
