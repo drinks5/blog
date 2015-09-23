@@ -2,3 +2,4 @@ CACHE
 *.pyc
 *.jpg
 *.png
+db.sqlite3

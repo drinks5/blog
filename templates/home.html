@@ -199,7 +199,14 @@
             <input type="submit" value="Search">
         </form>
         <div class="content community">
-            <p>ABout WeiBo</p>
+            {% for post in post_list %}
+            <span class="categories">分类: </span>
+                <span>
+                    <a href="{% url 'article.views.category_archive' item=post.sort.name %}"
+                       rel="category tag">{{ post.category.name }}
+                    </a>
+                </span>
+            {% endfor %}
         </div>
     </div>
 <!-- end tag cloud widget --> 	
