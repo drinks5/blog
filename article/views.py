@@ -6,7 +6,7 @@ from django.contrib.syndication.views import Feed
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.shortcuts import get_object_or_404, get_list_or_404, render, redirect,render_to_response
 from django.core.mail import send_mail
-from article.forms import ContactForm
+from article.forms import ContactForm, CommentForm
 from django.db.models import Count
 """
 from django.contrib import messages
@@ -14,10 +14,9 @@ from django.core.urlresolvers import reverse
 from datetime import datetime
 """
 # Create your views here.
-"""
-the home page and it will display 5 posts per page
-"""
+
 def home(request):
+    """the home page and it will display 5 posts per page"""
     post_list = Article.objects.all()
     paginator = Paginator(post_list,5)
     page = request.GET.get('page')
@@ -30,38 +29,32 @@ def home(request):
         posts = paginator.paginator(paginator.num_pages)
     return render(request,'home.html',{'post_list':posts, 'tag_list':tags })
 
-"""
-the function will display the detail of a post
-"""
-def detail(request,my_args):
-    post = get_object_or_404(Article,id=int(my_args) )
+def detail(request,pk):
+    """the function will display the detail of a post"""
+    post = get_object_or_404(Article,id=int(pk) )
     return render(request,'post.html',{'post':post})
 
-"""
-this function will make archive of all the post
-"""
-
 def archive(request):
+    """this function will make archive of all the post"""
     post_list = get_list_or_404(Article)
     return render(request,'archive.html',{'post_list':post_list,'error':False})
 
 
-"""
-archive by tags
-"""
 def tags_archive(request, item):
-    post = Article.objects.annotate(Count('title')).filter\
+    """archive by tags"""
+    posts = Article.objects.annotate(Count('title')).filter\
         (tags__name= item).prefetch_related('category')\
         .prefetch_related('tags').order_by('timestamp')
+    return render(request, 'archive.html', { 'post_list': posts })
 
 def category_archive(request, item):
-    post = Article.objects.annotate(Count('title')).filter\
-        (category__name= item).prefetch_related('category')\
+    posts = Article.objects.annotate(Count('title')).filter\
+        (sort__name= item).prefetch_related('sort')\
         .prefetch_related('tags').order_by('timestamp')
-"""
-this function will search a post by title and content
-"""
+    return render(request, 'archive.html', { 'post_list': posts })
+
 def blog_search(request):
+    """this function will search a post by title and content"""
     errors = []
     keyWord = Article.objects.none()
     if 'q' in request.GET:
@@ -83,11 +76,8 @@ def blog_search(request):
             return render( request, 'archive.html', { 'post_list': keyWord, 'query':q})
     return render( request, 'archive.html', { 'errors': errors,})
 
-"""
-this function offered the contact and send email
-to site-owner
-"""
 def contact(request):
+    """this function offered the contact and send emailto site-owner"""
     errors = []
     if request.method ==  'POST':
         form = ContactForm(request.POST)
@@ -108,11 +98,20 @@ def contact(request):
     return render(request, 'contact_from.html', {'form':form}, context_instance=RequestContext(request))
 
 
+def add_Comment(request,id):
+    """add comment by user in a post"""
+    if request.method == 'POST':
+        form = CommentForm( request.POST)
+        if form.is_valid():
+            comment = form.save( commit = False)
+            comment.post_id = int(id)
+            comment.save()
+        return redirect( 'article.views.detail', id = id)
+    return redirect( 'article.views.home',error=True)
 
-"""
-this function offered the RSS page
-"""
+
 class RSSFeed(Feed) :
+    """this function offered the RSS page"""
     title = "RSS feed - Article"
     link = "feeds/posts/"
     description = "RSS feed - blog posts"
@@ -126,8 +125,8 @@ class RSSFeed(Feed) :
     def item_description(self, item):
         return item.content
 
-
 def display_meta(request):
+    """just display all the request.META"""
     values = request.META.items()
     values.sort()
     html = []
