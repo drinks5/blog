@@ -29,6 +29,41 @@
         {{ post.content|custom_markdown }}
         </div><!-- /.blog-post -->
 
+   <form action="{% url 'article.views.add_Comment' id=post.id %}" method="POST" id="commentform">
+        {% csrf_token %}
+        <div id="respond">
+            <div id="author_info">
+                <div class="row" style="margin-left:0">
+                    <input type="text" name="author" id="author" class="textfield"
+                           value="" size="24" tabindex="1">
+                    <label for="author" class="small">昵称 (必填)</label>
+                </div>
+                <div class="row" style="margin-left:0">
+                    <input type="text" name="email" id="email" class="textfield"
+                           value="" size="24" tabindex="2">
+                    <label for="email" class="small">电子邮箱 (我们会为您保密) (必填)</label>
+                </div>
+                <div class="row" style="margin-left:0">
+                    <input type="text" name="" id="url" class="textfield"
+                           value="" size="24" tabindex="3">
+                    <label for="url" class="small">网址</label>
+                </div>
+            </div>
+            <!-- comment input -->
+            <div class="row" style="margin-left:-7px;">
+                <label for="comment"></label>
+                <textarea name="text" id="comment" tabindex="4" rows="8" cols="50"></textarea>
+            </div>
+            <!-- comment submit and rss -->
+            <div id="submitbox">
+                <div class="submitbutton">
+                    <input name="submit" type="submit" id="submit" class="button" tabindex="5"
+                           value="提交评论">
+                </div>
+                <div class="fixed"></div>
+            </div>
+        </div>
+    </form>
 
       <nav>
         <ul class="pager">
