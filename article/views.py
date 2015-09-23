@@ -7,6 +7,7 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.shortcuts import get_object_or_404, get_list_or_404, render, redirect,render_to_response
 from django.core.mail import send_mail
 from article.forms import ContactForm
+from django.db.models import Count
 """
 from django.contrib import messages
 from django.core.urlresolvers import reverse
@@ -39,20 +40,24 @@ def detail(request,my_args):
 """
 this function will make archive of all the post
 """
-"""
-def archive(request, year, month):
+
+def archive(request):
     post_list = get_list_or_404(Article)
     return render(request,'archive.html',{'post_list':post_list,'error':False})
-"""
+
 
 """
 archive by tags
 """
-def tags_archive(request, name):
+def tags_archive(request, item):
     post = Article.objects.annotate(Count('title')).filter\
-        (category__name='1111').prefetch_related('category')\
+        (tags__name= item).prefetch_related('category')\
         .prefetch_related('tags').order_by('timestamp')
 
+def category_archive(request, item):
+    post = Article.objects.annotate(Count('title')).filter\
+        (category__name= item).prefetch_related('category')\
+        .prefetch_related('tags').order_by('timestamp')
 """
 this function will search a post by title and content
 """
