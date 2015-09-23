@@ -124,7 +124,7 @@ WSGI_APPLICATION = 'blog_site.wsgi.application'
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.mysql',
-    'NAME'  : 'mysql_test',
+    'NAME'  : 'blog',
     'USER'  : 'root',
     'PASSWORD': 'drinks',
     'HOST'  : 'localhost',
@@ -162,7 +162,7 @@ EMAIL_HOST_PASSWORD = 'drinks1993'
 SERVER_EMAIL = 'drinksober@sina.com'
 #DEFAULT_FROM_EMAIL = 'drinksober@sina.com'
 
-#SITE_ID=2
+SITE_ID=2
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/

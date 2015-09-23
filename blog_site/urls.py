@@ -19,6 +19,7 @@ urlpatterns += patterns('article.views',
     url(r'^meta/$', 'display_meta', name = 'meta'),
     url(r'^contact/$', 'contact', name = 'contact'),
     url(r'^(?P<my_args>\d+)/$', 'detail', name='detail'),
+    url(r'^category/(?P<item>\w+)/$', 'category_archive', name='category'),
     )
 
 
