@@ -10,6 +10,7 @@ urlpatterns = patterns('article.views',
     url(r'^contact/$', 'contact', name = 'contact'),
     url(r'^article/(?P<pk>\d+)/$', 'detail', name='detail'),
     url(r'^category/(?P<item>\w+)/$', 'category_archive', name='category'),
+    url(r'^tags/(?P<item>\w+)/$', 'tags_archive', name='tags'),
     url(r'^comment/(?P<id>\d+)/$', 'add_Comment', name = 'comment'),
     url(r'^feed/$', RSSFeed(),name = 'RSS'),
     )

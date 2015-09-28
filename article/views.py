@@ -21,13 +21,14 @@ def home(request):
     paginator = Paginator(post_list,5)
     page = request.GET.get('page')
     tags = Article.tags.all()
+    sorts = Article.sort.get_queryset()
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.paginator(paginator.num_pages)
-    return render(request,'home.html',{'post_list':posts, 'tag_list':tags })
+    return render(request,'home.html',{'post_list':posts, 'tag_list':tags,'sort_list': sorts })
 
 def detail(request,pk):
     """the function will display the detail of a post"""
@@ -43,7 +44,7 @@ def archive(request):
 def tags_archive(request, item):
     """archive by tags"""
     posts = Article.objects.annotate(Count('title')).filter\
-        (tags__name= item).prefetch_related('category')\
+        (tags__name= item).prefetch_related('sort')\
         .prefetch_related('tags').order_by('timestamp')
     return render(request, 'archive.html', { 'post_list': posts })
 
