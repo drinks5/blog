@@ -3,21 +3,23 @@
 {% block content %}
 <div class="posts">
     {% if  errors %}
-                <ul>
-                    {% for error in errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
+        <ul>
+            {% for error in errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
     {% else %}
       {% for post in post_list %}
           <section class="post">
               <header class="post-header">
-                  <h2 class="post-title"><a href="{% url 'detail' pk=post.id %}">{{ post.title|custom_markdown }}</a></h2>
+                  <h2 class="post-title"><a href="{% url 'detail' pk=post.id %}">
+                      {{ post.title|custom_markdown }}</a></h2>
                       <p class="post-description">
                           {{ post.content|truncatewords:10 }}
                       </p>
                       <p class="post-meta">
-                          Time:  <a class="post-timestamp" href="#">{{ post.timestamp |date:'Y /m /d'}}</a> <a href="{% url 'detail' pk=post.id %}">Read More</a>
+                          Time:  <a class="post-timestamp" href="#">{{ post.timestamp |date:'Y /m /d'}}</a>
+                          <a href="{% url 'detail' pk=post.id %}">Read More</a>
                       </p>
                 </header>
           </section>

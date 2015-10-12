@@ -110,7 +110,7 @@ pre {
 }
 ::-moz-selection {
   color: #ffffff;
-  background: #f4645f;
+  background: #ffffff;
   text-shadow: none;
 }
 ::selection {

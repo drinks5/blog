@@ -1,21 +1,26 @@
+#! /usr/bin/env python
+# encoding: utf-8
+__author__ = 'drinksober'
+
 # Create your views here.
-from article.models import Article
 from django.template import RequestContext
-from django.http import Http404,HttpResponse
+from django.template.response import TemplateResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib.syndication.views import Feed
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.shortcuts import get_object_or_404, get_list_or_404, render, redirect,render_to_response
 from django.core.mail import send_mail
-from article.forms import ContactForm, CommentForm
 from django.db.models import Count
-"""
+from django.views.generic import CreateView, UpdateView, DetailView, View
 from django.contrib import messages
-from django.core.urlresolvers import reverse
-from datetime import datetime
-"""
+
+from .models import Article, Comment
+from .forms import ContactForm, CommentForm
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
-def home(request):
+def home(request,page):
     """the home page and it will display 5 posts per page"""
     post_list = Article.objects.all()
     paginator = Paginator(post_list,5)
@@ -28,17 +33,23 @@ def home(request):
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.paginator(paginator.num_pages)
-    return render(request,'home.html',{'post_list':posts, 'tag_list':tags,'sort_list': sorts })
+    return render(request,'home.html',
+                  {'post_list':posts, 'tag_list':tags,'sort_list': sorts })
 
 def detail(request,pk):
     """the function will display the detail of a post"""
-    post = get_object_or_404(Article,id=int(pk) )
-    return render(request,'post.html',{'post':post})
+    post = get_object_or_404(Article, id=int(pk))
+    comments = post.comment_set.all()
+    return render(request,'post.html',{'post':post, 'comments': comments, 'error':False})
 
 def archive(request):
     """this function will make archive of all the post"""
     post_list = get_list_or_404(Article)
     return render(request,'archive.html',{'post_list':post_list,'error':False})
+
+def aboutme(request):
+    """the AboutMe page"""
+    return  render(request, 'aboutme.html',{})
 
 
 def tags_archive(request, item):
@@ -96,18 +107,21 @@ def contact(request):
         form = ContactForm(
             initial = { 'subject':'I love your site'}
         )
-    return render(request, 'contact_from.html', {'form':form}, context_instance=RequestContext(request))
+    return render(request, 'contact_from.html',
+                  {'form':form}, context_instance=RequestContext(request))
 
 
-def add_Comment(request,id):
+def add_Comment(request,pk):
     """add comment by user in a post"""
     if request.method == 'POST':
         form = CommentForm( request.POST)
         if form.is_valid():
             comment = form.save( commit = False)
-            comment.post_id = int(id)
+            comment.post_id = int(pk)
             comment.save()
-        return redirect( 'article.views.detail', id = id)
+        return redirect( 'article.views.detail', pk = pk)
+    else:
+        form = CommentForm(initial={ 'key': 'value'})
     return redirect( 'article.views.home',error=True)
 
 
@@ -134,3 +148,65 @@ def display_meta(request):
     for k,v in values:
         html.append( '<tr><td>%s</td><td>%s</td></tr>' % (k,v ) )
     return HttpResponse( '<table>%s</table> ' % '\n'.join(html))
+
+class CommentActionMixin(object):
+    fields = ('author', 'email', 'text')
+
+    @property
+    def success_msg(self):
+        return NotImplemented
+
+    def form_valid(self, form):
+        messages.info( self.request, self.sucess_msg)
+        return super(CommentActionMixin, self).form_valid(form)
+
+class CommentCreateView(CommentActionMixin, CreateView):
+    model = Comment
+    success_msg ="Comment created!!!"
+
+class CommentUpdateView(CommentActionMixin, UpdateView):
+    model = Comment
+    success_msg ="Comment updated!!!"
+
+class CommentDetailView( DetailView):
+    model = Comment
+    template_name = 'comment.html'
+    context_object_name = 'comment'
+
+class CommentView( View):
+    form_class = CommentForm
+    initial = { 'key': 'value'}
+    template_name = 'comment.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial= self.initial)
+        return render( request, self.template_name, {'form':form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            comment = form.save( commit = False)
+            comment.post_id = int(pk)
+            comment.save()
+            return HttpResponseRedirect('/')
+        return render(request, self.template_name,{'form':form})
+
+
+"""
+test
+"""
+def home_test(request):
+    """the home page and it will display 5 posts per page"""
+    post_list = Article.objects.all()
+    paginator = Paginator(post_list,5)
+    page = request.GET.get('page')
+    tags = Article.tags.all()
+    sorts = Article.sort.get_queryset()
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.paginator(paginator.num_pages)
+    return render(request,'test_home.html',
+                  {'post_list':posts, 'tag_list':tags,'sort_list': sorts })

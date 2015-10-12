@@ -1,7 +1,7 @@
 #__author__ = 'drinksober`'
 # coding=utf-8
 from django import forms
-from article.models import Comment
+from .models import Comment
 
 class ContactForm(forms.Form):
     subject = forms.CharField(max_length=100,help_text="test help")

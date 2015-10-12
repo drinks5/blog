@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
 
 from django.contrib import messages
+"""
+bootstrap alert info...
+"""
 MESSAGE_TAGS = {
             messages.SUCCESS: 'alert-success success',
             messages.WARNING: 'alert-warning warning',
@@ -49,6 +52,7 @@ MESSAGE_TAGS = {
 
 
 INSTALLED_APPS = (
+    'django.contrib.admindocs',
     'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -57,16 +61,29 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'authtools',
     'bootstrap3',
     'imagekit',
     'taggit',
 #    'userena',
 #    'guardian',
 #    'easy_thumbnails',
-#    'accounts',
+    'accounts',
     'article',
 )
 
+DATABASES = {
+    'default': {
+    'ENGINE' : 'django.db.backends.postgresql_psycopg2',
+    'NAME'   : 'blog',
+    'USER'   : 'bloguser',
+    'PASSWORD': 'drinks',
+    'HOST'   : 'localhost',
+    'PORT'   : '',
+    'ATOMIC_REQUESTS':True,
+    }
+    }
+    
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
     'django.core.context_processors.debug',
@@ -80,10 +97,7 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
 )
 
 BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
-#TEMPLATE_DIRS = (
-  #  os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
- #   os.path.join(BASE_DIR,'templates').replace('\\','/'),
-#)
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -105,6 +119,7 @@ TEMPLATES = [
         'DIRS': [os.path.join(BASE_DIR,'templates').replace('\\','/')],
         'APP_DIRS': True,
         'OPTIONS': {
+            'string_if_invalid': 'INVALID EXPRESSION : %S',
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -121,21 +136,7 @@ WSGI_APPLICATION = 'blog_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = {
-    'default': {
 
-     'ENGINE': 'django.db.backends.sqlite3',
-    'NAME': os.path.join(BASE_DIR, 'db1.sqlite3'),
-    }
-    }
-"""
-'ENGINE': 'django.db.backends.mysql',
-    'NAME'  : 'blog',
-    'USER'  : 'root',
-    'PASSWORD': 'drinks',
-    'HOST'  : 'localhost',
-    'PORT'  : '',
-"""
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 USE_TZ = False
@@ -154,6 +155,8 @@ USE_L10N = True
 #LOGIN_URL = '/accounts/signin/'
 #LOGOUT_URL = '/accounts/signout/'
 
+AUTH_USER_MODEL = 'accounts.User'
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.sina.com'
@@ -168,7 +171,6 @@ SITE_ID=2
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(__file__),'static')
 STATICFILES_DIRS = (

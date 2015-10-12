@@ -1,11 +1,33 @@
 from django.contrib import admin
-from article.models import Article, Sort, Comment
+from django.core.urlresolvers import reverse
+from django.utils.html import format_html
+
 from django_admin_bootstrapped.admin.models import SortableInline
+
+from .models import Article, Sort, Comment
 
 
 # Register your models here.
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'sort', 'timestamp',)
 
-admin.site.register(Article)
+    """
+    show the avatar_thumbnail's url
+    and it can callable
+    """
+    # readonly_fields = ("avatar_thumbnail",)
+    #
+    # def avatar_thumbnail(self, instance):
+    #     url = reverse("avatar_detail", kwargs={"id": instance.pk})
+    #     response = format_html("""<a href="{0}">{1}</a>""",url,url)
+    #     return response
+    #
+    # avatar_thumbnail.short_description = "post avatar url"
+    # avatar_thumbnail.allow_tags = True
+
+
+
+admin.site.register(Article, ArticleAdmin)
 admin.site.register(Sort)
 admin.site.register(Comment)
 
