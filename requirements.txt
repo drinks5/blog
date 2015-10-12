@@ -1,0 +1,8 @@
+django_admin_bootstrapped
+django-bootstrap3
+django-taggit
+django-imagekit
+pillow
+mysql-python
+markdown
+djang-userena

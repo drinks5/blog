@@ -3,3 +3,4 @@ CACHE
 *.jpg
 *.png
 db*
+*migrations

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+ <main class="col-md-10 col-md-offset-1 main-content">
+       <article class="post tag-about-drinksober tag-driknsober-in-depth  ">
+      <div class="col-md-12">
+            <h4 class="title">ContactMe</h4>
+            <form>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" class="form-control" id="subject" placeholder="来个主题呗">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="记得写上你的邮箱">
+                </div>
+                <div class="form-group">
+                    <label for="message">Content</label>
+                    <textarea name="message" class="form-control" rows="4" placeholder="说点什么吧"></textarea></p>
+                </div>
+                <button type="submit" class="btn btn-default">提交</button>
+            </form>
+        </div>
+       </article>
+ </main>
+{% endblock %}

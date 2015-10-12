@@ -1,213 +1,111 @@
-<!DOCTYPE html>
-{% load staticfiles %}
+{% extends "base.html" %}
 {% load custom_markdown %}
-<html lang="zh-CN">
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Blog For Drinksober</title>
-    <meta name="description" content="DrinkSober是个人技术与生活分享的博客">
-    <meta name="keywords" content="Blog,django,python,DrinkSober">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Ghost 0.6">
-
-    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <!--  <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
-    <link rel="stylesheet" href="{% static 'css/monokai_sublime.css' %}">-->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/screen.css' %}">
-    <script src="{% static "bootstrap/js/jquery-2.1.4.min.js" %}"></script>
-      <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $(".post_original").click(function(){  
-               $(this).next().slideToggle("slow");
-                                        });
-                                     });
-    </script>
-
-</head>
-<body class="home-template">
-    <!-- start header -->
-    <header class="main-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h1><span class="hide">Laravel - </span>drinksober</h1>
+{% block title %}Home{% endblock %}
+{% block content %}
+    <main class="col-md-8" main-content">
+    {% if user %}
+        {{ user }}
+    {% endif %}
+    <a href={% url 'accounts.views.logout' %}>logout</a>
+    {% if error %}
+    <h1 class="post-title">没有相关文章题目</h1>
+    {% else %}
+        {% for post in post_list %}
+        <article class="post tag-about-drinksober tag-driknsober-in-depth">
+    <!-- 博文头-->
+            <div class="post-head">
+                <h1 class="post-title"><a href="{% url 'article.views.detail' pk=post.id  %}">
+                    {{ post.title }} </a>
+                </h1>
+                <div class="post-meta">
+                    <span class="author">作者：<a href="/">DrinkSober</a></span> •
+                    <time class="post-date" datetime="{{post.timestamp}}" title="post.timestamp">
+                        {{ post.timestamp |date:'Y年m月d日'}}</time>
                 </div>
             </div>
-        </div>
-    </header>
-    <!-- end header -->
+    <!--插入图片-->
+            <div class="featured-media">
 
-    <!-- start navigation -->
-    <nav class="main-navigation">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="navbar-header">
-                        <span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu">
-                        <span class="sr-only">Toggle navigation</span>
-                        <i class="fa fa-bars"></i>
-                        </span>
-                    </div>
-                    <div class="collapse navbar-collapse" id="main-menu">
-                        <ul class="menu">
-                            <li class="nav-current" role="presentation"><a href="/">Home</a></li>
-                            <li role="presentation"><a href="http://lumen.golaravel.com/" title="About Me" target="_blank">About Me</a></li>
-                            <li role="presentation"><a href="http://wenda.golaravel.com/" title="Contact" target="_blank">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
+                <a href="{% url 'article.views.detail' pk=post.id  %}">
+                    <img src="{{ post.avatar_thumbnail.url }}" / alt="{{post.title}}" class="img-rounded"></a>
             </div>
-        </div>
-    </nav>
-    <!-- end navigation -->
-
-
-    <!-- start site's main content area -->
-<section class="content-wrap">
-    <div class="container">
-        <div class="row">
-            <main class="col-md-8 main-content">
-
-            {% if error %}
-                <h1 class="post-title">没有相关文章题目</a></h1>
-            {% else %}
-                {% for post in post_list %}
-                <article id="{{ post.id }}" class="post tag-laravel tag-laravel-5-1 tag-xin-ban-ben-fa-bu">
-                    <div class="post-head">
-                        <h1 class="post-title"><a href="{% url 'article.views.detail' pk=post.id  %}"> {{ post.title }} </a></h1>
-                        <div class="post-meta">
-                            <span class="author">作者：<a href="/">DrinkSober</a></span> •
-                            <time class="post-date" datetime="{{post.timestamp}}" title="post.timestamp">{{ post.timestamp |date:'Y年m月d日'}}</time>
-                        </div>
-                    </div>
-<!--插入图片-->
-                    <div class="featured-media">
-                    <style type="text/css" src="{% static 'bootstrap/css/bootstrap.css' %}"></style>
-
-                        <a href="{% url 'article.views.detail' pk=post.id  %}"><img src="{{ post.avatar_thumbnail.url }}" / alt="{{post.title}}" class="img-rounded"></a>
-                    </div>
-
-                    <div  class="post_original" >
-                        {{post.summary|custom_markdown}}
-                    </div>
-
-                    <div  class="hidden" >
-                        {{post.content|custom_markdown }}
-                    </div>
-
-             <!--       <div class="post-permalink">
-                        <a href="http://www.golaravel.com/post/laravel-5-1-is-released/" class="btn btn-default">阅读全文</a>
-                    </div>-->
-
-                    <footer class="post-footer clearfix">
-                        <div class="pull-left tag-list">
-                            <i class="fa fa-folder-open-o"></i>
-                            <span class= "glyphicon glyphicon-certificate" aria-hidden="true"></span>
-                            {% for tag in post.tags.all %}
-                            <a href="{% url 'article.views.tags_archive' item=tag  %}" rel="category tag">{{ tag }} </a>
-                            {% endfor %}
-                        </div>
-                        <div class="pull-right share">
-                        </div>
-                    </footer>
-                </article>
-                {% endfor %}
-            {% endif %}
-<!--分页-->
-            <nav>
-              {% for post in post_list %}
-                {{ post.full_name|upper }}
-                  <ul class="pager">
-                      {% if  post_list.has_previous %}
-                        <li><a href="{{ post_list.previous_page_number }}">Previous</a></li>
-                      {% endif %}
-                      {% if post_list.has_next %}
-                        <li><a href="{{ post_list.next_page_number }}">Next</a></li>
-                      {% endif %}
-                  </ul>
-              {% endfor %}
-
-            </nav>
-        </main>
-        <aside class="col-md-4 sidebar">
-<!--微博-->
-            <div class="widget">
-                <h4 class="title">WeiBo</h4>
-                <div class="content community">
-                    <iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=1&uid=2476067225&verifier=3c08c88d&colors=ffc20e,ffffff,000000,0082cb,ecfbfd&dpc=1"></iframe>
-                </div>
+    <!-- 博文内容-->
+            <div class="post-content">
+                {{post.summary|custom_markdown}}
+                {{post.content|custom_markdown }}
             </div>
-<!-- end tag cloud widget -->	
-
-<!-- 标签云 -->
-            <div class="widget">
-                <h4 class="title">CloudTag</h4>
-                <div class="content tag-cloud">
-                    {% for tag in tag_list %}
-                        <a href="{% url 'article.views.tags_archive' item=tag  %}" rel="category tag">{{ tag }} </a>
+            <div class="post-permalink">
+                <a href="{% url 'article.views.detail' pk=post.id %}" class="btn btn-default">read more</a>
+            </div>
+            <footer class="footer clearfix">
+                <hr>
+                <div class=" tag-clound content">
+                    <i class="fa fa-folder-open-o"></i>
+                    <span class= "glyphicon glyphicon-certificate" aria-hidden="true"></span>
+                    {% for tag in post.tags.all %}
+                    <a href="{% url 'article.views.tags_archive' item=tag  %}" rel="category tag">{{ tag }} </a>
                     {% endfor %}
-
                 </div>
+            </footer>
+        </article>
+        {% endfor %}
+    {% endif %}
+    <!-- 分页-->
+        <nav>
+            {# post.full_name|upper #}
+            <ul class="pager">
+                {% if  post_list.has_previous %}
+                <li><a href="{{ post_list.previous_page_number }}">Previous</a></li>
+                {% endif %}
+                {% if post_list.has_next %}
+                <li><a href="{{ post_list.next_page_number }}">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </main>
+    <!-- 侧栏-->
+    <aside class="col-md-4 sidebar">
+        <!-- 微博-->
+        <div class="widget">
+            <h4 class="title">WeiBo</h4>
+            <div class="content community">
+                <iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=1&uid=2476067225&verifier=3c08c88d&colors=ffc20e,ffffff,000000,0082cb,ecfbfd&dpc=1"></iframe>
             </div>
-<!--end tag cloud widget -->A
-
-<!-- 分类 -->
-            <div class="widget">
-                <div class="content community">
-                    <h4 class="title">Category</h4>
-                    <div class="content tag-cloud">
-                        {% for sort in sort_list %}
-                        <a href="{% url 'article.views.category_archive' item=sort.name %}"
-                           rel="category tag">{{ sort.name }}
-                        </a>
-                        {% endfor %}
-                        <hr>
-
-                    </div>
-                </div>
-            </div>
-<!-- end tag cloud widget -->
-
-<!--联系我-->
-            <div class="widget">
-                <h4 class="title">ContactMe</h4>
-                <form>
-                  <div class="form-group">
-                    <label for="subject">主题</label>
-                    <input type="text" class="form-control" id="subject" placeholder="主题">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">邮箱</label>
-                    <input type="email" class="form-control" id="email" placeholder="电子邮箱">
-                  </div>
-                  <div class="form-group">
-                    <label for="message">内容</label>
-                    <textarea name="message" class="form-control" rows="4" placeholder="请输入邮件内容"></textarea></p>
-                  </div>
-                  <button type="submit" class="btn btn-default">提交</button>
-                </form>
-            </div>
-<!-- end tag cloud widget -->
-            </aside>
         </div>
-    </div>
-</section>
-
-    <div class="copyright">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12" align="center">
-                    <p class="text-muted"><a href="#">Blog for DrinkSober</a></p>
+        <!-- 标签云 -->
+        <div class="widget">
+            <h4 class="title">CloudTag</h4>
+            <div class="content tag-cloud">
+                {% for tag in tag_list %}
+                <a href="{% url 'article.views.tags_archive' item=tag  %}" rel="category tag">{{ tag }} </a>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- 分类 -->
+        <div class="widget">
+            <div class="content community">
+                <h4 class="title">Category</h4>
+                <div class="content tag-cloud">
+                    {% for sort in sort_list %}
+                    <a href="{% url 'article.views.category_archive' item=sort.name %}"
+                       rel="category tag">{{ sort.name }}
+                    </a>
+                    {% endfor %}
+                    <hr>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="{% static "js/highlight.js" %}"></script>
-    <script src="{% static "js/main.js" %}"></script>
- <!--   <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>-->
-    </body>
+        <!--搜索-->
+        <div class="widget">
+             <div class="input-group" >
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">搜索</button>
+                </span>
+                <input type="text" class="form-control" placeholder="请输入要搜索的内容">
+              </div>
+        </div>
+        <!--联系我-->
+
+    </aside>
+{% endblock %}
 </html>
