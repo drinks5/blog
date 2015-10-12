@@ -3,6 +3,10 @@
 {% block title %}Home{% endblock %}
 {% block content %}
     <main class="col-md-8" main-content">
+    {% if user %}
+        {{ user }}
+    {% endif %}
+    <a href={% url 'accounts.views.logout' %}>logout</a>
     {% if error %}
     <h1 class="post-title">没有相关文章题目</h1>
     {% else %}
@@ -48,7 +52,7 @@
     {% endif %}
     <!-- 分页-->
         <nav>
-            {{ post.full_name|upper }}
+            {# post.full_name|upper #}
             <ul class="pager">
                 {% if  post_list.has_previous %}
                 <li><a href="{{ post_list.previous_page_number }}">Previous</a></li>

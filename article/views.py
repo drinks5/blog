@@ -7,19 +7,22 @@ from django.template import RequestContext
 from django.template.response import TemplateResponse
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib.syndication.views import Feed
+from django.contrib.auth import get_user
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.shortcuts import get_object_or_404, get_list_or_404, render, redirect,render_to_response
 from django.core.mail import send_mail
 from django.db.models import Count
 from django.views.generic import CreateView, UpdateView, DetailView, View
 from django.contrib import messages
+from django.utils import timezone
 
 from .models import Article, Comment
 from .forms import ContactForm, CommentForm
-from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
-
+@login_required
 def home(request,page):
     """the home page and it will display 5 posts per page"""
     post_list = Article.objects.all()
@@ -27,6 +30,7 @@ def home(request,page):
     page = request.GET.get('page')
     tags = Article.tags.all()
     sorts = Article.sort.get_queryset()
+    user = get_user(request)
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
@@ -34,13 +38,23 @@ def home(request,page):
     except EmptyPage:
         posts = paginator.paginator(paginator.num_pages)
     return render(request,'home.html',
-                  {'post_list':posts, 'tag_list':tags,'sort_list': sorts })
+                  {'post_list':posts, 'tag_list':tags,'sort_list': sorts , 'user': user })
 
 def detail(request,pk):
     """the function will display the detail of a post"""
     post = get_object_or_404(Article, id=int(pk))
     comments = post.comment_set.all()
     return render(request,'post.html',{'post':post, 'comments': comments, 'error':False})
+
+# class ArticleDetailView(DetailView):
+#     model = Article
+#     template_name = 'detail.html'
+
+#     def get_context_data(self, **kwargs):
+#         context = super(ArticleDetailView, self).get_context_data(**kwargs)
+#         context['now'] = timezone.now()
+#         return context
+# detail = ArticleDetailView.as_view()
 
 def archive(request):
     """this function will make archive of all the post"""
@@ -190,23 +204,3 @@ class CommentView( View):
             comment.save()
             return HttpResponseRedirect('/')
         return render(request, self.template_name,{'form':form})
-
-
-"""
-test
-"""
-def home_test(request):
-    """the home page and it will display 5 posts per page"""
-    post_list = Article.objects.all()
-    paginator = Paginator(post_list,5)
-    page = request.GET.get('page')
-    tags = Article.tags.all()
-    sorts = Article.sort.get_queryset()
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.paginator(paginator.num_pages)
-    return render(request,'test_home.html',
-                  {'post_list':posts, 'tag_list':tags,'sort_list': sorts })

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load custom_markdown %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block sidebar_left %}
+<!--<div class="col-md-2 sidebar">-->
+    <!--<div class="widget">-->
+        <!--<div class="content community">-->
+            <!--<h4 class="title">Tags</h4>-->
+            <!--<div class="content tag-cloud">-->
+                <!--<i class="fa fa-folder-open-o"></i>-->
+                <!--{% for tag in post.tags.all %}-->
+                <!--<a href="{% url 'article.views.tags_archive' item=tag  %}" rel="category tag">{{ tag }} </a>-->
+                <!--{% endfor %}-->
+            <!--</div>-->
+            <!--<h4 class="title">Category</h4>-->
+            <!--<div class="content tag-cloud">-->
+                <!--<i class="fa fa-folder-open-o"></i>-->
+                <!--<a href="{% url 'article.views.category_archive' item=post.sort.name  %}" rel="category tag">{{ post.sort }} </a>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+{% endblock %}
+{% block content %}
+{{  object.title }}
+{% endblock %}
+{% block sidebar_right %}
+<!--<div class="col-md-2 sidebar">-->
+    <!--<div class="widget">-->
+        <!--<div class="content community">-->
+            <!--<h4 class="title">Category</h4>-->
+            <!--<div class="content tag-cloud">-->
+                <!--{% for sort in sort_list %}-->
+                <!--<a href="{% url 'article.views.category_archive' item=sort.name %}"-->
+                   <!--rel="category tag">{{ sort.name }}-->
+                <!--</a>-->
+                <!--{% endfor %}-->
+                <!--<hr>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+{% endblock %}

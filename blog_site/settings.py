@@ -85,15 +85,12 @@ DATABASES = {
     }
     
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
+    
 )
 
 from django.conf import global_settings
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
-    'django.core.context_processors.request','django.core.context_processors.static',
+    
 )
 
 BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
@@ -113,6 +110,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'blog_site.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -121,9 +119,14 @@ TEMPLATES = [
         'OPTIONS': {
             'string_if_invalid': 'INVALID EXPRESSION : %S',
             'context_processors': [
-                'django.template.context_processors.debug',
+
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -154,7 +157,7 @@ USE_L10N = True
 #LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
 #LOGIN_URL = '/accounts/signin/'
 #LOGOUT_URL = '/accounts/signout/'
-
+LOGIN_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'accounts.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -8,8 +8,8 @@ urlpatterns = patterns('',
     url(r'^admin/doc/',include('django.contrib.admindocs.urls')),
     url(r'^accounts/', include('accounts.urls')),
 
-    url(r'',include('article.urls')),
-
+    url(r'^article/',include('article.urls')),
+    url(r'^(?P<page>\d*)$', 'article.views.home', name='home'),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT }),
     url(r'^static/(?P<path>.*)$',serve,{'document_root':settings.STATIC_ROOT}),
     )

@@ -13,7 +13,7 @@
     <p>Please login to see this page </p>
     {% endif %}
 {% endif %}
-<form class="form-horizontal" action="{% url 'accounts.views.logout_then_login' %}"  method="POST" >
+<form class="form-horizontal" action="{% url 'accounts.views.login' %}"  method="POST" >
                 <div class="form-group">
                     {% csrf_token %}
                     <div class="col-xs-4">

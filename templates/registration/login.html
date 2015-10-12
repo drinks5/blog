@@ -13,7 +13,41 @@
     <p>Please login to see this page </p>
     {% endif %}
 {% endif %}
-<form class="form-horizontal" action="{% url 'accounts.views.login' %}"  method="POST" >
+<div class="container">
+        <form class="form-horizontal" action="{% url 'accounts.views.login' %}"  method="POST" >
+            <div class="form-group">
+                {% csrf_token %}
+                <label for="inputEmail" class="col-sm-2 control-label">电子邮件</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="inputEmail" placeholder="abc@def.ghi" name="username">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword" class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="inputPassword" placeholder="@%#$%^%&" name="password">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"> Remember me
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default" value="login">Sign in</button>
+                    <input type="hidden" class="btn btn-default" name="next" value="{{ next }}">
+                    <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+                </div>
+            </div>
+        </form>
+    </div>
+
+<!-- <form class="form-horizontal" action="{% url 'accounts.views.login' %}"  method="POST" >
                 <div class="form-group">
                     {% csrf_token %}
                     <div class="col-xs-4">
@@ -29,6 +63,6 @@
                     </div>
                     <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
                 </div>
-</form>
+</form> -->
 
 {% endblock %}
