@@ -54,11 +54,11 @@
         <nav>
             {# post.full_name|upper #}
             <ul class="pager">
-                {% if  post_list.has_previous %}
-                <li><a href="{{ post_list.previous_page_number }}">Previous</a></li>
+                {% if  post_list.has_previous %} 
+                <li><a href="{% url 'home' page=post_list.previous_page_number %}">Previous</a></li>
                 {% endif %}
                 {% if post_list.has_next %}
-                <li><a href="{{ post_list.next_page_number }}">Next</a></li>
+                <li><a href="{% url 'home' page=post_list.next_page_number %}">Next</a></li>
                 {% endif %}
             </ul>
         </nav>
