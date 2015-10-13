@@ -14,7 +14,7 @@
         <article class="post tag-about-drinksober tag-driknsober-in-depth">
     <!-- 博文头-->
             <div class="post-head">
-                <h1 class="post-title"><a href="{% url 'article.views.detail' pk=post.id  %}">
+                <h1 class="post-title"><a href="{% url 'detail' pk=post.id  %}">
                     {{ post.title }} </a>
                 </h1>
                 <div class="post-meta">
@@ -26,7 +26,7 @@
     <!--插入图片-->
             <div class="featured-media">
 
-                <a href="{% url 'article.views.detail' pk=post.id  %}">
+                <a href="{% url 'detail' pk=post.id  %}">
                     <img src="{{ post.avatar_thumbnail.url }}" / alt="{{post.title}}" class="img-rounded"></a>
             </div>
     <!-- 博文内容-->
@@ -35,7 +35,7 @@
                 {{post.content|custom_markdown }}
             </div>
             <div class="post-permalink">
-                <a href="{% url 'article.views.detail' pk=post.id %}" class="btn btn-default">read more</a>
+                <a href="{% url 'detail' pk=post.id %}" class="btn btn-default">read more</a>
             </div>
             <footer class="footer clearfix">
                 <hr>
