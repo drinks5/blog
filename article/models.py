@@ -27,6 +27,7 @@ class Article(models.Model):
     title = models.CharField(max_length=50)
     summary = models.TextField(blank=True,null=True,max_length=400) 
     timestamp = models.DateTimeField(auto_now_add=True)
+   # pub_date = models.DateField()
     content = models.TextField(blank=True,null=True)
     tags = TaggableManager()
     sort = models.ForeignKey(Sort)
@@ -38,8 +39,8 @@ class Article(models.Model):
                                       options = {'quality': 100})
 
     def get_absolute_url(self):
-        return reverse('article.views.detail', args=[str(self.id)])
-        #return '/%s/' % self.id
+        # return reverse('article.views.detail', args=[str(self.id)])
+        return '/%s/' % self.id
 
     def __str__(self):
         return self.title

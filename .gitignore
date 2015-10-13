@@ -4,3 +4,4 @@ CACHE
 *.png
 db*
 *migrations
+.idea/*

@@ -13,9 +13,11 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.shortcuts import get_object_or_404, get_list_or_404, render, redirect,render_to_response
 from django.core.mail import send_mail
 from django.db.models import Count
-from django.views.generic import CreateView, UpdateView, DetailView, View
 from django.contrib import messages
 from django.utils import timezone
+from django.views.generic import (CreateView, UpdateView, 
+                                                                    DetailView, View,YearArchiveView,
+                                                                    MonthArchiveView)
 
 from .models import Article, Comment
 from .forms import ContactForm, CommentForm
@@ -40,31 +42,34 @@ def home(request,page):
     return render(request,'home.html',
                   {'post_list':posts, 'tag_list':tags,'sort_list': sorts , 'user': user })
 
-def detail(request,pk):
-    """the function will display the detail of a post"""
-    post = get_object_or_404(Article, id=int(pk))
-    comments = post.comment_set.all()
-    return render(request,'post.html',{'post':post, 'comments': comments, 'error':False})
+# def detail(request,pk):
+#     """the function will display the detail of a post"""
+#     post = get_object_or_404(Article, id=int(pk))
+#     comments = post.comment_set.all()
+#     return render(request,'post.html',{'post':post, 'comments': comments, 'error':False})
 
-# class ArticleDetailView(DetailView):
-#     model = Article
-#     template_name = 'detail.html'
 
-#     def get_context_data(self, **kwargs):
-#         context = super(ArticleDetailView, self).get_context_data(**kwargs)
-#         context['now'] = timezone.now()
-#         return context
-# detail = ArticleDetailView.as_view()
+class ArticleDetailView(DetailView):
+    model = Article
+    template_name = 'post.html'
+
+    def get_queryset(self):
+        if self.model:
+            return self.model.objects.all()
+        print(self.queryset)
+        return self.queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleDetailView, self).get_context_data(**kwargs)
+        context['user'] = get_user(self.request)
+        return context
+
+detail = ArticleDetailView.as_view()
 
 def archive(request):
     """this function will make archive of all the post"""
     post_list = get_list_or_404(Article)
     return render(request,'archive.html',{'post_list':post_list,'error':False})
-
-def aboutme(request):
-    """the AboutMe page"""
-    return  render(request, 'aboutme.html',{})
-
 
 def tags_archive(request, item):
     """archive by tags"""
@@ -78,6 +83,25 @@ def category_archive(request, item):
         (sort__name= item).prefetch_related('sort')\
         .prefetch_related('tags').order_by('timestamp')
     return render(request, 'archive.html', { 'post_list': posts })
+
+class TimeArchiveMixin(object):
+    """ abstract the TimeArchive's common feature """
+    queryset = Article.objects.all()
+    date_field = "timestamp"
+    allow_future = True
+
+class ArticleYearArchiveView(TimeArchiveMixin, YearArchiveView):
+    """year archive view"""
+    make_object_list = True
+    template_name = 'year_archive.html'
+
+class ArticleMonthArchiveView(TimeArchiveMixin, MonthArchiveView):
+    """month archive view"""
+    template_name = 'month_archive.html'
+
+def aboutme(request):
+    """the AboutMe page"""
+    return  render(request, 'aboutme.html',{})
 
 def blog_search(request):
     """this function will search a post by title and content"""
