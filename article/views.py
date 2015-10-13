@@ -25,11 +25,11 @@ from .forms import ContactForm, CommentForm
 
 # Create your views here.
 @login_required
-def home(request,page):
+def home(request, page):
     """the home page and it will display 5 posts per page"""
     post_list = Article.objects.all()
     paginator = Paginator(post_list,5)
-    page = request.GET.get('page')
+    page = request.GET.get('page', None)
     tags = Article.tags.all()
     sorts = Article.sort.get_queryset()
     user = get_user(request)
