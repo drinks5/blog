@@ -9,6 +9,7 @@ from imagekit.processors import ResizeToFill
 from django_admin_bootstrapped.widgets import GenericContentTypeSelect
 from taggit.managers import TaggableManager
 
+
 @python_2_unicode_compatible
 class Sort(models.Model):
       name = models.CharField(max_length=50)
@@ -39,8 +40,8 @@ class Article(models.Model):
                                       options = {'quality': 100})
 
     def get_absolute_url(self):
-        # return reverse('article.views.detail', args=[str(self.id)])
-        return '/%s/' % self.id
+         # return reverse('article.views.detail', args=[str(self.id)])
+        return '/article/%s/' % self.id
 
     def __str__(self):
         return self.title

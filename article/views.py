@@ -53,15 +53,11 @@ class ArticleDetailView(DetailView):
     model = Article
     template_name = 'post.html'
 
-    def get_queryset(self):
-        if self.model:
-            return self.model.objects.all()
-        print(self.queryset)
-        return self.queryset
-
     def get_context_data(self, **kwargs):
+        pk = self.kwargs.get(self.pk_url_kwarg, None)
         context = super(ArticleDetailView, self).get_context_data(**kwargs)
-        context['user'] = get_user(self.request)
+        context['user'] = get_user(self.request)  
+        context['comments'] = Comment.objects.filter(post__id=int(pk))
         return context
 
 detail = ArticleDetailView.as_view()
@@ -170,13 +166,15 @@ class RSSFeed(Feed) :
     description = "RSS feed - blog posts"
 
     def items(self):
-        return Article.objects.order_by('-timestamp')[:5]
+        return Article.objects.order_by('-timestamp')
 
     def item_title(self, item):
         return item.title
 
     def item_description(self, item):
         return item.content
+
+
 
 def display_meta(request):
     """just display all the request.META"""
@@ -188,6 +186,7 @@ def display_meta(request):
     return HttpResponse( '<table>%s</table> ' % '\n'.join(html))
 
 class CommentActionMixin(object):
+    model = Comment
     fields = ('author', 'email', 'text')
 
     @property
@@ -199,15 +198,12 @@ class CommentActionMixin(object):
         return super(CommentActionMixin, self).form_valid(form)
 
 class CommentCreateView(CommentActionMixin, CreateView):
-    model = Comment
     success_msg ="Comment created!!!"
 
 class CommentUpdateView(CommentActionMixin, UpdateView):
-    model = Comment
     success_msg ="Comment updated!!!"
 
 class CommentDetailView( DetailView):
-    model = Comment
     template_name = 'comment.html'
     context_object_name = 'comment'
 

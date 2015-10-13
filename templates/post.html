@@ -8,7 +8,6 @@
 {% block content %}
 <main class="col-md-10 col-md-offset-1 main-content">
     <article class="post tag-about-drinksober tag-driknsober-in-depth  ">
-    {{ now |date:'Y年m月d日' }}
     {{ user }}
     <!-- 博文-->
         <div class="post-head">
@@ -49,7 +48,6 @@
                     </div>
                 </div>
             </form>
-            {{ article.comment_id }}
             {% if comments %}
                 {% for comment in comments %}
                 <div class="container">

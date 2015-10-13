@@ -13,22 +13,6 @@
     <p>Please login to see this page </p>
     {% endif %}
 {% endif %}
-<form class="form-horizontal" action="{% url 'accounts.views.login' %}"  method="POST" >
-                <div class="form-group">
-                    {% csrf_token %}
-                    <div class="col-xs-4">
-                    <input class="form-control" type="text" name="username">
-                    </div>
-                    <div class="col-xs-8">
-                    <input class="form-control" type="password" name="password">
-                    </div>
-                    
-                    <div class="col-md-1 col-md-offset-9">
-                        <input type="submit"  class="btn btn-info" value="login" >
-                        <input type="hidden" class="btn btn-info" name="next" value={{ next }} >
-                    </div>
-                    <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-                </div>
-</form>
+
 
 {% endblock %}
