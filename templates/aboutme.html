@@ -4,9 +4,10 @@
 {% block content %}
 <div class="container">
     <div class="span3 well">
-        <center>{{ user.name }}
-        <a href="#aboutModal" data-toggle="modal" data-target="#myModal"><img src={% static 'user.avatar_thumbnail.url' %} name="aboutme" width="140" height="140" class="img-circle"></a>
-        <h3>Joe Sixpack</h3>
+        <center>
+        <a href="#aboutModal" data-toggle="modal" data-target="#myModal">
+        <img src="{% static 'images/skeleton.jpg' %}" name="aboutme" width="140" height="140" class="img-circle"></a>
+        <h3>DrinkSober</h3>
         <em>click my face for more</em>
         </center>
     </div>
@@ -16,22 +17,22 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title" id="myModalLabel">More About Joe</h4>
+                    <h4 class="modal-title" id="myModalLabel">More About me</h4>
                     </div>
                 <div class="modal-body">
                     <center>
-                    <img src="{{ user.avatar_thumbnail}}" name="aboutme" width="140" height="140" border="0" class="img-circle"></a>
-                    <h3 class="media-heading">Joe Sixpack <small>USA</small></h3>
+                    <img src="{% static 'images/skeleton.jpg' %}" name="aboutme" width="140" height="140" border="0" class="img-circle"></a>
+                    <h3 class="media-heading">DrinkSober<small> CN</small></h3>
                     <span><strong>Skills: </strong></span>
-                        <span class="label label-warning">HTML5/CSS</span>
-                        <span class="label label-info">Adobe CS 5.5</span>
-                        <span class="label label-info">Microsoft Office</span>
-                        <span class="label label-success">Windows XP, Vista, 7</span>
+                        <span class="label label-warning">Python</span>
+                        <span class="label label-info">Linux</span>
+                        <span class="label label-info">Docker</span>
+                        <span class="label label-success">Django</span>
                     </center>
                     <hr>
                     <center>
                     <p class="text-left"><strong>Bio: </strong><br>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sem dui, tempor sit amet commodo a, vulputate vel tellus.</p>
+                        Enjoy programming and love tech and wanna be a tech geek...</p>
                     <br>
                     </center>
                 </div>
@@ -43,9 +44,7 @@
             </div>
         </div>
     </div>
-</div>
- <main class="col-md-10 col-md-offset-1 main-content">
-       <article class="post tag-about-drinksober tag-driknsober-in-depth  ">
+           <article class="post tag-about-drinksober tag-driknsober-in-depth  ">
       <div class="col-md-12">
             <h4 class="title">ContactMe</h4>
             <form>
@@ -65,5 +64,8 @@
             </form>
         </div>
        </article>
+</div>
+ <main class="col-md-10 col-md-offset-1 main-content">
+
  </main>
 {% endblock %}

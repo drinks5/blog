@@ -41,8 +41,6 @@
             <footer class="footer clearfix">
                 <hr>
                 <div class=" content tag-cloud">
-                    <i class="fa fa-folder-open-o"></i>
-
                     <span class= "glyphicon glyphicon-certificate" aria-hidden="true"></span>
                     {% for tag in post.tags.all %}
                     <a href="{% url 'article.views.tags_archive' item=tag  %}" rel="category tag">{{ tag }} </a>

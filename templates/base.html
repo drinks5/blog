@@ -1,5 +1,4 @@
 {% load staticfiles %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +9,8 @@
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/3.2.0/css/font-awesome.css" >
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/screen.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
     {% block extrahead %}
@@ -77,22 +77,16 @@
 </section>
 <hr>
 <footer class="copyright">
-<div class="container">
-
+    <div class="container">
         <div class="text-center center-block">
-            <p class="txt-railway">- drinksober.com -</p>
-                <a href="https://www.facebook.com/bootsnipp"><span class="glyphicon glyphicon-search social" aria-hidden="true"></span></a>
-                <a href="https://twitter.com/bootsnipp"><i id="social-tw" class="fa fa-twitter-square fa-3x social"></i></a>
-                <a href="https://plus.google.com/+Bootsnipp-page"><i id="social-gp" class="fa fa-google-plus-square fa-3x social"></i></a>
-                <a href="mailto:bootsnipp@gmail.com"><i id="social-em" class="fa fa-envelope-square fa-3x social"></i></a>
-
-                <a href="https://www.facebook.com/bootsnipp"><i id="social-fb" class="fa fa-facebook-square fa-3x social"></i></a>
-                <a href="https://twitter.com/bootsnipp"><i id="social-tw" class="fa fa-twitter-square fa-3x social"></i></a>
-                <a href="https://plus.google.com/+Bootsnipp-page"><i id="social-gp" class="fa fa-google-plus-square fa-3x social"></i></a>
-                <a href="mailto:bootsnipp@gmail.com"><i id="social-em" class="fa fa-envelope-square fa-3x social"></i></a>
-
-</div>
-</div>
+            <p class="txt-railway">- Bootsnipp.com -</p>
+       
+                <a href="https://www.facebook.com/bootsnipp"><i id="social-fb" class="fa fa-github-square fa-3x social"></i></a>
+                <a href="mailto:drinksober@foxmail.com"><i id="social-em" class="fa fa-envelope-square fa-3x social"></i></a>
+        <hr>
+        </div>
+    </div>
+    </div>
 </footer>
 </body>
 </html>
