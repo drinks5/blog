@@ -26,7 +26,7 @@ SECRET_KEY = '91&3j(+hkf)$i4-3&g4y!@gp6062nk$$19go)2xv#xlh5*=m*y'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-from .develop import *
+
 #bootstrap
 DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
 
@@ -61,7 +61,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    # 'authtools',
+    'authtools',
     'bootstrap3',
     'imagekit',
     'taggit',
@@ -72,7 +72,7 @@ INSTALLED_APPS = (
     'article',
 )
 
-
+from .develop import *
     #    'ENGINE' : 'django.db.backends.postgresql_psycopg2',
     # 'NAME'   : 'blog',
     # 'USER'   : 'bloguser',

@@ -1,7 +1,8 @@
 # coding=utf-8
 from django.conf.urls import patterns, url,include 
-from .views import *
-
+from .views import  (archive, ArticleYearArchiveView, ArticleMonthArchiveView,
+                                        category_archive, tags_archive, detail,add_comment, RSSFeed,
+                                        blog_search, display_meta, contact, aboutme, ArticleDetailView)
 
 archive_patterns = [
     url(r'^$', archive, name = 'archive'),
@@ -13,9 +14,17 @@ archive_patterns = [
     url(r'^tags/(?P<item>\w+)/$', tags_archive, name='archive_tags'),
     ]
 
+# article_patterns = [
+#     url(r'^create/$', ArticleCreateView.as_view(),'name = create'),
+#     url(r'^update/$', ArticleUpdateView.as_view(),'name = update'),
+#     url(r'^delete/$', ArticleDeleteView.as_view(),'name = delete'),
+#     ]
+
 urlpatterns = [
-    url(r'^(?P<pk>\d+)/$', detail, name="detail"),
-    url(r'^comment/(?P<pk>\d+)/$', add_Comment, name = 'comment'),
+    url(r'^(?P<pk>\d+)/$', ArticleDetailView.as_view(), name="detail"),
+    url(r'^(?P<pk>\d+)/$', 'article.views.detail'),
+
+    url(r'^comment/(?P<pk>\d+)/$', add_comment, name = 'comment'),
 
     url(r'^search/$',blog_search, name = 'search'),
     url(r'^meta/$', display_meta, name = 'meta'),
@@ -23,5 +32,6 @@ urlpatterns = [
     url(r'^aboutme/$', aboutme, name = 'aboutme'),
     url(r'^feed/$', RSSFeed(),name = 'RSS'),
     url(r'^archive/', include(archive_patterns)),
+
 
     ]

@@ -1,45 +1,71 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% load custom_markdown %}
-{% block title %}{{ post.title }}{% endblock %}
+{% block title %}{{ article.title }}{% endblock %}
 
+{% block extrahead %}
+<link rel="stylesheet"  href="{% static 'css/article.css' %}">
+    {% endblock %}
 {% block sidebar_left %}
 
 {% endblock %}
 {% block content %}
+        {% if messages %}
+            <div class="alert alert-success" role="alert">
+                <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                    {{ message }}
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {{ user.name }}
+        
 <main class="col-md-10 col-md-offset-1 main-content">
-    <article class="post tag-about-drinksober tag-driknsober-in-depth  ">
-    {{ user }}
+    <article class="post ">
     <!-- 博文-->
         <div class="post-head">
             <h1 class="post-title">
-                {{ object.title }} </a>
+                {{ article.title }} </a>
             </h1>
             <div class="post-meta">
-                <span class="author">作者：<a href="/">DrinkSober</a></span>
-                <time class="post-date" datetime="{{object.timestamp}}" title="object.timestamp">
-                    {{ object.timestamp |date:'Y年m月d日'}}</time>
+                <span class="glyphicon glyphicon-user" aria-hidden="true"><a href="/">{{ article.author.name }}</a>
+                </span>
+                
+                <span class="glyphicon glyphicon-time" aria-hidden="true">
+                <time class="post-date" datetime={{ article.timestamp}} title={{ article.timestamp}}>{{ article.timestamp |date:'Y年m月d日'}}</time>
+                </span>
+                
             </div>
         </div>
     <!--插入图片-->
             <div class="col-md-12">
-            <img src="{{ object.avatar_thumbnail.url }}" class="center-block img-responsive img-thumbnail" alt="Responsive image">
+            <img src="{{ article.avatar_thumbnail.url }}" class="center-block img-rounded"  alt="Responsive image">
             </div>
 
     <!-- 博文内容-->
         <div class="post-content col-md-12">
-            {{object.summary|custom_markdown}}
-            {{object.content|custom_markdown }}
+            {{article.summary|custom_markdown}}
+            {{article.content|custom_markdown }}
         </div>
         <footer class="col-md-12 footer clearfix">
-            <form class="form-horizontal" action="{% url 'article.views.add_Comment' pk=object.id %}" method="POST" id="commentform">
+        <div>
+        <p>Tags: 
+        {% for tag in article.tags.all %}
+        <a href="{% url 'archive_tags' item=tag %}"><span class="label label-info">{{ tag }}</span></a> 
+        {% endfor %}
+        
+    |  <span class="glyphicon glyphicon-user" aria-hidden="true"></span><a href="#">{{ article.author.name }}</a> 
+    |  <span class="glyphicon glyphicon-time" aria-hidden="true">{{ article.timestamp }}</span>
+    |  <span class="glyphicon glyphicon-comment" aria-hidden="true">{{ comments.count }}</span>
+    |  <span class="glyphicon glyphicon-share-alt" aria-hidden="true"> <a href="#">39 Shares</a>
+</p>
+        </div>
+            <form class="form-horizontal" action="{% url 'comment' pk=article.id %}" method="POST" id="commentform">
                 <div class="form-group">
                     {% csrf_token %}
-                    <div class="col-xs-4">
-                    <input class="form-control" type="text" name="author"  placeholder="写上你的大名">
-                    </div>
-                    <div class="col-xs-8">
-                    <input class="form-control" type="text" name="email" placeholder="没什么卵用的电子邮箱">
-                    </div>
                     <div class="col-xs-12">
                     <textarea class="form-control" name="text"  rows="3" cols="12" placeholder="评论些什么吧"></textarea>
                     </div>
@@ -48,20 +74,37 @@
                     </div>
                 </div>
             </form>
+            
             {% if comments %}
                 {% for comment in comments %}
                 <div class="container">
-                    {{ comment.author }} : {{ comment.text }}
-                    <br>
-                    分钟
-                </div>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <div class="thumbnail">
+                            <img class="img-responsive user-photo" src="{{ comment.author.avatar_thumbnail.url }}" / alt="{{ comment.author }}" class="img-rounded">
+                            </div><!-- /thumbnail -->
+                        </div><!-- /col-sm-1 -->
+
+                        <div class="col-md-7">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>{{ comment.author.name  }}</strong> <span class="text-muted">commented {{comment.pub_timestamp}}</span>
+                                </div>
+                                
+                                <div class="panel-body">
+                                    {{ comment.text }}
+                                </div><!-- /panel-body -->
+                            </div><!-- /panel panel-default -->
+                        </div><!-- /col-sm-5 -->
+                    </div><!-- /row -->
+                </div><!-- /container -->
                 {% endfor %}
             {% endif %}
         </footer>
     </article>
     <nav>
         <ul class="pager">
-          <li><a href="#">Previous</a></li>
+          <li><a href="{% url 'detail' pk=article.id  %}">Previous</a></li>
           <li><a href="#">Next</a></li>
         </ul>
     </nav>

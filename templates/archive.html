@@ -1,31 +1,75 @@
 {% extends "base.html" %}
 {% load custom_markdown %}
-{% block content %}
-<div class="posts">
-    {% if  errors %}
-        <ul>
-            {% for error in errors %}
-            <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-      {% for post in post_list %}
-          <section class="post">
-              <header class="post-header">
-                  <h2 class="post-title"><a href="{% url 'detail' pk=post.id %}">
-                      {{ post.title|custom_markdown }}</a></h2>
-                      <p class="post-description">
-                          {{ post.content|truncatewords:10 }}
-                      </p>
-                      <p class="post-meta">
-                          Time:  <a class="post-timestamp" href="#">{{ post.timestamp |date:'Y /m /d'}}</a>
-                          <a href="{% url 'detail' pk=post.id %}">Read More</a>
-                      </p>
-                </header>
-          </section>
-      {% endfor %}
-    {% endif %}
+{% load staticfiles %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/archive.css' %}">
+{% endblock %}
 
+
+{% block content %}
+<section class="post">
+        <div class="page-header">
+            <h1 id="">Timeline</h1>
+        </div>
+        <div id="timeline"><div class="row timeline-movement timeline-movement-top">
+        <div class="timeline-badge timeline-future-movement">
+            <a href="#">
+                <span class="glyphicon glyphicon-plus"></span>
+            </a>
+        </div>
+        <div class="timeline-badge timeline-filter-movement">
+            <a href="#">
+                <span class="glyphicon glyphicon-time"></span>
+            </a>
+        </div>
+    </div>
+{% for post in post_list %}
+  {% if not forloop.counter|divisibleby:"2" %}
+<div class="row timeline-movement">
+    <div class="timeline-badge">
+        <span class="timeline-balloon-date-day">{{ post.timestamp|date:"m" }}</span>
+        <span class="timeline-balloon-date-month">{{ post.timestamp|date:"Y" }}</span>
+    </div>
+
+ 
+
+
+<!-- article -->
+    <div class="col-sm-6  timeline-item">
+        <div class="row">
+            <div class="col-sm-11">
+                <div class="timeline-panel credits">
+                    <ul class="timeline-panel-ul">
+                        <li><span class="importo"><a href="{% url 'detail'  pk=post.id %}">{{ post.title }}
+                        </a></span></li>
+                        <li><span class="causale">{{ post.summary }}</span> </li>
+                        <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ post.timestamp }}</small></p> </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+   {% else %}
+    <div class="col-sm-6  timeline-item">
+        <div class="row">
+            <div class="col-sm-offset-1 col-sm-11">
+                <div class="timeline-panel debits">
+                    <ul class="timeline-panel-ul">
+                        <li><span class="importo"><a href="{% url 'detail'  pk=post.id %}">{{ post.title }}</a></span></li>
+                        <li><span class="causale">{{post.summary }} </span> </li>
+                        <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11/09/2014</small></p> </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+   
+</div>
+   {% endif %}
+    {% endfor %}
+</div>
     {% if post_list.object_list and post_list.paginator.num_pages > 1 %}
       <div>
         <ul class="pager">
@@ -39,11 +83,5 @@
         </ul>
       </div>
     {% endif %}
-
-    ----
-    <ul>
-
-</div>
-</div><!-- /.blog-post -->
-
+</section>
 {% endblock %}

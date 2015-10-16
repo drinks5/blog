@@ -11,10 +11,8 @@ class ContactForm(forms.Form):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['author', 'email', 'text', ]
+        fields = [  'text', ]
         labels = {
-            'author' : u'昵称',
-            'email'  : u'电子邮箱',
             'text'   : u'评论内容',
         }
         widgets = {
