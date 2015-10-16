@@ -8,6 +8,8 @@ from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import BaseUserManager
 
+from imagekit.models import ImageSpecField,ProcessedImageField
+from imagekit.processors import ResizeToFill
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **kwargs):
@@ -61,8 +63,12 @@ class AbstractEmailUser(AbstractBaseUser, PermissionsMixin):
 @python_2_unicode_compatible
 class AbstractNamedUser(AbstractEmailUser):
     name = models.CharField(_('name'), max_length=255)
+    avatar_thumbnail = ProcessedImageField(upload_to = 'avatars'  ,      # source = 'avatar',
+                                      processors = [ResizeToFill(64  , 48)],
+                                      format = 'JPEG',
+                                      options = {'quality': 100})
 
-    REQUIRED_FIELDS = ['name']
+    REQUIRED_FIELDS = ['name', 'avatar_thumbnail' ]
 
     class Meta:
         abstract = True
@@ -85,4 +91,4 @@ class User(AbstractNamedUser):
     class Meta(AbstractNamedUser.Meta):
         swappable = 'AUTH_USER_MODEL'
         verbose_name = _('user')
-        verbose_name_plural = _('users')
+        verbose_name_plural = _('user')

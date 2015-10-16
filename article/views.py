@@ -9,6 +9,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib.syndication.views import Feed
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.shortcuts import get_object_or_404, get_list_or_404, render, redirect,render_to_response
 from django.core.mail import send_mail
@@ -42,11 +43,11 @@ def home(request, page):
     return render(request,'home.html',
                   {'post_list':posts, 'tag_list':tags,'sort_list': sorts , 'user': user })
 
-# def detail(request,pk):
-#     """the function will display the detail of a post"""
-#     post = get_object_or_404(Article, id=int(pk))
-#     comments = post.comment_set.all()
-#     return render(request,'post.html',{'post':post, 'comments': comments, 'error':False})
+def detail(request,pk):
+    """the function will display the detail of a post"""
+    post = get_object_or_404(Article, id=int(pk))
+    comments = post.comment_set.all()
+    return render(request,'post.html',{'post':post, 'comments': comments, 'error':False})
 
 
 class ArticleDetailView(DetailView):
@@ -97,7 +98,8 @@ class ArticleMonthArchiveView(TimeArchiveMixin, MonthArchiveView):
 
 def aboutme(request):
     """the AboutMe page"""
-    return  render(request, 'aboutme.html',{})
+    user = get_user(request)
+    return  render(request, 'aboutme.html',{'user': user })
 
 def blog_search(request):
     """this function will search a post by title and content"""
@@ -144,16 +146,18 @@ def contact(request):
     return render(request, 'contact_from.html',
                   {'form':form}, context_instance=RequestContext(request))
 
-
-def add_Comment(request,pk):
+@login_required
+def add_comment(request,pk):
     """add comment by user in a post"""
     if request.method == 'POST':
         form = CommentForm( request.POST)
         if form.is_valid():
             comment = form.save( commit = False)
             comment.post_id = int(pk)
+            comment.author_id  = get_user(request).id  
             comment.save()
-        return redirect( 'article.views.detail', pk = pk)
+            messages.add_message(request,messages.INFO,"comment complete")
+        return HttpResponseRedirect( reverse( detail, kwargs={'pk' : pk }))
     else:
         form = CommentForm(initial={ 'key': 'value'})
     return redirect( 'article.views.home',error=True)
@@ -174,8 +178,6 @@ class RSSFeed(Feed) :
     def item_description(self, item):
         return item.content
 
-
-
 def display_meta(request):
     """just display all the request.META"""
     values = request.META.items()
@@ -185,42 +187,39 @@ def display_meta(request):
         html.append( '<tr><td>%s</td><td>%s</td></tr>' % (k,v ) )
     return HttpResponse( '<table>%s</table> ' % '\n'.join(html))
 
-class CommentActionMixin(object):
-    model = Comment
-    fields = ('author', 'email', 'text')
+# class CommentActionMixin(object):
+#     model = Article
+#     fields = ('author', 'email', 'text')
+#     template_name = "comment.html"
 
-    @property
-    def success_msg(self):
-        return NotImplemented
+#     @property
+#     def success_msg(self):
+#         return NotImplemented
 
-    def form_valid(self, form):
-        messages.info( self.request, self.sucess_msg)
-        return super(CommentActionMixin, self).form_valid(form)
+#     def form_valid(self, form):
+#         messages.info( self.request, self.sucess_msg)
+#         return super(CommentActionMixin, self).form_valid(form)
 
-class CommentCreateView(CommentActionMixin, CreateView):
-    success_msg ="Comment created!!!"
+# class ArticleCreateView(CommentActionMixin, CreateView):
+#     success_msg ="Comment created!!!"
 
-class CommentUpdateView(CommentActionMixin, UpdateView):
-    success_msg ="Comment updated!!!"
+# class ArticleUpdateView(CommentActionMixin, UpdateView):
+#     success_msg ="Comment updated!!!"
 
-class CommentDetailView( DetailView):
-    template_name = 'comment.html'
-    context_object_name = 'comment'
+# class ArticleView( View):
+#     form_class = CommentForm
+#     initial = { 'key': 'value'}
+#     template_name = 'comment.html'
 
-class CommentView( View):
-    form_class = CommentForm
-    initial = { 'key': 'value'}
-    template_name = 'comment.html'
+#     def get(self, request, *args, **kwargs):
+#         form = self.form_class(initial= self.initial)
+#         return render( request, self.template_name, {'form':form})
 
-    def get(self, request, *args, **kwargs):
-        form = self.form_class(initial= self.initial)
-        return render( request, self.template_name, {'form':form})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            comment = form.save( commit = False)
-            comment.post_id = int(pk)
-            comment.save()
-            return HttpResponseRedirect('/')
-        return render(request, self.template_name,{'form':form})
+#     def post(self, request, *args, **kwargs):
+#         form = self.form_class(request.POST)
+#         if form.is_valid():
+#             comment = form.save( commit = False)
+#             comment.post_id = int(pk)
+#             comment.save()
+#             return HttpResponseRedirect('/')
+#         return render(request, self.template_name,{'form':form})
