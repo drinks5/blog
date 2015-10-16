@@ -4,10 +4,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="{% static 'images/favaico.ico' %}" >
     <title>DrinkSober|{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/3.2.0/css/font-awesome.css" >
     <link rel="stylesheet" href="{% static 'css/screen.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
     {% block extrahead %}
@@ -30,7 +33,6 @@
             </div>
         </div>
     </header>
-
 <nav class="main-navigation">
     <div class="container">
         <div class="row">
@@ -58,6 +60,7 @@
         </div>
     </div>
 </nav>
+
 <section class="content-warp">
     <div class="container">
         <div class="row">
@@ -74,13 +77,22 @@
 </section>
 <hr>
 <footer class="copyright">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12" align="center">
-                <p class="text-muted"><a href="#">Blog for DrinkSober</a></p>
-            </div>
-        </div>
-    </div>
+<div class="container">
+
+        <div class="text-center center-block">
+            <p class="txt-railway">- drinksober.com -</p>
+                <a href="https://www.facebook.com/bootsnipp"><span class="glyphicon glyphicon-search social" aria-hidden="true"></span></a>
+                <a href="https://twitter.com/bootsnipp"><i id="social-tw" class="fa fa-twitter-square fa-3x social"></i></a>
+                <a href="https://plus.google.com/+Bootsnipp-page"><i id="social-gp" class="fa fa-google-plus-square fa-3x social"></i></a>
+                <a href="mailto:bootsnipp@gmail.com"><i id="social-em" class="fa fa-envelope-square fa-3x social"></i></a>
+
+                <a href="https://www.facebook.com/bootsnipp"><i id="social-fb" class="fa fa-facebook-square fa-3x social"></i></a>
+                <a href="https://twitter.com/bootsnipp"><i id="social-tw" class="fa fa-twitter-square fa-3x social"></i></a>
+                <a href="https://plus.google.com/+Bootsnipp-page"><i id="social-gp" class="fa fa-google-plus-square fa-3x social"></i></a>
+                <a href="mailto:bootsnipp@gmail.com"><i id="social-em" class="fa fa-envelope-square fa-3x social"></i></a>
+
+</div>
+</div>
 </footer>
 </body>
 </html>

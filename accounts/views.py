@@ -23,6 +23,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import FormView, TemplateView, RedirectView
+from django.views.generic import DetailView
 
 from .forms import FriendlyPasswordResetForm
 
@@ -345,3 +346,8 @@ class PasswordResetCompleteView(TemplateView):
 password_reset_complete = PasswordResetCompleteView.as_view()
 
 # Create your views here.
+class ProfileDetailView( DetailView):
+    model = User
+    template_name = 'registration/profile.html'
+    
+profile = ProfileDetailView.as_view()

@@ -1,31 +1,32 @@
 {% extends "base.html" %}
 {% load custom_markdown %}
+{% load staticfiles %}
 {% block title %}Home{% endblock %}
+{% block extrahead %}
+<link rel="styleshellt" href="{% static 'css/user_card.css' %}">
+{% endblock %}
 {% block content %}
     <main class="col-md-8" main-content">
-    {% if user %}
-        {{ user }}
-    {% endif %}
-    <a href={% url 'accounts.views.logout' %}>logout</a>
     {% if error %}
     <h1 class="post-title">没有相关文章题目</h1>
     {% else %}
         {% for post in post_list %}
-        <article class="post tag-about-drinksober tag-driknsober-in-depth">
+        <article class="post">
     <!-- 博文头-->
             <div class="post-head">
                 <h1 class="post-title"><a href="{% url 'detail' pk=post.id  %}">
                     {{ post.title }} </a>
                 </h1>
-                <div class="post-meta">
-                    <span class="author">作者：<a href="/">DrinkSober</a></span> •
-                    <time class="post-date" datetime="{{post.timestamp}}" title="post.timestamp">
-                        {{ post.timestamp |date:'Y年m月d日'}}</time>
+                <div class="post-meta">  
+                      <span class="glyphicon glyphicon-user" aria-hidden="true"><a href="/">DrinkSober</a> </span>
+                      
+                    <span class="glyphicon glyphicon-time" aria-hidden="true"><time class="post-date" datetime="{{post.timestamp}}" title="post.timestamp">{{ post.timestamp |date:'Y年m月d日'}}
+                    </time></span>
+         
                 </div>
             </div>
     <!--插入图片-->
             <div class="featured-media">
-
                 <a href="{% url 'detail' pk=post.id  %}">
                     <img src="{{ post.avatar_thumbnail.url }}" / alt="{{post.title}}" class="img-rounded"></a>
             </div>
@@ -39,8 +40,9 @@
             </div>
             <footer class="footer clearfix">
                 <hr>
-                <div class=" tag-clound content">
+                <div class=" content tag-cloud">
                     <i class="fa fa-folder-open-o"></i>
+
                     <span class= "glyphicon glyphicon-certificate" aria-hidden="true"></span>
                     {% for tag in post.tags.all %}
                     <a href="{% url 'article.views.tags_archive' item=tag  %}" rel="category tag">{{ tag }} </a>
@@ -65,6 +67,9 @@
     </main>
     <!-- 侧栏-->
     <aside class="col-md-4 sidebar">
+
+
+
         <!-- 微博-->
         <div class="widget">
             <h4 class="title">WeiBo</h4>
