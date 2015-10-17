@@ -1,7 +1,7 @@
 ### blog_site
 
 *    This project is build  in *ubuntu15.04*
-*    The django version is 1.82
+*    The django version is 1.85
 
 
 ####Configuration
