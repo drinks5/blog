@@ -64,7 +64,7 @@ class AbstractEmailUser(AbstractBaseUser, PermissionsMixin):
 class AbstractNamedUser(AbstractEmailUser):
     name = models.CharField(_('name'), max_length=255)
     avatar_thumbnail = ProcessedImageField(upload_to = 'avatars'  ,      # source = 'avatar',
-                                      processors = [ResizeToFill(64  , 48)],
+                                      processors = [ResizeToFill(320  , 480)],
                                       format = 'JPEG',
                                       options = {'quality': 100})
 

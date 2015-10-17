@@ -40,9 +40,9 @@ class Article(models.Model):
     tags = TaggableManager()
     sort = models.ForeignKey(Sort)
     avatar_thumbnail = ProcessedImageField(upload_to = 'avatars'  ,      # source = 'avatar',
-                                      processors = [ResizeToFill(640  , 480)],
+                                      processors = [ResizeToFill(480  , 320)],
                                       format = 'JPEG',
-                                      options = {'quality': 100})
+                                      options = {'quality': 60})
 
     def get_absolute_url(self):
          # return reverse_lazy('article.views.ArticleDetailView.asview' , args=[str(self.id)])

@@ -25,6 +25,8 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import FormView, TemplateView, RedirectView
 from django.views.generic import DetailView
 
+from django.shortcuts import get_object_or_404, render
+
 from .forms import FriendlyPasswordResetForm
 
 User = get_user_model()
@@ -346,8 +348,12 @@ class PasswordResetCompleteView(TemplateView):
 password_reset_complete = PasswordResetCompleteView.as_view()
 
 # Create your views here.
-class ProfileDetailView( DetailView):
-    model = User
-    template_name = 'registration/profile.html'
+# class ProfileDetailView( DetailView):
+#     model = User
+#     template_name = 'registration/profile.html'
     
-profile = ProfileDetailView.as_view()
+# profile = ProfileDetailView.as_view()
+
+def profile(request, slug):
+    user = get_object_or_404(User,  name = slug )
+    return render(request, 'profile.html', {'user': user })
