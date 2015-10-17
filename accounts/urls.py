@@ -1,9 +1,10 @@
 from django.conf.urls import patterns, url
-from .views import ProfileDetailView
+from .views import profile
 
 urlpatterns = patterns('accounts.views',
-    url(r'^(?P<pk>\d+)',  ProfileDetailView.as_view(), name = 'profile'),
+    url(r'^(?P<slug>\w+)',   profile, name = 'profile'),
     url(r'^login/$', 'login', name='login'),
+
     # url(r'^login/$', 'logout_then_login' , name='logout_then_login'),
     url(r'^logout/$', 'logout', name='logout'),
     url(r'^password_change/$', 'password_change', name='password_change'),
