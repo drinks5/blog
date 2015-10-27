@@ -23,10 +23,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '91&3j(+hkf)$i4-3&g4y!@gp6062nk$$19go)2xv#xlh5*=m*y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
 
 ALLOWED_HOSTS = ['*']
 from .production import *
+
+DEBUG = True
+
 #bootstrap
 DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
 
@@ -65,6 +68,7 @@ INSTALLED_APPS = (
     'bootstrap3',
     'imagekit',
     'taggit',
+    'rest_framework',
 #    'userena',
 #    'guardian',
 #    'easy_thumbnails',

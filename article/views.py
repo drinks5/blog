@@ -16,8 +16,8 @@ from django.core.mail import send_mail
 from django.db.models import Count
 from django.contrib import messages
 from django.utils import timezone
-from django.views.generic import (CreateView, UpdateView, 
-                                                                    DetailView, View,YearArchiveView,
+from django.views.generic import (CreateView, UpdateView, DetailView, 
+                                                                    View, ListView, YearArchiveView,
                                                                     MonthArchiveView)
 
 from .models import Article, Comment
@@ -25,29 +25,43 @@ from .forms import ContactForm, CommentForm
 
 
 # Create your views here.
-@login_required
-def home(request, page):
-    """the home page and it will display 5 posts per page"""
-    post_list = Article.objects.all()
-    paginator = Paginator(post_list,5)
-    page = request.GET.get('page', None)
-    tags = Article.tags.all()
-    sorts = Article.sort.get_queryset()
-    user = get_user(request)
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.paginator(paginator.num_pages)
-    return render(request,'home.html',
-                  {'post_list':posts, 'tag_list':tags,'sort_list': sorts , 'user': user })
+# def home(request, page):
+#     """the home page and it will display 5 posts per page"""
+#     post_list = Article.objects.all()
+#     paginator = Paginator(post_list,5)
+#     page = request.GET.get('page', None)
+#     tags = Article.tags.all()
+#     sorts = Article.sort.get_queryset()
+#     user = get_user(request)
+#     try:
+#         posts = paginator.page(page)
+#     except PageNotAnInteger:
+#         posts = paginator.page(1)
+#     except EmptyPage:
+#         posts = paginator.paginator(paginator.num_pages)
+#     return render(request,'home.html',
+#                   {'post_list':posts, 'tag_list':tags,'sort_list': sorts , 'user': user })
 
-def detail(request,pk):
-    """the function will display the detail of a post"""
-    post = get_object_or_404(Article, id=int(pk))
-    comments = post.comment_set.all()
-    return render(request,'post.html',{'post':post, 'comments': comments, 'error':False})
+class HomeListView(ListView):
+    model = Article
+    template_name = 'home.html'
+    paginate_by  = 5
+    context_object_name = 'post_list'
+    
+    def get_context_data(self,**kwargs):
+        context = super(HomeListView, self).get_context_data(**kwargs)
+        context['user'] = get_user(self.request)
+        context['tags'] = Article.tags.all()
+        context['sort_list'] = Article.sort.get_queryset()
+        return context
+
+home = HomeListView.as_view()
+
+# def detail(request,pk):
+#     """the function will display the detail of a post"""
+#     post = get_object_or_404(Article, id=int(pk))
+#     comments = post.comment_set.all()
+#     return render(request,'post.html',{'post':post, 'comments': comments, 'error':False})
 
 
 class ArticleDetailView(DetailView):
@@ -63,10 +77,25 @@ class ArticleDetailView(DetailView):
 
 detail = ArticleDetailView.as_view()
 
-def archive(request):
-    """this function will make archive of all the post"""
-    post_list = get_list_or_404(Article)
-    return render(request,'archive.html',{'post_list':post_list,'error':False})
+class ArchiveMixin(object):
+    model = Article
+    template_name = 'archive.html'
+    context_object_name = 'post_list'
+
+class ArchiveList(ArchiveMixin, ListView):
+    pass
+
+archive = ArchiveList.as_view()
+# class TagsArchiveList(ArchiveMixin, ListView):
+#     queryset = Article.objects.annotate(Count('title')).filter\
+#          (tags__name= item).prefetch_related('sort')\
+#          .prefetch_related('tags').order_by('timestamp')
+
+
+# def archive(request):
+#     """this function will make archive of all the post"""
+#     post_list = get_list_or_404(Article)
+#     return render(request,'archive.html',{'post_list':post_list,'error':False})
 
 def tags_archive(request, item):
     """archive by tags"""

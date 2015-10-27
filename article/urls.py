@@ -1,11 +1,12 @@
 # coding=utf-8
 from django.conf.urls import patterns, url,include 
-from .views import  (archive, ArticleYearArchiveView, ArticleMonthArchiveView,
+from .views import  (archive, ArchiveList , ArticleYearArchiveView, ArticleMonthArchiveView,
                                         category_archive, tags_archive, detail,add_comment, RSSFeed,
                                         blog_search, display_meta, contact, aboutme, ArticleDetailView)
 
-archive_patterns = [
-    url(r'^$', archive, name = 'archive'),
+archive_patterns = [ 
+    # url(r'^$', ArchiveList.as_view(), name = 'archive'),
+    url(r'^$', 'article.views.archive', name = 'archive'),
     url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',
         ArticleMonthArchiveView.as_view(month_format='%m'),
         name="archive_month"),
@@ -21,8 +22,8 @@ archive_patterns = [
 #     ]
 
 urlpatterns = [
-    url(r'^(?P<pk>\d+)/$', ArticleDetailView.as_view(), name="detail"),
-    url(r'^(?P<pk>\d+)/$', 'article.views.detail'),
+    # url(r'^(?P<pk>\d+)/$', ArticleDetailView.as_view(), name="detail"),
+    url(r'^(?P<pk>\d+)/$', 'article.views.detail', name = 'detail'),
 
     url(r'^comment/(?P<pk>\d+)/$', add_comment, name = 'comment'),
 
