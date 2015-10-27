@@ -51,7 +51,7 @@ MESSAGE_TAGS = {
 #    'guardian.backends.ObjectPermissionBackend',
  #   'django.contrib.auth.backends.ModelBackend',
 #)
-#ANONYMOUS_USER_ID = -1
+ANONYMOUS_USER_ID = -1
 
 
 INSTALLED_APPS = (
@@ -84,9 +84,14 @@ INSTALLED_APPS = (
     # 'HOST'   : 'localhost',
     # 'PORT'   : '',
     # 'ATOMIC_REQUESTS':True,
-TEMPLATE_CONTEXT_PROCESSORS = (
-    
-)
+
+REST_FRAMEWORK = {
+    # Use Django's standard 'django.contrib.auth' permissions ,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES':[
+            'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        ]
+}
 
 from django.conf import global_settings
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
