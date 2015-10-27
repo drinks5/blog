@@ -121,9 +121,13 @@ class ArticleYearArchiveView(TimeArchiveMixin, YearArchiveView):
     make_object_list = True
     template_name = 'year_archive.html'
 
+year_archive = ArticleYearArchiveView.as_view()
+
 class ArticleMonthArchiveView(TimeArchiveMixin, MonthArchiveView):
     """month archive view"""
     template_name = 'month_archive.html'
+
+month_archive = ArticleMonthArchiveView.as_view(month_format='%m')
 
 def aboutme(request):
     """the AboutMe page"""
@@ -216,6 +220,7 @@ def display_meta(request):
         html.append( '<tr><td>%s</td><td>%s</td></tr>' % (k,v ) )
     return HttpResponse( '<table>%s</table> ' % '\n'.join(html))
 
+rss = RSSFeed()
 # class CommentActionMixin(object):
 #     model = Article
 #     fields = ('author', 'email', 'text')
