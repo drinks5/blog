@@ -23,10 +23,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '91&3j(+hkf)$i4-3&g4y!@gp6062nk$$19go)2xv#xlh5*=m*y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
 
 ALLOWED_HOSTS = ['*']
 from .production import *
+
+DEBUG = True
+
 #bootstrap
 DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
 
@@ -48,7 +51,7 @@ MESSAGE_TAGS = {
 #    'guardian.backends.ObjectPermissionBackend',
  #   'django.contrib.auth.backends.ModelBackend',
 #)
-#ANONYMOUS_USER_ID = -1
+ANONYMOUS_USER_ID = -1
 
 
 INSTALLED_APPS = (
@@ -65,6 +68,7 @@ INSTALLED_APPS = (
     'bootstrap3',
     'imagekit',
     'taggit',
+    'rest_framework',
 #    'userena',
 #    'guardian',
 #    'easy_thumbnails',
@@ -80,9 +84,14 @@ INSTALLED_APPS = (
     # 'HOST'   : 'localhost',
     # 'PORT'   : '',
     # 'ATOMIC_REQUESTS':True,
-TEMPLATE_CONTEXT_PROCESSORS = (
-    
-)
+
+REST_FRAMEWORK = {
+    # Use Django's standard 'django.contrib.auth' permissions ,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES':[
+            'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        ]
+}
 
 from django.conf import global_settings
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (

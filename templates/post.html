@@ -54,13 +54,13 @@
         <div>
         <p>Tags: 
         {% for tag in article.tags.all %}
-        <a href="{% url 'archive_tags' item=tag %}"><span class="label label-info">{{ tag }}</span></a> 
+        <a href="{% url 'archive_tags' item=tag %}"><span class="label label-info">{{ tag }} &nbsp</span></a> 
         {% endfor %}
         
-    |  <span class="glyphicon glyphicon-user" aria-hidden="true"></span><a href="#">{{ article.author.name }}</a> 
-    |  <span class="glyphicon glyphicon-time" aria-hidden="true">{{ article.timestamp }}</span>
-    |  <span class="glyphicon glyphicon-comment" aria-hidden="true">{{ comments.count }}</span>
-    |  <span class="glyphicon glyphicon-share-alt" aria-hidden="true"> <a href="#">39 Shares</a>
+    |&nbsp  <span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp <a href="#">{{ article.author.name }}</a> 
+    |&nbsp  <span class="glyphicon glyphicon-time" aria-hidden="true"> {{ article.timestamp | date:'Y年m月d日'}} </span> &nbsp
+    |&nbsp  <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp{{ comments.count }}  &nbsp
+    |&nbsp  <span class="glyphicon glyphicon-share-alt" aria-hidden="true"> <a href="#">39 Shares</a>
 </p>
         </div>
             <form class="form-horizontal" action="{% url 'comment' pk=article.id %}" method="POST" id="commentform">
