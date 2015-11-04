@@ -10,11 +10,11 @@ archive_patterns = patterns('article.views',
     url(r'^tags/(?P<item>\w+)/$', 'tags_archive', name='archive_tags'),
     )
 
-# article_patterns = [
-#     url(r'^create/$', ArticleCreateView.as_view(),'name = create'),
-#     url(r'^update/$', ArticleUpdateView.as_view(),'name = update'),
-#     url(r'^delete/$', ArticleDeleteView.as_view(),'name = delete'),
-#     ]
+article_patterns = [
+    url(r'^create/$', ArticleCreateView.as_view(),'name = create'),
+    url(r'^update/$', ArticleUpdateView.as_view(),'name = update'),
+    url(r'^delete/$', ArticleDeleteView.as_view(),'name = delete'),
+    ]
 
 urlpatterns = patterns('article.views',
     url(r'^(?P<pk>\d+)/$', 'detail', name = 'detail'),

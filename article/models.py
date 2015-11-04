@@ -34,8 +34,6 @@ class Article(models.Model):
     title = models.CharField(max_length=50)
     summary = models.TextField(blank=True,null=True,max_length=400) 
     timestamp = models.DateTimeField(auto_now_add=True)
-
-   # pub_date = models.DateField()
     content = models.TextField(blank=True,null=True)
     tags = TaggableManager()
     sort = models.ForeignKey(Sort)
@@ -46,7 +44,6 @@ class Article(models.Model):
 
     def get_absolute_url(self):
           return reverse_lazy('article.views.detail' , args=[str(self.id)])
-         # return '/article/%s/' % self.id
 
     def __str__(self):
         return self.title
@@ -55,8 +52,6 @@ class Article(models.Model):
         ordering = ['-timestamp']
         verbose_name = _('article')
         verbose_name_plural = _('article')
-
-
 
 @python_2_unicode_compatible
 class Comment(models.Model):

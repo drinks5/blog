@@ -25,8 +25,6 @@ class ArticleAdmin(admin.ModelAdmin):
     # avatar_thumbnail.short_description = "post avatar url"
     # avatar_thumbnail.allow_tags = True
 
-
-
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Sort)
 admin.site.register(Comment)
