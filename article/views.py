@@ -221,39 +221,39 @@ def display_meta(request):
     return HttpResponse( '<table>%s</table> ' % '\n'.join(html))
 
 rss = RSSFeed()
-# class CommentActionMixin(object):
-#     model = Article
-#     fields = ('author', 'email', 'text')
-#     template_name = "comment.html"
+class CommentActionMixin(object):
+    model = Article
+    fields = ('author', 'email', 'text')
+    template_name = "comment.html"
 
-#     @property
-#     def success_msg(self):
-#         return NotImplemented
+    @property
+    def success_msg(self):
+        return NotImplemented
 
-#     def form_valid(self, form):
-#         messages.info( self.request, self.sucess_msg)
-#         return super(CommentActionMixin, self).form_valid(form)
+    def form_valid(self, form):
+        messages.info( self.request, self.sucess_msg)
+        return super(CommentActionMixin, self).form_valid(form)
 
-# class ArticleCreateView(CommentActionMixin, CreateView):
-#     success_msg ="Comment created!!!"
+class ArticleCreateView(CommentActionMixin, CreateView):
+    success_msg ="Comment created!!!"
 
-# class ArticleUpdateView(CommentActionMixin, UpdateView):
-#     success_msg ="Comment updated!!!"
+class ArticleUpdateView(CommentActionMixin, UpdateView):
+    success_msg ="Comment updated!!!"
 
-# class ArticleView( View):
-#     form_class = CommentForm
-#     initial = { 'key': 'value'}
-#     template_name = 'comment.html'
+class ArticleView( View):
+    form_class = CommentForm
+    initial = { 'key': 'value'}
+    template_name = 'comment.html'
 
-#     def get(self, request, *args, **kwargs):
-#         form = self.form_class(initial= self.initial)
-#         return render( request, self.template_name, {'form':form})
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial= self.initial)
+        return render( request, self.template_name, {'form':form})
 
-#     def post(self, request, *args, **kwargs):
-#         form = self.form_class(request.POST)
-#         if form.is_valid():
-#             comment = form.save( commit = False)
-#             comment.post_id = int(pk)
-#             comment.save()
-#             return HttpResponseRedirect('/')
-#         return render(request, self.template_name,{'form':form})
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            comment = form.save( commit = False)
+            comment.post_id = int(pk)
+            comment.save()
+            return HttpResponseRedirect('/')
+        return render(request, self.template_name,{'form':form})

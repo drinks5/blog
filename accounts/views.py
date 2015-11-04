@@ -1,7 +1,3 @@
-"""
-Mostly equivalent to the views from django.contrib.auth.views, but
-implemented as class-based views.
-"""
 from __future__ import unicode_literals
 import warnings
 
@@ -32,18 +28,10 @@ from .forms import FriendlyPasswordResetForm
 User = get_user_model()
 
 def _safe_resolve_url(url):
-    """
-    Previously, resolve_url_lazy would fail if the url was a unicode object.
-    See <https://github.com/fusionbox/django-authtools/issues/13> for more
-    information.
 
-    Thanks to GitHub user alanwj for pointing out the problem and providing
-    this solution.
-    """
     return six.text_type(resolve_url(url))
 
 resolve_url_lazy = lazy(_safe_resolve_url, six.text_type)
-
 
 class WithCurrentSiteMixin(object):
     def get_current_site(self):
@@ -315,8 +303,6 @@ class PasswordResetConfirmView(AuthDecoratorsMixin, FormView):
 
 password_reset_confirm = PasswordResetConfirmView.as_view()
 
-# Django 1.6 added this as a temporary shim, see #14881. Since our view
-# works with base 36 or base 64, we can use the same view for both.
 password_reset_confirm_uidb36 = PasswordResetConfirmView.as_view()
 
 
