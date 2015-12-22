@@ -17,12 +17,12 @@
                 <h1 class="post-title"><a href="{% url 'detail' pk=post.id  %}">
                     {{ post.title }} </a>
                 </h1>
-                <div class="post-meta">  
+                <div class="post-meta">
                       <span class="glyphicon glyphicon-user" aria-hidden="true"><a href="/">DrinkSober</a> </span>
-                      
+
                     <span class="glyphicon glyphicon-time" aria-hidden="true"><time class="post-date" datetime="{{post.timestamp}}" title="post.timestamp">{{ post.timestamp |date:'Y年m月d日'}}
                     </time></span>
-         
+
                 </div>
             </div>
     <!--插入图片-->
@@ -54,7 +54,7 @@
         <nav>
             {# post.full_name|upper #}
             <ul class="pager">
-                {% if  post_list.has_previous %} 
+                {% if  post_list.has_previous %}
                 <li><a href="{% url 'home' page=post_list.previous_page_number %}">Previous</a></li>
                 {% endif %}
                 {% if post_list.has_next %}
@@ -63,7 +63,7 @@
             </ul>
         </nav>
     </main>
-    
+
     <!-- 侧栏-->
     <aside class="col-md-4 sidebar">
 
@@ -89,7 +89,7 @@
                 <h4 class="title">Category</h4>
                 <div class="content tag-cloud">
                     {% for sort in sort_list %}
-                            <a href="{% url 'article.views.category_archive' item=sort.name %}" >{{ sort.name }}</a> 
+                            <a href="{% url 'article.views.category_archive' item=sort.name %}" >{{ sort.name }}</a>
                     {% endfor %}
                     <hr>
                 </div>

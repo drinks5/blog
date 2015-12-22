@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Author: drinks
+# @Date:   2015-12-22 16:02:44
+# @Last Modified by:   drinks
+# @Last Modified time: 2015-12-22 16:18:10
 DEBUG = False
 DATABASES = {
     'default': {
@@ -10,7 +16,7 @@ DATABASES = {
     }
     }
 
-    INSTALLED_APPS = (
+INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django_admin_bootstrapped',
     'django.contrib.admin',

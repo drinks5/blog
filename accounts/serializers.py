@@ -8,7 +8,6 @@ class UserSerializer( serializers.HyperlinkedModelSerializer):
 
 class GroupSerializer( serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Group 
+        model = Group
         fields = ('url', 'name' )
 
-        

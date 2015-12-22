@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Author: drinks
+# @Date:   2015-12-22 16:01:28
+# @Last Modified by:   drinks
+# @Last Modified time: 2015-12-22 16:58:01
 """
 Django settings for blog_site project.
 
@@ -25,8 +31,8 @@ SECRET_KEY = '91&3j(+hkf)$i4-3&g4y!@gp6062nk$$19go)2xv#xlh5*=m*y'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-ALLOWED_HOSTS = ['*']
-from .production import *
+# ALLOWED_HOSTS = ['*']
+# from .production import *
 
 DEBUG = True
 
@@ -94,9 +100,7 @@ REST_FRAMEWORK = {
 }
 
 from django.conf import global_settings
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
-    
-)
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS
 
 BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
 
@@ -142,8 +146,24 @@ TEMPLATES = [
     },
 ]
 
+DATABASES = {
+    'default': {
+        'ENGINE' : 'django.db.backends.sqlite3',
+        'NAME'    : os.path.join(BASE_DIR, 'article.sqlite3')
 
+    }
+}
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE' : 'django.db.backends.mysql',
+#         'NAME'    : 'article',
+#         'USER'     : 'root',
+#         'PASSWORD'  : '123456',
+#         'HOST'   : '',
+#         'PORT'   : '3306',
+#     }
+#     }
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 USE_TZ = False
