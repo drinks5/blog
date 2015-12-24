@@ -9,7 +9,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib.syndication.views import Feed
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404, get_list_or_404, render, redirect, render_to_response
 from django.core.mail import send_mail
@@ -18,13 +18,14 @@ from django.contrib import messages
 from django.utils import timezone
 from django.views.generic import (CreateView, DeleteView, DetailView,
                                   View, ListView, YearArchiveView,
-                                  MonthArchiveView)
+                                  MonthArchiveView, FormView)
 
 from .models import Article, Comment
 from .forms import ContactForm, CommentForm
+from accounts.views import LoginRequiredMixin
 
 
-class HomeListView(ListView):
+class HomeListView(LoginRequiredMixin, ListView):
     model = Article
     template_name = 'home.html'
     paginate_by = 5
@@ -33,18 +34,11 @@ class HomeListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(HomeListView, self).get_context_data(**kwargs)
         context['user'] = get_user(self.request)
-        context['tags'] = Article.tags.all()
+        context['tag_list'] = Article.tags.all()
         context['sort_list'] = Article.sort.get_queryset()
         return context
 
 home = HomeListView.as_view()
-
-# def detail(request,pk):
-#     """the function will display the detail of a post"""
-#     post = get_object_or_404(Article, id=int(pk))
-#     comments = post.comment_set.all()
-# return render(request,'post.html',{'post':post, 'comments': comments,
-# 'error':False})
 
 
 class ArticleDetailView(DetailView):
@@ -52,11 +46,13 @@ class ArticleDetailView(DetailView):
     template_name = 'post.html'
 
     def get_context_data(self, **kwargs):
-        pk = self.kwargs.get(self.pk_url_kwarg, None)
+        pk = self.kwargs.get('pk', None)
         context = super(ArticleDetailView, self).get_context_data(**kwargs)
         context['user'] = get_user(self.request)
         context['comments'] = Comment.objects.filter(post__id=int(pk))
         return context
+
+detail = ArticleDetailView.as_view()
 
 
 class ArchiveMixin(object):
@@ -95,19 +91,19 @@ class CategoryList(ArchiveMixin, ListView):
 category_archive = CategoryList.as_view()
 
 
-class TimeArchiveMixin(object):
+class TimeArchiveMixin(ArchiveMixin):
 
     """ abstract the TimeArchive's common feature """
-    queryset = Article.objects.all()
     date_field = "timestamp"
     allow_future = True
+    make_object_list = True
 
 
 class ArticleYearArchiveView(TimeArchiveMixin, YearArchiveView):
 
     """year archive view"""
-    make_object_list = True
-    template_name = 'year_archive.html'
+    pass
+
 
 year_archive = ArticleYearArchiveView.as_view()
 
@@ -115,9 +111,9 @@ year_archive = ArticleYearArchiveView.as_view()
 class ArticleMonthArchiveView(TimeArchiveMixin, MonthArchiveView):
 
     """month archive view"""
-    template_name = 'month_archive.html'
+    pass
 
-month_archive = ArticleMonthArchiveView.as_view()
+month_archive = ArticleMonthArchiveView.as_view(month_format='%m')
 
 
 def aboutme(request):
@@ -126,28 +122,42 @@ def aboutme(request):
     return render(request, 'aboutme.html', {'user': user})
 
 
-def blog_search(request):
+class BlogSearchView(ArchiveMixin, ListView):
+
     """this function will search a post by title and content"""
-    errors = []
-    keyWord = Article.objects.none()
-    if 'q' in request.GET:
-        q = request.GET['q']
-        if not q:
+
+    def get_queryset(self):
+        errors = []
+        keyword = self.kwargs.get('q', None)
+        queryset = {}
+        post_list = Article.objects.none()
+        if not keyword:
             errors.append('please enter a search word...')
-        elif len(q) > 20:
+        elif len(keyword) > 20:
             errors.append('please enter at most 20 characters...')
         else:
-            post_list_title = Article.objects.filter(title__icontains=q)
-            post_list_content = Article.objects.filter(content__icontains=q)
-            if len(post_list_title) == 0:
-                if len(post_list_content) == 0:
-                    errors.append('no post was found...')
-                else:
-                    keyWord = post_list_content
-            else:
-                keyWord = post_list_title
-            return render(request, 'archive.html', {'post_list': keyWord, 'query': q})
-    return render(request, 'archive.html', {'errors': errors, })
+            queryset['title'] = Article.objects.filter(
+                title__icontains=keyword)
+            queryset['content'] = Article.objects.filter(
+                content__icontains=keyword)
+        if not queryset:
+            errors.append('no post was found...')
+        elif queryset.get('title'):
+            post_list = post_list_title
+        else:
+            post_list = post_list_content
+        return post_list
+
+blog_search = BlogSearchView.as_view()
+
+
+class ContactView(FormView):
+    template_name = 'contact.html'
+    form_class = ContactForm
+    success_msg = '/'
+
+    def form_valid(self, form):
+        pass
 
 
 def contact(request):
@@ -213,15 +223,16 @@ def add_comment(request, pk):
             comment.author_id = get_user(request).id
             comment.save()
             messages.add_message(request, messages.INFO, "comment complete")
-        return HttpResponseRedirect(reverse(detail, kwargs={'pk': pk}))
+        return HttpResponseRedirect(reverse(ArticleDetailView.as_view(), kwargs={'pk': 1}))
     else:
         form = CommentForm(initial={'key': 'value'})
     return redirect('article.views.home', error=True)
 
 
 class CommentActionMixin(object):
-    model = Article
-    fields = ('author', 'email', 'text')
+    model = Comment
+    # fields = ('author', 'post', 'text')
+    fields = ('text',)
     template_name = "comment.html"
 
     @property
@@ -229,7 +240,7 @@ class CommentActionMixin(object):
         return NotImplemented
 
     def form_valid(self, form):
-        messages.info(self.request, self.sucess_msg)
+        messages.info(self.request, self.success_msg)
         return super(CommentActionMixin, self).form_valid(form)
 
 

@@ -40,7 +40,7 @@ class Article(models.Model):
                                            options={'quality': 60})
 
     def get_absolute_url(self):
-        return reverse_lazy('article.views.detail', args=[str(self.id)])
+        return reverse_lazy('article.views.detail', args=(str(self.id),))
 
     def __str__(self):
         return '<{0}: {1}>'.format(self.author, self.title)

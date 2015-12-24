@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # @Author: drinks
 # @Date:   2015-12-22 16:25:11
-# @Last Modified by:   drinks
-# @Last Modified time: 2015-12-22 18:19:28
+# @Last Modified by:   root
+# @Last Modified time: 2015-12-23 22:52:27
 # coding=utf-8
 
 from django.conf.urls import patterns, url, include
@@ -35,7 +35,7 @@ article_patterns = [
 urlpatterns = patterns('article.views',
                        url(r'^(?P<pk>\d+)/$', ArticleDetailView.as_view(), name='detail'),
                        url(r'^comment/(?P<pk>\d+)/$',
-                           'add_comment', name='comment'),
+                           CommentCreateView.as_view(), name='comment'),
                        url(r'^search/$', 'blog_search', name='search'),
                        url(r'^meta/$', 'display_meta', name='meta'),
                        url(r'^contact/$', 'contact', name='contact'),
