@@ -29,7 +29,7 @@ class Sort(models.Model):
 class Article(models.Model):
     author = models.ForeignKey(User, related_name='+')
     title = models.CharField(max_length=50)
-    summary = models.TextField(blank=True, null=True, max_length=400)
+    # summary = models.TextField(blank=True, null=True, max_length=400)
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField(blank=True, null=True)
     tags = TaggableManager()

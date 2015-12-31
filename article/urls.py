@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 # @Author: drinks
 # @Date:   2015-12-22 16:25:11
-# @Last Modified by:   root
-# @Last Modified time: 2015-12-23 22:52:27
+# @Last Modified by:   drinks
+# @Last Modified time: 2015-12-30 22:37:42
 # coding=utf-8
 
 from django.conf.urls import patterns, url, include
 
-from article.views import CommentCreateView, CommentDeleteView, RSSFeed, ArticleDetailView, ArchiveList
+from article.views import CommentCreateView, CommentDeleteView, RSSFeed, ArticleDetailView, ArchiveList, ArticleCreateView, ArticleUpdateView, ArticleDeleteView
 
 
 archive_patterns = patterns('article.views',
@@ -24,7 +24,7 @@ archive_patterns = patterns('article.views',
                                 'tags_archive', name='archive_tags'),
                             )
 
-article_patterns = [
+comment_patterns = [
     url(r'^create/comment/$', CommentCreateView.as_view(),
         name='create comment'),
     # url(r'^update/com$', CommentUpdateView.as_view(),name = 'update comment'),
@@ -32,8 +32,15 @@ article_patterns = [
         name='delete comment'),
 ]
 
+article_patterns = [
+    url(r'^create/$', ArticleCreateView.as_view(), name='create_article'),
+    url(r'^update/(?P<pk>\d+)/$', ArticleUpdateView.as_view(), name='update_article'),
+    url(r'^delete/(?P<pk>\d+)/$', ArticleDetailView.as_view(), name='delete_article')]
+
 urlpatterns = patterns('article.views',
-                       url(r'^(?P<pk>\d+)/$', ArticleDetailView.as_view(), name='detail'),
+                       url(r'', include(article_patterns)),
+                       url(r'^(?P<pk>\d+)/$',
+                           ArticleDetailView.as_view(), name='detail'),
                        url(r'^comment/(?P<pk>\d+)/$',
                            CommentCreateView.as_view(), name='comment'),
                        url(r'^search/$', 'blog_search', name='search'),

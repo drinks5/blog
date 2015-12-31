@@ -16,7 +16,7 @@ from django.core.mail import send_mail
 from django.db.models import Count
 from django.contrib import messages
 from django.utils import timezone
-from django.views.generic import (CreateView, DeleteView, DetailView,
+from django.views.generic import (CreateView, UpdateView, DeleteView, DetailView,
                                   View, ListView, YearArchiveView,
                                   MonthArchiveView, FormView)
 
@@ -33,7 +33,7 @@ class HomeListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeListView, self).get_context_data(**kwargs)
-        context['user'] = get_user(self.request)
+        context['user'] = self.request.user
         context['tag_list'] = Article.tags.all()
         context['sort_list'] = Article.sort.get_queryset()
         return context
@@ -53,6 +53,40 @@ class ArticleDetailView(DetailView):
         return context
 
 detail = ArticleDetailView.as_view()
+
+
+class ArticleMixin(object):
+    model = Article
+    template_name = 'edit_article.html'
+    fields = ['title', 'content', 'tags', 'sort', 'avatar_thumbnail']
+
+
+class ArticleCreateView(ArticleMixin, CreateView):
+    success_url = reverse_lazy('')
+
+    def form_valid(self, form, *args, **kwargs):
+        form.instance.author = self.request.user
+        return super(ArticleCreateView, self).form_valid(form, *args, **kwargs)
+
+    def form_invalid(self, form, *args, **kwargs):
+        return HttpResponse('failure')
+
+
+class ArticleUpdateView(ArticleMixin, UpdateView):
+
+    def form_valid(self, form, *args, **kwargs):
+        form.instance.author = self.request.user
+        return super(ArticleUpdateView, self).form_valid(form, *args, **kwargs)
+
+    def form_invalid(self):
+        return HttpResponse('failure')
+
+class ArticleDeleteView(ArticleMixin, DeleteView):
+    success_url = '/'
+
+    def form_valid(self, form, *args, **kwargs):
+        form.instance.author = self.request.user
+        return super(ArticleDeleteView, self).form_valid(form, *args, **kwargs)
 
 
 class ArchiveMixin(object):
