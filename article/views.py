@@ -1,28 +1,31 @@
-#! /usr/bin/env python
-# encoding: utf-8
-__author__ = 'drinksober'
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Author: root
+# @Date:   2015-12-24 06:30:51
+# @Last Modified by:   root
+# @Last Modified time: 2015-12-26 19:13:50
+
 
 # Create your views here.
-from django.template import RequestContext
-from django.template.response import TemplateResponse
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.syndication.views import Feed
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse, reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import get_object_or_404, get_list_or_404, render, redirect, render_to_response
+from django.shortcuts import render, redirect, render_to_response
 from django.core.mail import send_mail
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.db.models import Count
 from django.contrib import messages
-from django.utils import timezone
 from django.views.generic import (CreateView, DeleteView, DetailView,
                                   View, ListView, YearArchiveView,
                                   MonthArchiveView, FormView)
 
+from braces.views import AjaxResponseMixin, JSONResponseMixin
 from .models import Article, Comment
 from .forms import ContactForm, CommentForm
 from accounts.views import LoginRequiredMixin
+from accounts.models import User
 
 
 class HomeListView(LoginRequiredMixin, ListView):
@@ -61,13 +64,18 @@ class ArchiveMixin(object):
     context_object_name = 'post_list'
 
 
-class ArchiveList(ArchiveMixin, ListView):
-    pass
+class ArchiveList(ArchiveMixin, JSONResponseMixin, AjaxResponseMixin, ListView):
+
+    def get_ajax(self, request, *args, **kwargs):
+        return self.render_json_object_response(self.get_queryset())
 
 archive = ArchiveList.as_view()
 
 
-class TagsArchiveList(ArchiveMixin, ListView):
+class TagsArchiveList(ArchiveMixin, JSONResponseMixin, AjaxResponseMixin,  ListView):
+
+    def get_ajax(self, request, *args, **kwargs):
+        return self.render_json_object_response(self.get_queryset())
 
     def get_queryset(self):
         item = self.kwargs.get('item')
@@ -143,9 +151,9 @@ class BlogSearchView(ArchiveMixin, ListView):
         if not queryset:
             errors.append('no post was found...')
         elif queryset.get('title'):
-            post_list = post_list_title
+            post_list = queryset.get('title')
         else:
-            post_list = post_list_content
+            post_list = queryset.get('content')
         return post_list
 
 blog_search = BlogSearchView.as_view()
@@ -157,30 +165,9 @@ class ContactView(FormView):
     success_msg = '/'
 
     def form_valid(self, form):
-        pass
+        return super(ContactView, self).form_valid(form)
 
-
-def contact(request):
-    """this function offered the contact and send emailto site-owner"""
-    errors = []
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            cleaned_form_data = form.cleaned_data
-            send_mail(
-                cleaned_form_data['subject'],
-                cleaned_form_data['message'],
-                cleaned_form_data.get('email', 'drinksober@sina.com'),
-                ['398869368@qq.com', '1349154991@qq.com'],
-                fail_silently=False
-            )
-        return redirect('/contact/')
-    else:
-        form = ContactForm(
-            initial={'subject': 'I love your site'}
-        )
-    return render(request, 'contact_from.html',
-                  {'form': form}, context_instance=RequestContext(request))
+contact = ContactView.as_view()
 
 
 class RSSFeed(Feed):
@@ -212,45 +199,37 @@ def display_meta(request):
 rss = RSSFeed()
 
 
-@login_required
-def add_comment(request, pk):
-    """add comment by user in a post"""
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post_id = int(pk)
-            comment.author_id = get_user(request).id
-            comment.save()
-            messages.add_message(request, messages.INFO, "comment complete")
-        return HttpResponseRedirect(reverse(ArticleDetailView.as_view(), kwargs={'pk': 1}))
-    else:
-        form = CommentForm(initial={'key': 'value'})
-    return redirect('article.views.home', error=True)
-
-
 class CommentActionMixin(object):
     model = Comment
-    # fields = ('author', 'post', 'text')
-    fields = ('text',)
+    fields = ['text']
     template_name = "comment.html"
 
-    @property
-    def success_msg(self):
-        return NotImplemented
+    def get_context_data(self, **kwargs):
+        context['post_id'] = self.kwargs.get('pk')
+        context['post'] = Article.objects.get(id=post_id)
+        return super(CommentActionMixin, self).get_context_data(**kwargs)
+
+    def form_invalid(self, form):
+        return HttpResponse('failure')
+
+    def get_success_url(self):
+        return reverse_lazy('detail', kwargs={'pk': self.kwargs.get('pk')})
+
+
+class CommentCreateView(CommentActionMixin, LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
-        messages.info(self.request, self.success_msg)
-        return super(CommentActionMixin, self).form_valid(form)
-
-
-class CommentCreateView(CommentActionMixin, CreateView):
-    pass
+        form.instance.author = self.request.user
+        post_id = self.kwargs.get('pk')
+        post = Article.objects.get(id=post_id)
+        form.instance.post = post
+        # messages.info(self.request, self.success_msg)
+        return super(CommentCreateView, self).form_valid(form)
 
 create_comment = CommentCreateView.as_view()
 
 
-class CommentDeleteView(CommentActionMixin, DeleteView):
+class CommentDeleteView(CommentActionMixin, LoginRequiredMixin, DeleteView):
     pass
 
 delete_comment = CommentDeleteView.as_view()
