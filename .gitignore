@@ -5,3 +5,4 @@ CACHE
 db*
 *migrations
 .idea*
+*.sock
