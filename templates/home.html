@@ -1,49 +1,50 @@
-{% extends "base.html" %}
-{% load custom_markdown %}
-{% load staticfiles %}
-{% block title %}Home{% endblock %}
+{% extends "base.html" %} {% load custom_markdown %} {% load staticfiles %} {% block title %}Home{% endblock %}
 {% block extrahead %}
 <link rel="styleshellt" href="{% static 'css/user_card.css' %}">
+
 {% endblock %}
 {% block content %}
-    <main class="col-md-8" main-content">
+<main id="article" class="col-md-8" main-content ">
+
     {% if error %}
-    <h1 class="post-title">没有相关文章题目</h1>
+    <h1 class="post-title ">没有相关文章题目</h1>
     {% else %}
         {% for post in post_list %}
-        <article class="post">
+        <article class="post ">
+        <article v-for="article in article_list" class="post">
+        ${article.pk}
+
     <!-- 博文头-->
-            <div class="post-head">
-                <h1 class="post-title"><a href="{% url 'detail' pk=post.id  %}">
+            <div class="post-head ">
+                <h1 class="post-title "><a href="{% url 'detail' pk=post.id %} ">
                     {{ post.title }} </a>
                 </h1>
-                <div class="post-meta">
-                      <span class="glyphicon glyphicon-user" aria-hidden="true"><a href="/">DrinkSober</a> </span>
+                <div class="post-meta ">
+                      <span class="glyphicon glyphicon-user " aria-hidden="true "><a href="/ ">DrinkSober</a> </span>
 
-                    <span class="glyphicon glyphicon-time" aria-hidden="true"><time class="post-date" datetime="{{post.timestamp}}" title="post.timestamp">{{ post.timestamp |date:'Y年m月d日'}}
+                    <span class="glyphicon glyphicon-time " aria-hidden="true "><time class="post-date " datetime="{{post.timestamp}} " title="post.timestamp ">{{ post.timestamp |date:'Y年m月d日'}}
                     </time></span>
 
                 </div>
             </div>
     <!--插入图片-->
-            <div class="featured-media">
-                <a href="{% url 'detail' pk=post.id  %}">
-                    <img src="{{ post.avatar_thumbnail.url }}" / alt="{{post.title}}" class="img-rounded"></a>
+            <div class="featured-media ">
+                <a href="{% url 'detail' pk=post.id %} ">
+                    <img src="{{ post.avatar_thumbnail.url }} " / alt="{{post.title}} " class="img-rounded "></a>
             </div>
     <!-- 博文内容-->
-            <div class="post-content">
-                {{post.summary|custom_markdown}}
+            <div class="post-content ">
             </div>
-            <div class="post-permalink">
-                <a href="{% url 'detail' pk=post.id %}" class="btn btn-default">read more</a>
+            <div class="post-permalink ">
+                <a href="{% url 'detail' pk=post.id %} " class="btn btn-default ">read more</a>
             </div>
-            <footer class="footer clearfix">
+            <footer class="footer clearfix ">
                 <hr>
-                <div class=" content tag-cloud">
+                <div class=" content tag-cloud ">
 
-                    <span class= "glyphicon glyphicon-certificate" aria-hidden="true"></span>
+                    <span class= "glyphicon glyphicon-certificate " aria-hidden="true "></span>
                     {% for tag in post.tags.all %}
-                    <a href="{% url 'article.views.tags_archive' item=tag  %}" rel="category tag">{{ tag }} </a>
+                    <a href="{% url 'article.views.tags_archive' item=tag %} " rel="category tag ">{{ tag }} </a>
                     {% endfor %}
                 </div>
             </footer>
@@ -53,64 +54,96 @@
     <!-- 分页-->
         <nav>
             {# post.full_name|upper #}
-            <ul class="pager">
+            <ul class="pager ">
                 {% if  post_list.has_previous %}
-                <li><a href="{% url 'home' page=post_list.previous_page_number %}">Previous</a></li>
+                <li><a href="{% url 'home' page=post_list.previous_page_number %} ">Previous</a></li>
                 {% endif %}
                 {% if post_list.has_next %}
-                <li><a href="{% url 'home' page=post_list.next_page_number %}">Next</a></li>
+                <li><a href="{% url 'home' page=post_list.next_page_number %} ">Next</a></li>
                 {% endif %}
             </ul>
         </nav>
     </main>
 
     <!-- 侧栏-->
-    <aside class="col-md-4 sidebar">
+    <aside class="col-md-4 sidebar ">
 
         <!-- 微博-->
-        <div class="widget">
-            <h4 class="title">WeiBo</h4>
-            <div class="content community">
-                <iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=1&uid=2476067225&verifier=3c08c88d&colors=ffc20e,ffffff,000000,0082cb,ecfbfd&dpc=1"></iframe>
+        <div class="widget ">
+            <h4 class="title ">WeiBo</h4>
+            <div class="content community ">
+                <iframe width="100% " height="550 " class="share_self "  frameborder="0 " scrolling="no " src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=1&uid=2476067225&verifier=3c08c88d&colors=ffc20e,ffffff,000000,0082cb,ecfbfd&dpc=1 "></iframe>
             </div>
         </div>
         <!-- 标签云 -->
-        <div class="widget">
-            <h4 class="title">CloudTag</h4>
-            <div class="content tag-cloud" id="tag">
+        <div class="widget ">
+            <h4 class="title ">CloudTag</h4>
+            <div class="content tag-cloud " id="tag ">
                 {% for tag in tag_list %}
-                <a href="{% url 'article.views.tags_archive' item=tag  %}" rel="category tag">{{ tag }} </a>
+                <a href="{% url 'article.views.tags_archive' item=tag %} " rel="category tag ">{{ tag }} </a>
                 {% endfor %}
             </div>
         </div>
         <!-- 分类 -->
-        <div class="widget">
-            <div class="content community">
-                <h4 class="title">Category</h4>
-                <div class="content tag-cloud">
+        <div class="widget ">
+            <div class="content community ">
+                <h4 class="title ">Category</h4>
+                <div class="content tag-cloud ">
                     {% for sort in sort_list %}
-                            <a href="{% url 'article.views.category_archive' item=sort.name %}" >{{ sort.name }}</a>
+                            <a href="{% url 'article.views.category_archive' item=sort.name %} " >{{ sort.name }}</a>
                     {% endfor %}
                     <hr>
                 </div>
             </div>
         </div>
         <!--搜索-->
-        <div class="widget">
-             <div class="input-group" >
-                <span class="input-group-btn">
-                    <button class="btn btn-default" name="q" type="submit" formaction="{% url 'search' %}">搜索</button>
+        <div class="widget ">
+            <div class="input-group ">
+                <span class="input-group-btn ">
+                <button id="search" class="btn btn-default " type="button " v-on:click="searchArticle ">Search!</button>
+              </span>
+                <input id="searchtext " type="text " class="form-control " placeholder="Search for... ">
+            </div>
+<script>
+new Vue({
+    el: '#search',
+    methods: {
+        searchArticle: function() {
+            search_val = $("#searchtext ").val();
+            window.location.href = '/article/search' + '?q=' + search_val;
+        }
+    }
+})
+</script>
 
-                </span>
-                <script type="text/javascript">
-                val = $("#searchtext")[0].value;
-                $("#search")</script>
-                <input id="searchtext" type="text" class="form-control">
+        </div>
 
-
-              </div>
         </div>
         <!--联系我-->
     </aside>
+<script type="text/javascript ">
+var articleURL = '/article/archive/'
+var apiURL = 'https://api.github.com/repos/vuejs/vue/commits?per_page=3&sha='
+var demo = new Vue({
+    el: '#article',
+    data: {
+        article_list: null
+    },
+    created: function() {
+        this.fetchData()
+    },
+    methods: {
+        fetchData: function() {
+            var self = this
+            var res = $.get(articleURL, function() {
+                self.article_list = res.responseJSON
+            })
+        }
+    }
+})
+</script>
+
+
+
 {% endblock %}
-</html>
+

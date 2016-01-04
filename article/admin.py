@@ -9,7 +9,7 @@ from .models import Article, Sort, Comment
 
 # Register your models here.
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'sort', 'timestamp',)
+    list_display = ('author', 'title', 'sort', 'timestamp',)
 
     """
     show the avatar_thumbnail's url

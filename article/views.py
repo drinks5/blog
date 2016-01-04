@@ -3,22 +3,20 @@
 # @Author: root
 # @Date:   2015-12-24 06:30:51
 # @Last Modified by:   drinks
-# @Last Modified time: 2015-12-31 10:06:38
+# @Last Modified time: 2016-01-04 13:29:58
 
 
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.syndication.views import Feed
-from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, render_to_response
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db.models import Count
 from django.contrib import messages
 from django.views.generic import (
-    CreateView, DeleteView, DetailView, UpdateView, View, ListView, YearArchiveView, MonthArchiveView, FormView)
+    CreateView, DeleteView, DetailView, UpdateView, View, ListView, YearArchiveView, MonthArchiveView, FormView, TemplateView)
 
 from braces.views import AjaxResponseMixin, JSONResponseMixin
 from .models import Article, Comment
@@ -27,7 +25,7 @@ from accounts.views import LoginRequiredMixin
 from accounts.models import User
 
 
-class HomeListView(LoginRequiredMixin, ListView):
+class HomeListView(JSONResponseMixin, AjaxResponseMixin, ListView):
     model = Article
     template_name = 'home.html'
     paginate_by = 5
@@ -40,17 +38,19 @@ class HomeListView(LoginRequiredMixin, ListView):
         context['sort_list'] = Article.sort.get_queryset()
         return context
 
+    def get_ajax(self, request, *args, **kwargs):
+        return self.render_json_object_response(self.get_queryset())
 home = HomeListView.as_view()
 
 
 class ArticleDetailView(DetailView):
     model = Article
-    template_name = 'post.html'
+    template_name = 'article/post.html'
 
     def get_context_data(self, **kwargs):
         pk = self.kwargs.get('pk', None)
         context = super(ArticleDetailView, self).get_context_data(**kwargs)
-        context['user'] = get_user(self.request)
+        context['user'] = self.request.user
         context['comments'] = Comment.objects.filter(post__id=int(pk))
         return context
 
@@ -59,12 +59,14 @@ detail = ArticleDetailView.as_view()
 
 class ArticleMixin(object):
     model = Article
-    template_name = 'edit_article.html'
+    template_name = 'article/edit_article.html'
     fields = ['title', 'content', 'tags', 'sort', 'avatar_thumbnail']
 
+    def get_success_url(self):
+        return reverse_lazy('detail', kwargs={'pk': self.object.id})
 
-class ArticleCreateView(ArticleMixin, CreateView):
-    success_url = reverse_lazy('')
+
+class ArticleCreateView(ArticleMixin, LoginRequiredMixin, CreateView):
 
     def form_valid(self, form, *args, **kwargs):
         form.instance.author = self.request.user
@@ -74,7 +76,7 @@ class ArticleCreateView(ArticleMixin, CreateView):
         return HttpResponse('failure')
 
 
-class ArticleUpdateView(ArticleMixin, UpdateView):
+class ArticleUpdateView(ArticleMixin, LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form, *args, **kwargs):
         form.instance.author = self.request.user
@@ -84,7 +86,7 @@ class ArticleUpdateView(ArticleMixin, UpdateView):
         return HttpResponse('failure')
 
 
-class ArticleDeleteView(ArticleMixin, DeleteView):
+class ArticleDeleteView(ArticleMixin, LoginRequiredMixin, DeleteView):
     success_url = '/'
 
     def form_valid(self, form, *args, **kwargs):
@@ -94,7 +96,7 @@ class ArticleDeleteView(ArticleMixin, DeleteView):
 
 class ArchiveMixin(object):
     model = Article
-    template_name = 'archive.html'
+    template_name = 'article/archive.html'
     context_object_name = 'post_list'
 
 
@@ -158,10 +160,16 @@ class ArticleMonthArchiveView(TimeArchiveMixin, MonthArchiveView):
 month_archive = ArticleMonthArchiveView.as_view(month_format='%m')
 
 
-def aboutme(request):
-    """the AboutMe page"""
-    user = get_user(request)
-    return render(request, 'aboutme.html', {'user': user})
+class AboutMeView(TemplateView):
+    model = User
+    template_name = 'aboutme.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(AboutMeView, self).get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
+
+aboutme = AboutMeView.as_view()
 
 
 class BlogSearchView(ArchiveMixin, ListView):
@@ -170,7 +178,7 @@ class BlogSearchView(ArchiveMixin, ListView):
 
     def get_queryset(self):
         errors = []
-        keyword = self.kwargs.get('q', None)
+        keyword = self.request.GET.get('q', None)
         queryset = {}
         post_list = Article.objects.none()
         if not keyword:
@@ -236,7 +244,7 @@ rss = RSSFeed()
 class CommentActionMixin(object):
     model = Comment
     fields = ['text']
-    template_name = "comment.html"
+    template_name = "article/comment.html"
 
     def get_context_data(self, **kwargs):
         context['post_id'] = self.kwargs.get('pk')
@@ -250,20 +258,19 @@ class CommentActionMixin(object):
         return reverse_lazy('detail', kwargs={'pk': self.kwargs.get('pk')})
 
 
-class CommentCreateView(CommentActionMixin, LoginRequiredMixin, CreateView):
+class CommentCreateView(CommentActionMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         post_id = self.kwargs.get('pk')
         post = Article.objects.get(id=post_id)
         form.instance.post = post
-        # messages.info(self.request, self.success_msg)
         return super(CommentCreateView, self).form_valid(form)
 
 create_comment = CommentCreateView.as_view()
 
 
-class CommentDeleteView(CommentActionMixin, LoginRequiredMixin, DeleteView):
+class CommentDeleteView(CommentActionMixin, DeleteView):
     pass
 
 delete_comment = CommentDeleteView.as_view()

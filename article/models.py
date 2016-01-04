@@ -11,6 +11,13 @@ from taggit.managers import TaggableManager
 from accounts.models import User
 
 
+# @python_2_unicode_compatible
+# class Tags(Tag):
+
+#     def __str__(self):
+#         return '<{0}>'.format(self.values())
+
+
 @python_2_unicode_compatible
 class Sort(models.Model):
     name = models.CharField(max_length=50)
@@ -20,9 +27,9 @@ class Sort(models.Model):
         return '<{0}>'.format(self.name)
 
     class Meta:
-        verbose_name = 'category'
-        verbose_name_plural = 'category'
-        ordering = ['name']
+        verbose_name = u'分类'
+        verbose_name_plural = u'分类'
+        ordering = ['-create_date']
 
 
 @python_2_unicode_compatible
@@ -47,8 +54,8 @@ class Article(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
-        verbose_name = 'article'
-        verbose_name_plural = 'article'
+        verbose_name = u'文章'
+        verbose_name_plural = u'文章'
 
 
 @python_2_unicode_compatible
@@ -59,8 +66,8 @@ class Comment(models.Model):
     post = models.ForeignKey(Article)
 
     class Meta:
-        verbose_name = 'comment'
-        verbose_name_plural = 'comment'
+        verbose_name = u'评论'
+        verbose_name_plural = u'评论'
 
     def __str__(self):
         return '<{0}: {1}>'.format(self.author, self.post.title)

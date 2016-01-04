@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+{% if user %}
+<br>
+<section class="post">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-2 col-sm-offset-1 ">
+                <img src="{{ user.avatar_thumbnail.url }}" alt="" class="img-rounded img-responsive" />
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <blockquote>
+                    <p>{{ user.name }}</p> <small><cite title="Source Title">China  <i class="glyphicon glyphicon-map-marker"></i></cite></small>
+                </blockquote>
+                <p> <i class="glyphicon glyphicon-envelope"></i> {{ user }}
+                    <br/>
+                    <br /> <i class="glyphicon glyphicon-gift"></i> {{ user.last_login }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

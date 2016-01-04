@@ -3,7 +3,7 @@
 # @Author: drinks
 # @Date:   2015-12-22 16:25:11
 # @Last Modified by:   drinks
-# @Last Modified time: 2015-12-31 10:07:00
+# @Last Modified time: 2015-12-31 18:37:29
 
 
 from django.conf.urls import patterns, url, include
@@ -31,7 +31,6 @@ comment_patterns = [
     url(r'^delete/comment/$', CommentDeleteView.as_view(),
         name='delete comment'),
 ]
-
 article_patterns = [
     url(r'^create/$', ArticleCreateView.as_view(), name='create_article'),
     url(r'^update/(?P<pk>\d+)/$', ArticleUpdateView.as_view(), name='update_article'),

@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 import warnings
 
 from django.conf import settings
-from django.contrib.auth import get_user_model, REDIRECT_FIELD_NAME,update_session_auth_hash
+from django.contrib.auth import get_user_model, REDIRECT_FIELD_NAME, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import (AuthenticationForm, SetPasswordForm,
                                        PasswordChangeForm, PasswordResetForm)
@@ -27,13 +27,16 @@ from .forms import FriendlyPasswordResetForm
 
 User = get_user_model()
 
+
 def _safe_resolve_url(url):
 
     return six.text_type(resolve_url(url))
 
 resolve_url_lazy = lazy(_safe_resolve_url, six.text_type)
 
+
 class WithCurrentSiteMixin(object):
+
     def get_current_site(self):
         return get_current_site(self.request)
 
@@ -109,6 +112,7 @@ SensitivePostParametersMixin = DecoratorMixin(
                               'password2', 'new_password1', 'new_password2')
 )
 
+
 class AuthDecoratorsMixin(NeverCacheMixin, CsrfProtectMixin, SensitivePostParametersMixin):
     pass
 
@@ -158,7 +162,8 @@ class LogoutView(NeverCacheMixin, WithCurrentSiteMixin, WithNextUrlMixin, Templa
 
     def get(self, *args, **kwargs):
         auth.logout(self.request)
-        # If we have a url to redirect to, do it. Otherwise render the logged-out template.
+        # If we have a url to redirect to, do it. Otherwise render the
+        # logged-out template.
         if self.get_redirect_url(**kwargs):
             return RedirectView.get(self, *args, **kwargs)
         else:
@@ -283,7 +288,8 @@ class PasswordResetConfirmView(AuthDecoratorsMixin, FormView):
         return kwargs
 
     def get_context_data(self, **kwargs):
-        kwargs = super(PasswordResetConfirmView, self).get_context_data(**kwargs)
+        kwargs = super(
+            PasswordResetConfirmView, self).get_context_data(**kwargs)
         if self.valid_link():
             kwargs['validlink'] = True
         else:
@@ -327,7 +333,8 @@ class PasswordResetCompleteView(TemplateView):
         return resolve_url(self.login_url)
 
     def get_context_data(self, **kwargs):
-        kwargs = super(PasswordResetCompleteView, self).get_context_data(**kwargs)
+        kwargs = super(
+            PasswordResetCompleteView, self).get_context_data(**kwargs)
         kwargs['login_url'] = self.get_login_url()
         return kwargs
 
@@ -337,9 +344,10 @@ password_reset_complete = PasswordResetCompleteView.as_view()
 # class ProfileDetailView( DetailView):
 #     model = User
 #     template_name = 'registration/profile.html'
-    
+
 # profile = ProfileDetailView.as_view()
 
+
 def profile(request, slug):
-    user = get_object_or_404(User,  name = slug )
-    return render(request, 'profile.html', {'user': user })
+    user = get_object_or_404(User, name=slug)
+    return render(request, 'registration/profile.html', {'user': user})

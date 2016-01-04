@@ -3,7 +3,7 @@
 # @Author: drinks
 # @Date:   2015-12-22 16:01:28
 # @Last Modified by:   drinks
-# @Last Modified time: 2015-12-30 19:04:51
+# @Last Modified time: 2015-12-31 13:00:15
 """
 Django settings for blog_site project.
 
@@ -112,19 +112,19 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'blog_site.urls'
+ROOT_URLCONF = 'conf.urls'
 
 
-WSGI_APPLICATION = 'blog_site.wsgi.application'
+WSGI_APPLICATION = 'conf.wsgi.application'
 
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(PROJECT_DIR, 'templates').replace('\\', '/')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates').replace('\\', '/')],
         'APP_DIRS': True,
         'OPTIONS': {
-            'string_if_invalid': 'INVALID EXPRESSION : %S',
+            'string_if_invalid': 'INVALID: "%s"',
             'context_processors': [
 
                 'django.template.context_processors.request',
@@ -193,19 +193,9 @@ SITE_ID = 2
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/statics/'
-STATIC_ROOT = os.path.join(PROJECT_DIR,'statics')
-STATIC_DIR= os.path.join(PROJECT_DIR,'static')
-STATICFILES_DIRS = [
-    STATIC_DIR,
-    # ('css', os.path.join(STATIC_DIR, 'css').replace('\\', '/')),
-    # ('js', os.path.join(STATIC_DIR, 'js').replace('\\', '/')),
-    # ('images', os.path.join(STATIC_DIR, 'images').replace('\\', '/')),
-    # ('upload', os.path.join(STATIC_DIR, 'upload').replace('\\', '/')),
-    (os.path.join(STATIC_DIR, 'css').replace('\\', '/')),
-    (os.path.join(STATIC_DIR, 'js').replace('\\', '/')),
-    (os.path.join(STATIC_DIR, 'images').replace('\\', '/')),
-    (os.path.join(STATIC_DIR, 'upload').replace('\\', '/')),
-]
+STATIC_ROOT = os.path.join(BASE_DIR,'statics')
+STATICDIR= os.path.join(BASE_DIR,'static')
+STATICFILES_DIRS = [STATICDIR,]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media')
+MEDIA_ROOT = os.path.join(STATICDIR, 'media')
