@@ -1,0 +1,26 @@
+{
+  "name": "static",
+  "homepage": "https://github.com/drinksober/blog_site",
+  "authors": [
+    "drinksober"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "vue-router": "^0.7.11",
+    "vue": "^1.0.17"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5"
+  }
+}
