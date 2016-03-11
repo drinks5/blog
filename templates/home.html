@@ -1,6 +1,6 @@
-{% extends "base.html" %} {% load custom_markdown %} {% load staticfiles %} {% block title %}Home{% endblock %}
+{% extends "base.html" %} {% load custom_markdown %}{% block title %}Home{% endblock %}
 {% block extrahead %}
-<link rel="styleshellt" href="{% static 'css/user_card.css' %}">
+<link rel="stylesheet" href="/static/css/post.css">
 
 {% endblock %}
 {% block content %}
@@ -11,12 +11,12 @@
     {% else %}
         {% for post in post_list %}
         <article class="post ">
-        <article v-for="article in article_list" class="post">
-        ${article.pk}
+        <article v-for="post in article_list" class="post">
+        ${post.pk}
 
     <!-- 博文头-->
             <div class="post-head ">
-                <h1 class="post-title "><a href="{% url 'detail' pk=post.id %} ">
+                <h1 class="post-title "><a href="/article/" + {{post.id}}>
                     {{ post.title }} </a>
                 </h1>
                 <div class="post-meta ">
@@ -29,14 +29,14 @@
             </div>
     <!--插入图片-->
             <div class="featured-media ">
-                <a href="{% url 'detail' pk=post.id %} ">
+                <a href="/article/" + {{post.id}}>
                     <img src="{{ post.avatar_thumbnail.url }} " / alt="{{post.title}} " class="img-rounded "></a>
             </div>
     <!-- 博文内容-->
             <div class="post-content ">
             </div>
             <div class="post-permalink ">
-                <a href="{% url 'detail' pk=post.id %} " class="btn btn-default ">read more</a>
+                <a href="/article/" + "{{post.id}}" class="btn btn-default ">read more</a>
             </div>
             <footer class="footer clearfix ">
                 <hr>
@@ -44,7 +44,7 @@
 
                     <span class= "glyphicon glyphicon-certificate " aria-hidden="true "></span>
                     {% for tag in post.tags.all %}
-                    <a href="{% url 'article.views.tags_archive' item=tag %} " rel="category tag ">{{ tag }} </a>
+                        {{ tag }}
                     {% endfor %}
                 </div>
             </footer>
@@ -80,7 +80,7 @@
             <h4 class="title ">CloudTag</h4>
             <div class="content tag-cloud " id="tag ">
                 {% for tag in tag_list %}
-                <a href="{% url 'article.views.tags_archive' item=tag %} " rel="category tag ">{{ tag }} </a>
+                <a href="{% url 'apps.article.views.tags_archive' item=tag %} " rel="category tag ">{{ tag }} </a>
                 {% endfor %}
             </div>
         </div>
@@ -90,7 +90,7 @@
                 <h4 class="title ">Category</h4>
                 <div class="content tag-cloud ">
                     {% for sort in sort_list %}
-                            <a href="{% url 'article.views.category_archive' item=sort.name %} " >{{ sort.name }}</a>
+                            <a href="{% url 'apps.article.views.category_archive' item=sort.name %} " >{{ sort.name }}</a>
                     {% endfor %}
                     <hr>
                 </div>
@@ -127,7 +127,7 @@ var apiURL = 'https://api.github.com/repos/vuejs/vue/commits?per_page=3&sha='
 var demo = new Vue({
     el: '#article',
     data: {
-        article_list: null
+        post_list: null
     },
     created: function() {
         this.fetchData()
@@ -136,14 +136,58 @@ var demo = new Vue({
         fetchData: function() {
             var self = this
             var res = $.get(articleURL, function() {
-                self.article_list = res.responseJSON
+                self.post_list = res.responseJSON
             })
         }
     }
 })
 </script>
 
+<div id="app">
+  <h1>Hello App!</h1>
+  <p>
+    <!-- 使用指令 v-link 进行导航。 -->
+    <a v-link="{ path: '/foo' }">Go to Foo</a>
+    <a v-link="{ path: '/bar' }">Go to Bar</a>
+  </p>
+  <!-- 路由外链 -->
+  <router-view></router-view>
+</div>
 
+<script type="text/javascript">
+// 定义组件
+var Foo = Vue.extend({
+    template: '<p>This is foo!</p>'
+})
 
+var Bar = Vue.extend({
+    template: '<p>This is bar!</p>'
+})
+
+// 路由器需要一个根组件。
+// 出于演示的目的，这里使用一个空的组件，直接使用 HTML 作为应用的模板
+var App = Vue.extend({})
+
+// 创建一个路由器实例
+// 创建实例时可以传入配置参数进行定制，为保持简单，这里使用默认配置
+var router = new VueRouter()
+
+// 定义路由规则
+// 每条路由规则应该映射到一个组件。这里的“组件”可以是一个使用 Vue.extend
+// 创建的组件构造函数，也可以是一个组件选项对象。
+// 稍后我们会讲解嵌套路由
+router.map({
+    '/foo': {
+        component: Foo
+    },
+    '/bar': {
+        component: Bar
+    }
+})
+
+// 现在我们可以启动应用了！
+// 路由器会创建一个 App 实例，并且挂载到选择符 #app 匹配的元素上。
+router.start(App, '#app')
+</script>
 {% endblock %}
 
