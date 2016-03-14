@@ -6,3 +6,4 @@ db*
 *migrations
 .idea*
 *.sock
+statics/*

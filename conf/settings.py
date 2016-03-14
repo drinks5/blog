@@ -3,7 +3,7 @@
 # @Author: drinks
 # @Date:   2015-12-22 16:01:28
 # @Last Modified by:   drinks
-# @Last Modified time: 2015-12-31 13:00:15
+# @Last Modified time: 2016-03-14 18:42:57
 """
 Django settings for blog_site project.
 
@@ -71,11 +71,12 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'bootstrap3',
-    'imagekit',
+    # 'imagekit',
     'taggit',
     'rest_framework',
-    'accounts',
-    'article',
+    'apps.accounts',
+    'apps.article',
+    # 'apps.wx',
 )
 
     #    'ENGINE' : 'django.db.backends.postgresql_psycopg2',
@@ -194,7 +195,7 @@ SITE_ID = 2
 
 STATIC_URL = '/statics/'
 STATIC_ROOT = os.path.join(BASE_DIR,'statics')
-STATICDIR= os.path.join(BASE_DIR,'static')
+STATICDIR= os.path.join(BASE_DIR,'static/dist')
 STATICFILES_DIRS = [STATICDIR,]
 
 MEDIA_URL = '/media/'

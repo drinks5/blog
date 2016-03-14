@@ -1,114 +1,69 @@
 {% extends "base.html" %}
-{% load staticfiles %}
 {% load custom_markdown %}
-
 {% block title %}{{ article.title }}{% endblock %}
-
 {% block extrahead %}
-<link rel="stylesheet"  href="{% static 'css/article.css' %}">
 {% endblock %}
-{% block sidebar_left %}
 
-{% endblock %}
-{% block content %} {% if messages %}
-<div class="alert alert-success" role="alert">
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
-            {{ message }}
-            </li>
-            {% endfor %}
-    </ul>
-</div>
-{% endif %} {{user.name}}
-<main class="col-md-10 col-md-offset-1 main-content">
-    <article class="post ">
-        <!-- 博文-->
-        <div class="post-head">
-            <h1 class="post-title">
-                {{ article.title }} </a>
-            </h1>
-            <div class="post-meta">
-                <span class="glyphicon glyphicon-user" aria-hidden="true"><a href="/">{{ article.author.name }}</a>
-                </span>
-                <span class="glyphicon glyphicon-time" aria-hidden="true">
-                <time class="post-date" datetime={{ article.timestamp}} title={{ article.timestamp}}>{{ article.timestamp |date:'Y年m月d日'}}</time>
-                </span>
-            </div>
-        </div>
-        <!--插入图片-->
-        <div class="col-md-12">
-            <img src="{{ article.avatar_thumbnail.url }}" class="center-block img-rounded" alt="Responsive image">
-        </div>
-        <!-- 博文内容-->
-        <div class="post-content col-md-12">
-            {{article.content|custom_markdown }}
-        </div>
-        <footer class="col-md-12 footer clearfix">
-            <div>
-                <p>Tags:
-                {% for tag in article.tags.all %}
-                    <a href="{% url 'archive_tags' item=tag %}"><span class="label label-info">{{ tag }} &nbsp</span></a>
-                {% endfor %}
-                |&nbsp <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                &nbsp<a href="#">{{ article.author.name }}</a>
-                |&nbsp <span class="glyphicon glyphicon-time" aria-hidden="true"> {{ article.timestamp | date:'Y年m月d日'}} </span>
-                &nbsp |&nbsp <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> &nbsp{{ comments.count }}
-                &nbsp |&nbsp <span class="glyphicon glyphicon-share-alt" aria-hidden="true"> <a href="#">39 Shares</a>
-                </p>
-        </div>
-            <form class="form-horizontal" action="{% url 'comment' pk=article.id %}" method="POST" id="commentform">
-                <div class="form-group">
-                    {% csrf_token %}
-                    <div class="col-xs-12">
-                    <textarea class="form-control" name="text"  rows="3" cols="12" placeholder="评论些什么吧"></textarea>
-                    </div>
-                    <div class="col-md-1 col-md-offset-9">
-                        <input class="btn btn-info" type="submit" value="Submit" >
+{% block content %}
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('/static/img/post-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Man must explore, and this is exploration at its greatest</h1>
+                        <h2 class="subheading">Problems look mighty small from 150 miles up</h2>
+                        <span class="meta">Posted by <a href="#">Start Bootstrap</a> on August 24, 2014</span>
                     </div>
                 </div>
-            </form>
+            </div>
+        </div>
+    </header>
 
-            {% if comments %}
-                {% for comment in comments %}
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-1">
-                            <div class="thumbnail">
-                            <img class="img-responsive user-photo" src="{{ comment.author.avatar_thumbnail.url }}" / alt="{{ comment.author }}" class="img-rounded">
-                            </div><!-- /thumbnail -->
-                        </div><!-- /col-sm-1 -->
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <p>Never in all their history have men been able truly to conceive of the world as one: a single sphere, a globe, having the qualities of a globe, a round earth in which all the directions eventually meet, in which there is no center because every point, or none, is center — an equal earth which all men occupy as equals. The airman's earth, if free men make it, will be truly round: a globe in practice, not in theory.</p>
 
-                        <div class="col-md-7">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <strong>{{ comment.author.name  }}</strong> <span class="text-muted">commented {{comment.pub_timestamp}}</span>
+                    <p>Science cuts two ways, of course; its products can be used for both good and evil. But there's no turning back from science. The early warnings about technological dangers also come from science.</p>
+
+                    <p>What was most significant about the lunar voyage was not that man set foot on the Moon but that they set eye on the earth.</p>
+
+                    <p>A Chinese tale tells of some men sent to harm a young girl who, upon seeing her beauty, become her protectors rather than her violators. That's how I felt seeing the Earth for the first time. I could not help but love and cherish her.</p>
+
+                    <p>For those who have seen the Earth from space, and for the hundreds and perhaps thousands more who will, the experience most certainly changes your perspective. The things that we share in our world are far more valuable than those which divide us.</p>
+
+                    <h2 class="section-heading">The Final Frontier</h2>
+
+                    <p>There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.</p>
+
+                    <p>There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.</p>
+
+                    <blockquote>The dreams of yesterday are the hopes of today and the reality of tomorrow. Science has not yet mastered prophecy. We predict too much for the next year and yet far too little for the next ten.</blockquote>
+
+                    <p>Spaceflights cannot be stopped. This is not the work of any one man or even a group of men. It is a historical process which mankind is carrying out in accordance with the natural laws of human development.</p>
+
+                    <h2 class="section-heading">Reaching for the Stars</h2>
+
+                    <p>As we got further and further away, it [the Earth] diminished in size. Finally it shrank to the size of a marble, the most beautiful you can imagine. That beautiful, warm, living object looked so fragile, so delicate, that if you touched it with a finger it would crumble and fall apart. Seeing this has to change a man.</p>
+
+                    <a href="#">
+                        <img class="img-responsive" src="img/post-sample-image.jpg" alt="">
+                    </a>
+                    <span class="caption text-muted">To go places and do things that have never been done before – that’s what living is all about.</span>
+
+                    <p>Space, the final frontier. These are the voyages of the Starship Enterprise. Its five-year mission: to explore strange new worlds, to seek out new life and new civilizations, to boldly go where no man has gone before.</p>
+
+                    <p>As I stand out here in the wonders of the unknown at Hadley, I sort of realize there’s a fundamental truth to our nature, Man must explore, and this is exploration at its greatest.</p>
+
+                    <p>Placeholder text by <a href="http://spaceipsum.com/">Space Ipsum</a>. Photographs by <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>.</p>
+                </div>
             </div>
-            <div class="panel-body">
-                {{ comment.text }}
-            </div>
-            <!-- /panel-body -->
-            </div>
-            <!-- /panel panel-default -->
-            </div>
-            <!-- /col-sm-5 -->
-            </div>
-            <!-- /row -->
-            </div>
-            <!-- /container -->
-                {% endfor %}
-            {% endif %}
-        </footer>
+        </div>
     </article>
-    <nav>
-        <ul class="pager">
-            <li><a href="{% url 'detail' pk=article.id  %}">Previous</a></li>
-            <li><a href="#">Next</a></li>
-        </ul>
-    </nav>
-</main>
-{% endblock %}
 
-{% block sidebar_right %}
+    <hr>
 {% endblock %}
-
