@@ -2,7 +2,7 @@
 # @Author: drinks
 # @Date:   2016-03-09 17:43:18
 # @Last Modified by:   drinks
-# @Last Modified time: 2016-03-09 18:27:50
+# @Last Modified time: 2016-03-10 11:57:56
 
 import hashlib
 import simplejson
@@ -46,7 +46,7 @@ class AuthView(WecahtApiView):
                 red_url = '%s%s?path=%s' % (self.HOST, reverse('wx:get_user_info'), path)
                 redirect_url = self.wechat_api.auth_url(red_url)
 
-                print 'auth_url', redirect_url
+                print('auth_url', redirect_url)
                 return redirect(redirect_url)
         else:
             return Http404('parameter path not founded!')
@@ -55,7 +55,6 @@ class AuthView(WecahtApiView):
 
 class GetUserInfoView(WecahtApiView):
     def get(self, request):
-
 
         redir_url = request.GET.get('path')
         code = request.GET.get('code')
@@ -70,7 +69,8 @@ class GetUserInfoView(WecahtApiView):
                 return HttpResponseServerError('get access_token error')
 
             # 获取用户信息信息
-            user_info, error = self.wechat_api.get_user_info(token_data['access_token'], token_data['openid'])
+            user_info, error = self.wechat_api.get_user_info(
+                token_data['access_token'], token_data['openid'])
 
             if error:
                 wx_log_error(error)
