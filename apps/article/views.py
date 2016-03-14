@@ -3,7 +3,7 @@
 # @Author: root
 # @Date:   2015-12-24 06:30:51
 # @Last Modified by:   drinks
-# @Last Modified time: 2016-03-14 18:56:23
+# @Last Modified time: 2016-03-14 20:57:10
 
 
 # Create your views here.
@@ -33,19 +33,17 @@ class ContactView(TemplateView):
 class AboutView(TemplateView):
     template_name = 'about.html'
 
-class ArticleDetailView(DetailView):
-    model = Article
+class ArticleView(TemplateView):
     template_name = 'article/post.html'
 
-    def get_context_data(self, **kwargs):
-        pk = self.kwargs.get('pk', None)
-        context = super(ArticleDetailView, self).get_context_data(**kwargs)
-        context['user'] = self.request.user
-        context['comments'] = Comment.objects.filter(post__id=int(pk))
-        return context
+class ArchiveView(TemplateView):
+    template_name = 'article/archive.html'
 
-detail = ArticleDetailView.as_view()
+class ArticleDetail(JSONResponseMixin, AjaxResponseMixin, DetailView):
+    model = Article
 
+    def get_ajax(self, request, *args, **kwargs):
+        return self.render_json_object_response([self.get_object()])
 
 class ArticleMixin(object):
     model = Article
@@ -90,15 +88,13 @@ class ArchiveMixin(object):
     context_object_name = 'post_list'
 
 
-class ArchiveList(ArchiveMixin, JSONResponseMixin, AjaxResponseMixin, ListView):
+class Archive(ArchiveMixin, JSONResponseMixin, AjaxResponseMixin, ListView):
 
     def get_ajax(self, request, *args, **kwargs):
         return self.render_json_object_response(self.get_queryset())
 
-archive = ArchiveList.as_view()
 
-
-class TagsArchiveList(ArchiveMixin, JSONResponseMixin, AjaxResponseMixin,  ListView):
+class TagsArchive(ArchiveMixin, JSONResponseMixin, AjaxResponseMixin,  ListView):
 
     def get_ajax(self, request, *args, **kwargs):
         return self.render_json_object_response(self.get_queryset())
@@ -110,10 +106,8 @@ class TagsArchiveList(ArchiveMixin, JSONResponseMixin, AjaxResponseMixin,  ListV
             .prefetch_related('tags').order_by('timestamp')
         return queryset
 
-tags_archive = TagsArchiveList.as_view()
 
-
-class CategoryList(ArchiveMixin, ListView):
+class CategoryArchive(ArchiveMixin, ListView):
 
     def get_queryset(self):
         item = self.kwargs.get('item')
@@ -121,9 +115,6 @@ class CategoryList(ArchiveMixin, ListView):
             (sort__name=item).prefetch_related('sort')\
             .prefetch_related('tags').order_by('timestamp')
         return queryset
-
-category_archive = CategoryList.as_view()
-
 
 class TimeArchiveMixin(ArchiveMixin):
 
@@ -133,36 +124,18 @@ class TimeArchiveMixin(ArchiveMixin):
     make_object_list = True
 
 
-class ArticleYearArchiveView(TimeArchiveMixin, YearArchiveView):
+class YearArchive(TimeArchiveMixin, YearArchiveView):
 
     """year archive view"""
     pass
 
 
-year_archive = ArticleYearArchiveView.as_view()
-
-
-class ArticleMonthArchiveView(TimeArchiveMixin, MonthArchiveView):
+class MonthArchive(TimeArchiveMixin, MonthArchiveView):
 
     """month archive view"""
     pass
 
-month_archive = ArticleMonthArchiveView.as_view(month_format='%m')
-
-
-class AboutMeView(TemplateView):
-    model = User
-    template_name = 'aboutme.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(AboutMeView, self).get_context_data(**kwargs)
-        context['user'] = self.request.user
-        return context
-
-aboutme = AboutMeView.as_view()
-
-
-class BlogSearchView(ArchiveMixin, ListView):
+class BlogSearch(ArchiveMixin, ListView):
 
     """this function will search a post by title and content"""
 
@@ -187,8 +160,6 @@ class BlogSearchView(ArchiveMixin, ListView):
         else:
             post_list = queryset.get('content')
         return post_list
-
-blog_search = BlogSearchView.as_view()
 
 
 class ContactView(FormView):

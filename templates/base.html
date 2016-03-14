@@ -30,13 +30,20 @@
     <![endif]-->
 
     <!-- jQuery -->
-    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="/static/js/bootstrap.min.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="/static/js/clean-blog.min.js"></script>
+
+    <script src="/static/js/vue.min.js"></script>
+    <script src="/static/js/vue-router.min.js"></script>
+    <script src="/static/js/vue-resource.min.js"></script>
+    <script>
+        Vue.config.delimiters = ['${', '}']
+    </script>
     {% block extraheader %}
     {% endblock %}
 </head>
