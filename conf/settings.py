@@ -3,7 +3,7 @@
 # @Author: drinks
 # @Date:   2015-12-22 16:01:28
 # @Last Modified by:   drinks
-# @Last Modified time: 2016-03-14 18:42:57
+# @Last Modified time: 2016-03-10 21:20:22
 """
 Django settings for blog_site project.
 

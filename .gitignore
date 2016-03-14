@@ -7,3 +7,7 @@ db*
 .idea*
 *.sock
 statics/*
+static/src/grunt
+static/src/node*
+static/src/bower*
+
