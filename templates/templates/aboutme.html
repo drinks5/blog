@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}AboutMe{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="span3 well">
+        <center>
+        <a href="#aboutModal" data-toggle="modal" data-target="#myModal">
+        <img src="{% static 'images/skeleton.jpg' %}" name="aboutme" width="140" height="140" class="img-circle"></a>
+        <h3>DrinkSober</h3>
+        <em>click my face for more</em>
+        </center>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title" id="myModalLabel">More About me</h4>
+                    </div>
+                <div class="modal-body">
+                    <center>
+                    <img src="{% static 'images/skeleton.jpg' %}" name="aboutme" width="140" height="140" border="0" class="img-circle"></a>
+                    <h3 class="media-heading">DrinkSober<small> CN</small></h3>
+                    <span><strong>Skills: </strong></span>
+                        <span class="label label-warning">Python</span>
+                        <span class="label label-info">Linux</span>
+                        <span class="label label-info">Docker</span>
+                        <span class="label label-success">Django</span>
+                    </center>
+                    <hr>
+                    <center>
+                    <p class="text-left"><strong>Bio: </strong><br>
+                        Enjoy programming and love tech and wanna be a tech geek...</p>
+                    <br>
+                    </center>
+                </div>
+                <div class="modal-footer">
+                    <center>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">I've heard enough about Joe</button>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+    <article class="post tag-about-drinksober tag-driknsober-in-depth  ">
+      <div class="col-md-12">
+            <h4 class="title">ContactMe</h4>
+            <form >
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" class="form-control" id="subject" placeholder="来个主题呗">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="记得写上你的邮箱">
+                </div>
+                <div class="form-group">
+                    <label for="message">Content</label>
+                    <textarea name="message" class="form-control" rows="4" placeholder="说点什么吧"></textarea></p>
+                </div>
+                <button type="submit" class="btn btn-default">提交</button>
+            </form>
+        </div>
+    </article>
+</div>
+ <main class="col-md-10 col-md-offset-1 main-content">
+
+ </main>
+{% endblock %}
