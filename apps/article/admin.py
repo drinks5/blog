@@ -2,19 +2,19 @@
 # @Author: drinks
 # @Date:   2016-03-09 13:14:06
 # @Last Modified by:   drinks
-# @Last Modified time: 2016-03-09 17:47:35
+# @Last Modified time: 2016-03-15 17:09:06
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.utils.html import format_html
 
 from django_admin_bootstrapped.admin.models import SortableInline
 
-from .models import Article, Sort, Comment
+from .models import Article, Comment, Category, Tags
 
 
 # Register your models here.
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('author', 'title', 'sort', 'timestamp',)
+    list_display = ('author', 'title', 'category', 'timestamp')
 
     """
     show the avatar_thumbnail's url
@@ -31,8 +31,9 @@ class ArticleAdmin(admin.ModelAdmin):
     # avatar_thumbnail.allow_tags = True
 
 admin.site.register(Article, ArticleAdmin)
-admin.site.register(Sort)
 admin.site.register(Comment)
+admin.site.register(Category)
+admin.site.register(Tags)
 
 class Article(admin.StackedInline, SortableInline):
 	model = Article

@@ -3,7 +3,7 @@
 # @Author: drinks
 # @Date:   2015-12-22 16:01:28
 # @Last Modified by:   drinks
-# @Last Modified time: 2016-03-10 21:20:22
+# @Last Modified time: 2016-03-15 17:05:22
 """
 Django settings for blog_site project.
 
@@ -159,10 +159,8 @@ DATABASES = {
 #         'PORT'   : '3306',
 #     }
 #     }
-# Internationalization
-# https://docs.djangoproject.com/en/1.8/topics/i18n/
 USE_TZ = False
-LANGUAGE_CODE = 'zh-hans'
+LANGUAGE_CODE = 'zh-cn'
 TIME_ZONE = 'Asia/Shanghai'
 
 
@@ -177,7 +175,7 @@ USE_L10N = True
 #LOGIN_URL = '/accounts/signin/'
 #LOGOUT_URL = '/accounts/signout/'
 LOGIN_REDIRECT_URL = '/'
-AUTH_USER_MODEL = 'accounts.User'
+# AUTH_USER_MODEL = 'accounts.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True

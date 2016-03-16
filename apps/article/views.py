@@ -3,26 +3,26 @@
 # @Author: root
 # @Date:   2015-12-24 06:30:51
 # @Last Modified by:   drinks
-# @Last Modified time: 2016-03-14 20:57:10
-
+# @Last Modified time: 2016-03-16 14:47:39
 
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.syndication.views import Feed
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, render_to_response
-from django.core.mail import send_mail
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db.models import Count
-from django.contrib import messages
 from django.views.generic import (
     CreateView, DeleteView, DetailView, UpdateView, View, ListView, YearArchiveView, MonthArchiveView, FormView, TemplateView)
+from braces.views import AjaxResponseMixin, JSONResponseMixin, LoginRequiredMixin
+from rest_framework import viewsets
 
-from braces.views import AjaxResponseMixin, JSONResponseMixin
+from .serializers import  ArticleSerializer
 from .models import Article, Comment
 from .forms import ContactForm, CommentForm
-from apps.accounts.views import LoginRequiredMixin
-from apps.accounts.models import User
+# from apps.accounts.views import LoginRequiredMixin
+# from apps.accounts.models import User
 
 class HomeView(TemplateView):
     template_name = 'index.html'
@@ -39,6 +39,13 @@ class ArticleView(TemplateView):
 class ArchiveView(TemplateView):
     template_name = 'article/archive.html'
 
+class ArticleViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+
 class ArticleDetail(JSONResponseMixin, AjaxResponseMixin, DetailView):
     model = Article
 
@@ -48,13 +55,13 @@ class ArticleDetail(JSONResponseMixin, AjaxResponseMixin, DetailView):
 class ArticleMixin(object):
     model = Article
     template_name = 'article/edit_article.html'
-    fields = ['title', 'content', 'tags', 'sort', 'avatar_thumbnail']
+    fields = ['title', 'content', 'category']
 
     def get_success_url(self):
         return reverse_lazy('detail', kwargs={'pk': self.object.id})
 
 
-class ArticleCreateView(ArticleMixin, LoginRequiredMixin, CreateView):
+class ArticleCreateView(ArticleMixin, CreateView):
 
     def form_valid(self, form, *args, **kwargs):
         form.instance.author = self.request.user
@@ -64,7 +71,7 @@ class ArticleCreateView(ArticleMixin, LoginRequiredMixin, CreateView):
         return HttpResponse('failure')
 
 
-class ArticleUpdateView(ArticleMixin, LoginRequiredMixin, UpdateView):
+class ArticleUpdateView(ArticleMixin, UpdateView):
 
     def form_valid(self, form, *args, **kwargs):
         form.instance.author = self.request.user
@@ -74,7 +81,7 @@ class ArticleUpdateView(ArticleMixin, LoginRequiredMixin, UpdateView):
         return HttpResponse('failure')
 
 
-class ArticleDeleteView(ArticleMixin, LoginRequiredMixin, DeleteView):
+class ArticleDeleteView(ArticleMixin, DeleteView):
     success_url = '/'
 
     def form_valid(self, form, *args, **kwargs):
@@ -102,7 +109,7 @@ class TagsArchive(ArchiveMixin, JSONResponseMixin, AjaxResponseMixin,  ListView)
     def get_queryset(self):
         item = self.kwargs.get('item')
         queryset = Article.objects.annotate(Count('title')).filter\
-            (tags__name=item).prefetch_related('sort')\
+            (tags__name=item).prefetch_related('category')\
             .prefetch_related('tags').order_by('timestamp')
         return queryset
 
@@ -112,7 +119,7 @@ class CategoryArchive(ArchiveMixin, ListView):
     def get_queryset(self):
         item = self.kwargs.get('item')
         queryset = Article.objects.annotate(Count('title')).filter\
-            (sort__name=item).prefetch_related('sort')\
+            (category__name=item).prefetch_related('category')\
             .prefetch_related('tags').order_by('timestamp')
         return queryset
 
@@ -193,7 +200,7 @@ class RSSFeed(Feed):
 def display_meta(request):
     """just display all the request.META"""
     values = request.META.items()
-    values.sort()
+    values.category()
     html = []
     for k, v in values:
         html.append('<tr><td>%s</td><td>%s</td></tr>' % (k, v))

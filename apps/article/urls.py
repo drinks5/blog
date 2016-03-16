@@ -3,15 +3,19 @@
 # @Author: drinks
 # @Date:   2015-12-22 16:25:11
 # @Last Modified by:   drinks
-# @Last Modified time: 2016-03-14 21:11:08
+# @Last Modified time: 2016-03-15 16:22:30
 
 
 from django.conf.urls import url, include
+from rest_framework import routers
 
-from .views import (ArticleView, ArticleDetail, RSSFeed,
+from .views import (ArticleView, ArticleViewSet, ArticleDetail, RSSFeed,
  ArchiveView, Archive, TagsArchive, CategoryArchive, YearArchive,
 MonthArchive, BlogSearch, display_meta)
 
+
+router = routers.DefaultRouter()
+router.register(r'list', ArticleViewSet)
 
 archive_patterns = [
                             # url(r'^$', ArchiveList.as_view(), name = 'archive'),
@@ -48,4 +52,5 @@ urlpatterns = [
                        url(r'^meta/$', display_meta, name='meta'),
                        url(r'^feed/$', RSSFeed(), name='RSS'),
                        url(r'^archive/', include(archive_patterns)),
+                       url(r'^', include(router.urls)),
                        ]
