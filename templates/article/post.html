@@ -44,7 +44,8 @@ var vm = new Vue({
         article: null
     },
     ready: function(){
-        this.$http.get('/article/api/1/', {}).then(function(response) {
+        var url = '/article/api/' + window.location.pathname.split('/')[2] + '/'
+        this.$http.get(url, {}).then(function(response) {
             this.$set('article', response.data[0])
         }, function(response) {
             // handle error

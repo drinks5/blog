@@ -8,6 +8,7 @@
 {% block content %}
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
+    <div id="home">
     <header class="intro-header" style="background-image: url('/static/img/home-bg.jpg')">
         <div class="container">
             <div class="row">
@@ -30,15 +31,20 @@
                     <h1 class="post-title ">没有相关文章题目</h1>
                 {% else %}
                 <div class="post-preview" v-for="post in post_list">
-                    <a href="post.html">
+                <a v-link="{ path: '/article/1/' }">Go to Foo</a>
+                     <!-- <a v-link="{ path: '/article/1/' }"> -->
+                     <!-- <a href="#"> -->
                         <h2 class="post-title">
                         ${post.fields.title}
                         </h2>
                         <h3 class="post-subtitle">
                             ${post.fields.content}
                         </h3>
+
                     </a>
+<!-- <router-view></router-view> -->
                     <p class="post-meta">Posted by <a href="#">${post.fields.author}</a> ${post.fields.timestamp}</p>
+
                 </div>
                 <hr>
                 <!-- Pager -->
@@ -52,26 +58,10 @@
         </div>
     </div>
     <hr>
+</div>
 
-<script type="text/javascript ">
-var archive_url = '/article/archive/'
-var demo = new Vue({
-    el: '#post_list',
-    data: {
-        post_list: null
-    },
-    created: function() {
-        this.fetchData()
-    },
-    methods: {
-        fetchData: function() {
-            var self = this
-            var res = $.get(archive_url, function() {
-                self.post_list = res.responseJSON
-            })
-        }
-    }
-})
-</script>
+<script src="/static/js/home.js"></script>
+
 
 {% endblock %}
+
