@@ -3,7 +3,7 @@
 # @Author: drinks
 # @Date:   2015-12-22 16:01:28
 # @Last Modified by:   drinks
-# @Last Modified time: 2016-03-17 10:59:33
+# @Last Modified time: 2016-03-21 21:41:51
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -65,6 +65,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'apps.accounts',
     'apps.article',
+    'apps.wechat',
     # 'apps.wx',
 )
 

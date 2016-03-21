@@ -13,6 +13,7 @@ urlpatterns = [
 
     # url(r'^accounts/', include('apps.accounts.urls')),
     url(r'^article/',include('apps.article.urls')),
+    url(r'^wechat/',include('apps.wechat.urls')),
     # url(r'^wx/',include('apps.wx.urls')),
 
     url(r'^(?P<page>\d*)$', HomeView.as_view(), name='home'),

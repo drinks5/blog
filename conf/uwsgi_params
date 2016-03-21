@@ -14,3 +14,5 @@ uwsgi_param  REMOTE_ADDR        $remote_addr;
 uwsgi_param  REMOTE_PORT        $remote_port;
 uwsgi_param  SERVER_PORT        $server_port;
 uwsgi_param  SERVER_NAME        $server_name;
+
+/usr/bin/python /usr/local/bin/sslocal -s 45.78.42.31 -p 443 -k drinks
