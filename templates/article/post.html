@@ -13,9 +13,9 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading" v-model="article">
-                        <h1>${article.fields.title}</h1>
-                        <h2 class="subheading">${article.fields.content}</h2>
-                        <span class="meta">Posted by <a href="#">${article.fields.author}</a> ${article.fields.timestamp}</span>
+                        <h1>${article.title}</h1>
+                        <h2 class="subheading">${article.content}</h2>
+                        <span class="meta">Posted by <a href="#">${article.belongto.username}</a> ${article.update_date}</span>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    ${article.fields.content}
+                    ${article.content}
                 </div>
             </div>
         </div>
@@ -36,23 +36,24 @@
     <hr>
 </div>
 <script type="text/javascript">
-    // var Vue = require('vue');
-    // Vue.use(require('vue-resource'));
-var vm = new Vue({
+
+var demo = new Vue({
     el: '#article',
     data: {
         article: null
     },
-    ready: function(){
-        var url = '/article/api/' + window.location.pathname.split('/')[2] + '/'
-        this.$http.get(url, {}).then(function(response) {
-            this.$set('article', response.data[0])
-        }, function(response) {
-            // handle error
-        });
+    created: function() {
+        this.fetchData()
     },
-
-});
-
+    methods: {
+        fetchData: function() {
+            var self = this
+            var url = '/api/article/' + window.location.pathname.split('/')[2] + '/'
+            var res = $.get(url, function() {
+                self.article = res.responseJSON
+            })
+        }
+    }
+})
 </script>
 {% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load custom_markdown %}
+
+
+{% block content %}
+<div id="edit">
+    <header class="intro-header" style="background-image: url('/static/img/home-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>Drinks</h1>
+                        <hr class="small">
+                        <span class="subheading"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <form class="form" id="save" name="save" enctype="multipart/form-data">
+                    {% csrf_token %} 
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon">title</span>
+                        <input type="text" class="form-control" name="title" placeholder="title" aria-describedby="sizing-addon1">
+                    </div>
+                    <div class="input-group input-group-lg">
+                          <span class="input-group-addon">content</span>
+                          <input type="text" class="form-control" name="content" placeholder="content" aria-describedby="sizing-addon1">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('button').on('click', function() {
+
+    $('#save').submit(function(){
+        var title = $("input[name=title]").val(),
+            content = $("input[name=content]").val(),
+            csrfmiddlewaretoken = $("input[name=csrfmiddlewaretoken]").val()
+        $.ajax({
+            type: 'post', 
+            url: '/api/article/', 
+            data: {
+                'title': title,
+                'content': content,
+                'csrfmiddlewaretoken':csrfmiddlewaretoken
+            },
+            success: function(data) { 
+                console.log(data);
+            },
+        });
+        return false; // 阻止表单自动提交事件
+    });
+});
+
+</script>
+{% endblock %}

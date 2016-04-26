@@ -27,23 +27,19 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" id="post_list">
-                {% if error %}
-                    <h1 class="post-title ">没有相关文章题目</h1>
-                {% else %}
                 <div class="post-preview" v-for="post in post_list">
-                <a v-link="{ path: '/article/1/' }">Go to Foo</a>
                      <!-- <a v-link="{ path: '/article/1/' }"> -->
-                     <!-- <a href="#"> -->
+                     <!-- <a v-link="{ path: '/foo' }">Go to Foo</a> -->
                         <h2 class="post-title">
-                        ${post.fields.title}
+                        ${post.title}
                         </h2>
                         <h3 class="post-subtitle">
-                            ${post.fields.content}
+                            ${post.content}
                         </h3>
 
                     </a>
 <!-- <router-view></router-view> -->
-                    <p class="post-meta">Posted by <a href="#">${post.fields.author}</a> ${post.fields.timestamp}</p>
+                    <p class="post-meta">Posted by <a href="#">${post.belongto.username}</a> ${post.update_date}</p>
 
                 </div>
                 <hr>
@@ -53,14 +49,53 @@
                         <a href="#">Older Posts &rarr;</a>
                     </li>
                 </ul>
-                {% endif %}
             </div>
         </div>
     </div>
     <hr>
 </div>
 
-<script src="/static/js/home.js"></script>
+<!-- <script src="/static/js/home.js"></script> -->
+<script type="text/javascript">
+var archive_url = '/api/article/'
+var demo = new Vue({
+    el: '#post_list',
+    data: {
+        post_list: null
+    },
+    created: function() {
+        this.fetchData()
+    },
+    methods: {
+        fetchData: function() {
+            var self = this
+            var res = $.get(archive_url, function() {
+                self.post_list = res.responseJSON
+                console.log(self.post_list)
+            })
+        }
+    }
+})
+var Foo = Vue.extend({
+    template: '<p>This is foo!</p>'
+})
+
+var Bar = Vue.extend({
+    template: '<p>This is bar!</p>'
+})
+
+var App = Vue.extend({})
+
+var router = new VueRouter()
+
+router.map({
+    '/article/1/': {
+        component: Foo
+    },
+})
+
+router.start(App, '#home')
+</script>
 
 
 {% endblock %}
