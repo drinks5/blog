@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # @Author: drinks
 # @Date:   2015-12-22 16:01:28
-# @Last Modified by:   drinks
-# @Last Modified time: 2016-03-21 21:41:51
+# @Last Modified by:   drinksober
+# @Last Modified time: 2016-04-26 11:36:53
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -50,7 +50,6 @@ ANONYMOUS_USER_ID = -1
 
 
 INSTALLED_APPS = (
-    'django.contrib.admindocs',
     'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -58,24 +57,25 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
-    'bootstrap3',
-    # 'imagekit',
-    'taggit',
+    'django_nose',
     'rest_framework',
     'apps.accounts',
     'apps.article',
     'apps.wechat',
-    # 'apps.wx',
 )
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-    #    'ENGINE' : 'django.db.backends.postgresql_psycopg2',
-    # 'NAME'   : 'blog',
-    # 'USER'   : 'bloguser',
-    # 'PASSWORD': 'drinks',
-    # 'HOST'   : 'localhost',
-    # 'PORT'   : '',
-    # 'ATOMIC_REQUESTS':True,
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(PROJECT_DIR, 'article.sqlite3')
+
+    }
+}
+# import sys
+# if 'test' in sys.argv:
+#     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
+
 
 REST_FRAMEWORK = {
     # Use Django's standard 'django.contrib.auth' permissions ,
@@ -131,13 +131,7 @@ TEMPLATES = [
     },
 ]
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_DIR, 'article.sqlite3')
 
-    }
-}
 
 # DATABASES = {
 #     'default': {
@@ -150,7 +144,7 @@ DATABASES = {
 #     }
 #     }
 USE_TZ = False
-LANGUAGE_CODE = 'zh-cn'
+LANGUAGE_CODE = 'zh-hans'
 TIME_ZONE = 'Asia/Shanghai'
 
 
