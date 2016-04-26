@@ -1,63 +1,77 @@
 # -*- coding: utf-8 -*-
 # @Author: drinks
 # @Date:   2016-03-09 16:22:29
-# @Last Modified by:   drinks
-# @Last Modified time: 2016-03-15 17:30:03
+# @Last Modified by:   drinksober
+# @Last Modified time: 2016-04-26 21:59:26
 from django.db import models
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+
 # from apps.accounts.models import User
 
-class Tags(models.Model):
+status_choices = ((0, 'deleted'), (1, 'active'))
+
+
+class Tag(models.Model):
     belongto = models.ForeignKey(User, related_name='+')
     name = models.CharField(max_length=50)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now_add=True)
+    status = models.IntegerField(choices=status_choices, default=1)
 
     def __str__(self):
-        return '<{0}>'.format(self.name())
+        return '<{0}: {1}>'.format(self.belongto, self.name)
+
 
 class Category(models.Model):
     belongto = models.ForeignKey(User)
     name = models.CharField(max_length=50)
     create_date = models.DateTimeField(auto_now_add=True)
+    status = models.IntegerField(choices=status_choices, default=1)
 
     def __str__(self):
-        return '<{0}>'.format(self.name)
+        return '<{0}: {1}>'.format(self.belongto, self.name)
 
     class Meta:
         verbose_name = u'分类'
         verbose_name_plural = u'分类'
         ordering = ['-create_date']
 
+
 class Article(models.Model):
-    author = models.ForeignKey(User)
+    belongto = models.ForeignKey(User)
     title = models.CharField(max_length=50)
-    # summary = models.TextField(blank=True, null=True, max_length=400)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    summary = models.TextField(blank=True, null=True, max_length=400)
+
     content = models.TextField(blank=True, null=True)
     category = models.ForeignKey(Category)
-    # tags = models.ManyToManyField(Article)
+    tags = models.ManyToManyField(Tag)
+    status = models.IntegerField(choices=status_choices, default=1)
+    create_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now_add=True)
+
     def get_absolute_url(self):
-        return reverse_lazy('apps.article.views.detail', args=(str(self.id),))
+        return '/article/{0}/'.format(self.pk)
 
     def __str__(self):
-        return '<{0}: {1}>'.format(self.author, self.title)
+        return '<{0}: {1}>'.format(self.belongto, self.title)
 
     class Meta:
-        ordering = ['-timestamp']
+        ordering = ['-update_date']
         verbose_name = u'文章'
         verbose_name_plural = u'文章'
 
+
 class Comment(models.Model):
-    author = models.ForeignKey(User)
+    belongto = models.ForeignKey(User)
     text = models.TextField()
-    pub_timestamp = models.DateTimeField(auto_now_add=True)
-    post = models.ForeignKey(Article)
+    create_date = models.DateTimeField(auto_now_add=True)
+    article = models.ForeignKey(Article)
+    status = models.IntegerField(choices=status_choices, default=1)
 
     class Meta:
         verbose_name = u'评论'
         verbose_name_plural = u'评论'
 
     def __str__(self):
-        return '<{0}: {1}>'.format(self.author, self.post.title)
+        return '<{0}: {1}>'.format(self.belongto, self.post.article)

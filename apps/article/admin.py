@@ -1,21 +1,20 @@
 # -*- coding: utf-8 -*-
 # @Author: drinks
 # @Date:   2016-03-09 13:14:06
-# @Last Modified by:   drinks
-# @Last Modified time: 2016-03-15 17:09:06
+# @Last Modified by:   drinksober
+# @Last Modified time: 2016-04-26 14:18:16
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.utils.html import format_html
 
 from django_admin_bootstrapped.admin.models import SortableInline
 
-from .models import Article, Comment, Category, Tags
+from .models import Article, Comment, Category, Tag
 
 
 # Register your models here.
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('author', 'title', 'category', 'timestamp')
-
+    list_display = ('belongto', 'title', 'category', 'update_date')
     """
     show the avatar_thumbnail's url
     and it can callable
@@ -30,12 +29,13 @@ class ArticleAdmin(admin.ModelAdmin):
     # avatar_thumbnail.short_description = "post avatar url"
     # avatar_thumbnail.allow_tags = True
 
+
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Comment)
 admin.site.register(Category)
-admin.site.register(Tags)
+admin.site.register(Tag)
+
 
 class Article(admin.StackedInline, SortableInline):
-	model = Article
-	extra = 0
-
+    model = Article
+    extra = 0
