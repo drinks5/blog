@@ -8,7 +8,6 @@
 {% block content %}
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
-    <div id="home">
     <header class="intro-header" style="background-image: url('/static/img/home-bg.jpg')">
         <div class="container">
             <div class="row">
@@ -24,23 +23,18 @@
     </header>
 
     <!-- Main Content -->
-    <div class="container">
+    <div class="container" id="home">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" id="post_list">
                 <div class="post-preview" v-for="post in post_list">
-                     <!-- <a v-link="{ path: '/article/1/' }"> -->
-                     <!-- <a v-link="{ path: '/foo' }">Go to Foo</a> -->
                         <h2 class="post-title">
                         ${post.title}
                         </h2>
                         <h3 class="post-subtitle">
                             ${post.content}
                         </h3>
-
                     </a>
-<!-- <router-view></router-view> -->
                     <p class="post-meta">Posted by <a href="#">${post.belongto.username}</a> ${post.update_date}</p>
-
                 </div>
                 <hr>
                 <!-- Pager -->
@@ -51,51 +45,13 @@
                 </ul>
             </div>
         </div>
+        <!-- <router-view></router-view> -->
     </div>
     <hr>
-</div>
 
-<!-- <script src="/static/js/home.js"></script> -->
-<script type="text/javascript">
-var archive_url = '/api/article/'
-var demo = new Vue({
-    el: '#post_list',
-    data: {
-        post_list: null
-    },
-    created: function() {
-        this.fetchData()
-    },
-    methods: {
-        fetchData: function() {
-            var self = this
-            var res = $.get(archive_url, function() {
-                self.post_list = res.responseJSON
-                console.log(self.post_list)
-            })
-        }
-    }
-})
-var Foo = Vue.extend({
-    template: '<p>This is foo!</p>'
-})
 
-var Bar = Vue.extend({
-    template: '<p>This is bar!</p>'
-})
-
-var App = Vue.extend({})
-
-var router = new VueRouter()
-
-router.map({
-    '/article/1/': {
-        component: Foo
-    },
-})
-
-router.start(App, '#home')
-</script>
+<script src="/static/js/page/router.js"></script>
+<script src="/static/js/page/vue.js"></script>
 
 
 {% endblock %}

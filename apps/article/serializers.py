@@ -2,7 +2,7 @@
 # @Author: drinks
 # @Date:   2016-03-15 16:07:50
 # @Last Modified by:   drinksober
-# @Last Modified time: 2016-04-26 15:43:46
+# @Last Modified time: 2016-04-26 22:27:14
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
@@ -12,7 +12,7 @@ from .models import Article, Category, Tag
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('username',)
+        fields = ('username', )
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
@@ -36,4 +36,5 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Article
-        fields = ('belongto', 'title', 'content', 'category', 'tags', 'update_date')
+        fields = ('belongto', 'title', 'content', 'category', 'tags',
+                  'update_date', 'id')

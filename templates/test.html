@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)http://django-wkhtmltopdf.readthedocs.io/en/latest/usage.html -->
+<html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" lang="en"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Usage — django-wkhtmltopdf 3.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+
+  
+    <link rel="stylesheet" href="./test_files/sphinx_rtd_theme.css" type="text/css">
+  
+
+  
+    <link rel="top" title="django-wkhtmltopdf 3.0.0 documentation" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/index.html">
+        <link rel="next" title="Settings" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/settings.html">
+        <link rel="prev" title="Full Installation Notes" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/installation.html"> 
+
+  
+  <script type="text/javascript" async="" src="./test_files/ga.js"></script><script src="./test_files/modernizr.min.js"></script><style type="text/css"></style>
+
+
+<!-- RTD Extra Head -->
+
+<!-- 
+Always link to the latest version, as canonical.
+http://docs.readthedocs.org/en/latest/canonical.html
+-->
+<link rel="canonical" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/usage.html">
+
+<link rel="stylesheet" href="./test_files/readthedocs-doc-embed.css" type="text/css">
+
+<script type="text/javascript" src="./test_files/readthedocs-data.js"></script>
+
+<!-- Add page-specific data, which must exist in the page js, not global -->
+<script type="text/javascript">
+READTHEDOCS_DATA['page'] = 'usage'
+</script>
+
+<script type="text/javascript" src="./test_files/readthedocs-dynamic-include.js"></script>
+
+<!-- end RTD <extrahead> --></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="http://django-wkhtmltopdf.readthedocs.io/en/latest/index.html" class="icon icon-home"> django-wkhtmltopdf
+          
+
+          
+          </a>
+
+          
+            
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="http://django-wkhtmltopdf.readthedocs.io/en/latest/search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs">
+    <input type="hidden" name="check_keywords" value="yes">
+    <input type="hidden" name="area" value="default">
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/installation.html">Full Installation Notes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/usage.html"><span class="toctree-expand"></span>Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/usage.html#simple-example">Simple Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/usage.html#advanced-example">Advanced Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/usage.html#unicode-characters">Unicode characters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/settings.html">Settings</a></li>
+</ul>
+
+            
+          
+        </div>
+      <div class="wy-menu rst-pro"><div class="rst-pro-about"><a href="http://docs.readthedocs.org/en/latest/sponsors.html#sponsorship-information"><i class="fa fa-info-circle"></i></a></div><a class="rst-pro-image-wrapper" href="http://readthedocs.org/sustainability/click/5/Qx9bBfe66xaH/" target="_blank"><img class="rst-pro-image" src="./test_files/saved_resource"></a><span>Build the future of communications at <a class="rst-pro-link" href="http://readthedocs.org/sustainability/click/5/Qx9bBfe66xaH/" target="_blank">Twilio SIGNAL conference 2016</a>.</span></div><div class="rst-pro-wrapper"></div></div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="http://django-wkhtmltopdf.readthedocs.io/en/latest/index.html">django-wkhtmltopdf</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="http://django-wkhtmltopdf.readthedocs.io/en/latest/index.html">Docs</a> »</li>
+      
+    <li>Usage</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="https://github.com/incuna/django-wkhtmltopdf/blob/master/docs/usage.rst" class="fa fa-github"> Edit on GitHub</a>
+          
+        
+      </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/usage.html#usage" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="xref py py-class docutils literal"><span class="pre">PDFTemplateView</span></code> is a Django class-based view.
+By default, it uses <code class="xref py py-class docutils literal"><span class="pre">PDFTemplateResponse</span></code> to render an HTML
+template to PDF.
+It accepts the following class attributes:</p>
+<dl class="docutils">
+<dt><code class="xref py py-attr docutils literal"><span class="pre">template_name</span></code></dt>
+<dd>The full name of a template to use as the body of the PDF.</dd>
+<dt><code class="xref py py-attr docutils literal"><span class="pre">header_template</span></code></dt>
+<dd>Optional.
+The full name of a template to use as the header on each page.</dd>
+<dt><code class="xref py py-attr docutils literal"><span class="pre">footer_template</span></code></dt>
+<dd>Optional.
+The full name of a template to use as the footer on each page.</dd>
+<dt><code class="xref py py-attr docutils literal"><span class="pre">filename</span></code></dt>
+<dd><p class="first">The filename to use when responding with an attachment containing
+the PDF.
+Default is <code class="docutils literal"><span class="pre">'rendered_pdf.pdf'</span></code>.</p>
+<p class="last">If <code class="docutils literal"><span class="pre">None</span></code>, the view returns the PDF output inline,
+not as an attachment.</p>
+</dd>
+<dt><code class="xref py py-attr docutils literal"><span class="pre">response_class</span></code></dt>
+<dd>The response class to be returned by <code class="xref py py-meth docutils literal"><span class="pre">render_to_response()</span></code>
+method.
+Default is <code class="xref py py-class docutils literal"><span class="pre">PDFTemplateResponse</span></code>.</dd>
+<dt><code class="xref py py-attr docutils literal"><span class="pre">html_response_class</span></code></dt>
+<dd>The response class to be returned by <code class="xref py py-meth docutils literal"><span class="pre">render_to_response()</span></code>
+method, when rendering as HTML.
+See note below.
+Default is <code class="xref py py-class docutils literal"><span class="pre">TemplateResponse</span></code>.</dd>
+<dt><code class="xref py py-attr docutils literal"><span class="pre">cmd_options</span></code></dt>
+<dd><p class="first">The dictionary of command-line arguments passed to the underlying
+<code class="docutils literal"><span class="pre">wkhtmltopdf</span></code> binary.
+Default is <code class="docutils literal"><span class="pre">{}</span></code>.</p>
+<p class="last">wkhtmltopdf options can be found by running <code class="docutils literal"><span class="pre">wkhtmltopdf</span> <span class="pre">--help</span></code>.
+Unfortunately they don’t provide hosted documentation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For convenience in development you can add the GET arg <code class="docutils literal"><span class="pre">?as=html</span></code> to the
+end of your URL to render the PDF as a web page.</p>
+</div>
+<div class="section" id="simple-example">
+<h2>Simple Example<a class="headerlink" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/usage.html#simple-example" title="Permalink to this headline">¶</a></h2>
+<p>Point a URL at <code class="xref py py-class docutils literal"><span class="pre">PDFTemplateView</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf.urls.defaults</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">wkhtmltopdf.views</span> <span class="kn">import</span> <span class="n">PDFTemplateView</span>
+
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span>
+    <span class="c1"># ...</span>
+    <span class="n">url</span><span class="p">(</span><span class="s1">r'^pdf/$'</span><span class="p">,</span> <span class="n">PDFTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s1">'my_template.html'</span><span class="p">,</span>
+                                           <span class="n">filename</span><span class="o">=</span><span class="s1">'my_pdf.pdf'</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">'pdf'</span><span class="p">),</span>
+    <span class="c1"># ...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="advanced-example">
+<h2>Advanced Example<a class="headerlink" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/usage.html#advanced-example" title="Permalink to this headline">¶</a></h2>
+<p>Point a URL (as above) at your own view that subclasses
+<code class="xref py py-class docutils literal"><span class="pre">PDFTemplateView</span></code>
+and override the sections you need to.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wkhtmltopdf.views</span> <span class="kn">import</span> <span class="n">PDFTemplateView</span>
+
+
+<span class="k">class</span> <span class="nc">MyPDF</span><span class="p">(</span><span class="n">PDFTemplateView</span><span class="p">):</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s1">'my_pdf.pdf'</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">'my_template.html'</span>
+    <span class="n">cmd_options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'margin-top'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unicode-characters">
+<h2>Unicode characters<a class="headerlink" href="http://django-wkhtmltopdf.readthedocs.io/en/latest/usage.html#unicode-characters" title="Permalink to this headline">¶</a></h2>
+<p>Templates containing utf-8 characters should be supported. You will need to
+ensure that you set the content type in your template file for <cite>wkhtmltopdf</cite> to
+interpret it properly.</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">"Content-Type"</span> <span class="na">content</span><span class="o">=</span><span class="s">"text/html; charset=utf-8"</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="http://django-wkhtmltopdf.readthedocs.io/en/latest/settings.html" class="btn btn-neutral float-right" title="Settings" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="http://django-wkhtmltopdf.readthedocs.io/en/latest/installation.html" class="btn btn-neutral" title="Full Installation Notes" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr>
+
+  <div role="contentinfo">
+    <p>
+        © Copyright 2012, Incuna Ltd.
+      
+        <span class="commit">
+          Revision <code>7024713a</code>.
+        </span>
+      
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Read the Docs</span>
+      v: latest
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions"><!-- Inserted RTD Footer -->
+<div class="injected">
+
+  
+
+      
+      
+      
+      <dl>
+        <dt>Versions</dt>
+        
+         <strong> 
+        <dd><a href="http://django-wkhtmltopdf.readthedocs.io/en/latest/usage.html">latest</a></dd>
+         </strong> 
+        
+        
+        <dd><a href="http://django-wkhtmltopdf.readthedocs.io/en/stable/usage.html">stable</a></dd>
+        
+        
+      </dl>
+      
+      
+
+      
+      
+      <dl>
+        <dt>Downloads</dt>
+        
+        <dd><a href="http://readthedocs.org/projects/django-wkhtmltopdf/downloads/pdf/latest/">PDF</a></dd>
+        
+        <dd><a href="http://readthedocs.org/projects/django-wkhtmltopdf/downloads/htmlzip/latest/">HTML</a></dd>
+        
+        <dd><a href="http://readthedocs.org/projects/django-wkhtmltopdf/downloads/epub/latest/">Epub</a></dd>
+        
+      </dl>
+      
+      
+
+      
+      <dl>
+        <!-- These are kept as relative links for internal installs that are http -->
+        <dt>On Read the Docs</dt>
+        <dd>
+          <a href="http://readthedocs.org/projects/django-wkhtmltopdf/">Project Home</a>
+        </dd>
+        <dd>
+          <a href="http://readthedocs.org/projects/django-wkhtmltopdf/builds/">Builds</a>
+        </dd>
+        <dd>
+          <a href="http://readthedocs.org/projects/django-wkhtmltopdf/downloads/">Downloads</a>
+        </dd>
+      </dl>
+      
+
+      
+
+      
+      <dl>
+        <dt>On GitHub</dt>
+        <dd>
+          <a href="https://github.com/incuna/django-wkhtmltopdf/blob/master/docs/usage.rst">View</a>
+        </dd>
+        <dd>
+          <a href="https://github.com/incuna/django-wkhtmltopdf/edit/master/docs/usage.rst">Edit</a>
+        </dd>
+      </dl>
+      
+      
+
+      
+      <dl>
+        <dt>Search</dt>
+        <dd>
+          <div style="padding: 6px;">
+            <form id="flyout-search-form" class="wy-form" target="_blank" action="https://readthedocs.org/projects/django-wkhtmltopdf/search/" method="get">
+              <input type="text" name="q" placeholder="Search docs">
+              </form>
+          </div>
+        </dd>
+      </dl>
+      
+
+
+
+      <hr>
+      
+      Free document hosting provided by <a href="https://readthedocs.org/">Read the Docs</a>. 
+      
+
+      
+
+</div>
+</div>
+  </div>
+
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'3.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="./test_files/jquery-2.0.3.min.js"></script>
+      <script type="text/javascript" src="./test_files/jquery-migrate-1.2.1.min.js"></script>
+      <script type="text/javascript" src="./test_files/underscore.js"></script>
+      <script type="text/javascript" src="./test_files/doctools.js"></script>
+      <script type="text/javascript" src="./test_files/readthedocs-doc-embed.js"></script>
+
+  
+
+  
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+
+<script aria-hidden="true" type="application/x-lastpass" id="hiddenlpsubmitdiv" style="display: none;"></script><script>try{(function() { for(var lastpass_iter=0; lastpass_iter < document.forms.length; lastpass_iter++){ var lastpass_f = document.forms[lastpass_iter]; if(typeof(lastpass_f.lpsubmitorig2)=="undefined"){ lastpass_f.lpsubmitorig2 = lastpass_f.submit; if (typeof(lastpass_f.lpsubmitorig2)=='object'){ continue;}lastpass_f.submit = function(){ var form=this; var customEvent = document.createEvent("Event"); customEvent.initEvent("lpCustomEvent", true, true); var d = document.getElementById("hiddenlpsubmitdiv"); if (d) {for(var i = 0; i < document.forms.length; i++){ if(document.forms[i]==form){ if (typeof(d.innerText) != 'undefined') { d.innerText=i.toString(); } else { d.textContent=i.toString(); } } } d.dispatchEvent(customEvent); }form.lpsubmitorig2(); } } }})()}catch(e){}</script></body><div></div><div></div></html>

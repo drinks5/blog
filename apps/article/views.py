@@ -3,14 +3,14 @@
 # @belongto: root
 # @Date:   2015-12-24 06:30:51
 # @Last Modified by:   drinksober
-# @Last Modified time: 2016-04-26 22:03:25
+# @Last Modified time: 2016-04-28 11:52:15
 
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.syndication.views import Feed
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect, render_to_response
+from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db.models import Count
 from django.views.generic import (CreateView, DeleteView, DetailView,
@@ -60,23 +60,25 @@ class ArticleViewSet(viewsets.ViewSet):
     """
 
     def get_queryset(self):
-        queryset = Article.objects.filter(belongto=self.request.user)
+        queryset = Article.objects.filter(status='1')
         return queryset
 
-    @detail_route(methods=['get'])
     def retrieve(self, request, pk):
-        if pk:
-            queryset = Article.objects.get(pk=pk)
-            article_serializer = ArticleSerializer(queryset)
-            return Response(article_serializer.data)
-        return self.list(request)
+        data = get_object_or_404(Article, pk=pk)
+        article_serializer = ArticleSerializer(data)
+        return Response(article_serializer.data)
 
     def list(self, request):
         article_serializer = ArticleSerializer(self.get_queryset(), many=True)
         return Response(article_serializer.data)
 
-    @detail_route(methods=['post'])
-    def create_or_update(self, request, pk=None):
+    def update(self, request, pk):
+        return self._operate(request, pk)
+
+    def create(self, request, pk=None):
+        return self._operate(request, pk)
+
+    def _operate(self, request, pk=None):
         user = request.user
         title = request.POST.get('title', '')
         content = request.POST.get('content', '')
@@ -94,16 +96,12 @@ class ArticleViewSet(viewsets.ViewSet):
         for item in tr4s.get_key_sentences(num=3):
             summary.append(item.sentence)
         summary = ','.join(summary)
+        paras = {'title': title, 'summary': summary, 'content': content, 'category': category, 'belongto': user}
         if pk:
-            article = Article.objects.get(pk=pk)
-            article.tags.clear()
-        else:
-            article = Article()
-        article.belongto = user
-        article.title = title
-        article.summary = summary
-        article.content = content
-        article.category = category
+            old_article = get_object_or_404(Article, pk=pk)
+            old_article.tags.clear()
+            paras.update({'pk': pk})
+        article = Article(**paras)
         article.save()
         article.tags.add(*tags)
         return Response(ArticleSerializer(article).data)

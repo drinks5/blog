@@ -46,8 +46,9 @@
             content = $("input[name=content]").val(),
             csrfmiddlewaretoken = $("input[name=csrfmiddlewaretoken]").val()
         $.ajax({
-            type: 'post', 
-            url: '/api/article/', 
+            type: 'put', 
+            // if(window.location.pathname.split('/')[3] === "") {type:'post'}
+            url: '/api/article/1/', 
             data: {
                 'title': title,
                 'content': content,
