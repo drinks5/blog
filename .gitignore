@@ -4,5 +4,4 @@ db*
 *migrations
 .idea*
 *.sock
-static/*
 
