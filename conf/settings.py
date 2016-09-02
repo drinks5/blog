@@ -1,64 +1,43 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Author: drinks
-# @Date:   2015-12-22 16:01:28
-# @Last Modified by:   drinksober
-# @Last Modified time: 2016-05-15 11:57:04
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '91&3j(+hkf)$i4-3&g4y!@gp6062nk$$19go)2xv#xlh5*=m*y'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-
 # ALLOWED_HOSTS = ['*']
-# from .production import *
 
 DEBUG = True
 
-# bootstrap
-DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
-
-from django.contrib import messages
-"""
-bootstrap alert info...
-"""
-MESSAGE_TAGS = {
-    messages.SUCCESS: 'alert-success success',
-    messages.WARNING: 'alert-warning warning',
-    messages.ERROR: 'alert-danger error'
-}
-
 # Application definition
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
 
-# AUTHENTICATION_BACKENDS = (
-#    'userena.backends.UserenaAuthenticationBackend',
-#    'guardian.backends.ObjectPermissionBackend',
-#   'django.contrib.auth.backends.ModelBackend',
-#)
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend', )
 ANONYMOUS_USER_ID = -1
 
-INSTALLED_APPS = ('django_admin_bootstrapped',
-                  'django.contrib.admin',
+INSTALLED_APPS = ('django.contrib.admin',
                   'django.contrib.auth',
+                  'django.contrib.sites',
                   'django.contrib.contenttypes',
                   'django.contrib.sessions',
                   'django.contrib.messages',
                   'django.contrib.staticfiles',
                   'django_nose',
                   'rest_framework',
-                  'apps.accounts',
-                  'wkhtmltopdf',
                   'apps.article',
-                  'apps.wechat', )
+                  'allauth',
+                  'allauth.account',
+                  'allauth.socialaccount',
+                  'allauth.socialaccount.providers.weibo',
+                  'allauth.socialaccount.providers.weixin',
+                  'allauth.socialaccount.providers.github',
+                  'corsheaders',
+                  'taggit')
+
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 DATABASES = {
@@ -80,13 +59,11 @@ REST_FRAMEWORK = {
     'DATETIME_FORMAT': "%Y-%m-%d",
 }
 
-from django.conf import global_settings
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS
-
 BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     # 'django.middleware.csrf.CsrfResponseMiddleware',
@@ -120,16 +97,6 @@ TEMPLATES = [
     },
 ]
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE' : 'django.db.backends.mysql',
-#         'NAME'    : 'article',
-#         'USER'     : 'root',
-#         'PASSWORD'  : '123456',
-#         'HOST'   : '',
-#         'PORT'   : '3306',
-#     }
-#     }
 USE_TZ = False
 LANGUAGE_CODE = 'zh-hans'
 TIME_ZONE = 'Asia/Shanghai'
@@ -147,19 +114,20 @@ EMAIL_PORT = 25
 EMAIL_HOST_USER = 'drinksober@sina.com'
 EMAIL_HOST_PASSWORD = 'drinks1993'
 SERVER_EMAIL = 'drinksober@sina.com'
-#DEFAULT_FROM_EMAIL = 'drinksober@sina.com'
 
-SITE_ID = 2
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
+SITE_ID = 1
 
 STATIC_URL = '/statics/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'statics')
 STATICDIR = os.path.join(BASE_DIR, 'static/dist')
-STATICFILES_DIRS = [STATICDIR, ]
+STATICFILES_DIRS = [STATICDIR, os.path.join(BASE_DIR, 'static/assets')]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(STATICDIR, 'media')
 
 WKHTMLTOPDF_CMD = '/usr/bin/wkhtmltopdf'
+
+# CORS_ORIGIN_WHITELIST = (
+#     '127.0.0.1:8080',
+# )
+CORS_ORIGIN_ALLOW_ALL = True

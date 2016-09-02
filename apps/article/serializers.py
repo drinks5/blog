@@ -6,7 +6,8 @@
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Article, Category, Tag
+from .models import Article, Category
+from taggit.models import Tag
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -16,23 +17,23 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
-    # belongto = UserSerializer(required=False)
+    belongto = UserSerializer(required=False)
+
     class Meta:
         model = Category
-        fields = ('name', )
+        fields = ('belongto', 'name', 'id')
 
 
-class TagsSerializer(serializers.HyperlinkedModelSerializer):
-    # belongto = UserSerializer(required=False)
+class TagSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tag
-        fields = ('name', )
+        fields = ('name', 'id')
 
 
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):
     belongto = UserSerializer()
     category = CategorySerializer()
-    tags = CategorySerializer()
+    tags = CategorySerializer(many=True, read_only=True)
 
     class Meta:
         model = Article

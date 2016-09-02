@@ -4,23 +4,11 @@
 # @Last Modified by:   drinksober
 # @Last Modified time: 2016-04-26 21:59:26
 from django.db import models
-from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-
+from taggit.managers import TaggableManager
 # from apps.accounts.models import User
 
 status_choices = ((0, 'deleted'), (1, 'active'))
-
-
-class Tag(models.Model):
-    belongto = models.ForeignKey(User, related_name='+')
-    name = models.CharField(max_length=50)
-    create_date = models.DateTimeField(auto_now_add=True)
-    update_date = models.DateTimeField(auto_now_add=True)
-    status = models.IntegerField(choices=status_choices, default=1)
-
-    def __str__(self):
-        return '<{0}: {1}>'.format(self.belongto, self.name)
 
 
 class Category(models.Model):
@@ -45,7 +33,7 @@ class Article(models.Model):
 
     content = models.TextField(blank=True, null=True)
     category = models.ForeignKey(Category)
-    tags = models.ManyToManyField(Tag)
+    tags = TaggableManager()
     status = models.IntegerField(choices=status_choices, default=1)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now_add=True)
