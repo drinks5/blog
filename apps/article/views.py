@@ -19,7 +19,6 @@ from textrank4zh import TextRank4Keyword, TextRank4Sentence
 from .forms import CommentForm, ContactForm
 from .models import Article, Category, Comment
 from .serializers import ArticleSerializer, CategorySerializer, TagSerializer
-from ipdb import set_trace as trace
 
 
 class CategoryViewSet(viewsets.ViewSet):

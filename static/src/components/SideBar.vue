@@ -4,9 +4,9 @@
         <div class="well">
             <h4>Blog Search</h4>
             <div class="input-group">
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" v-model="search">
                 <span class="input-group-btn">
-                    <a class="btn btn-default" role="button" v-link="{name: 'articleList', params: {search: search}}">
+                    <a class="btn btn-default" v-link="{ name: 'articleList', exact:true, params: {search: search}}">
                         <span class="glyphicon glyphicon-search"></span>
                     </a>
                 </span>
@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <ul class="list-unstyled" v-for="category in categoryList | limitBy halfCategory">
-                        <li><a v-link="{name: 'about', params: { categoryId: 1123123} }">{{ category.name }}</a>
+                        <li><a v-link="{name: 'articleList', params: { categoryId: category.id} }">{{ category.name }}</a>
                         </li>
                     </ul>
                 </div>
@@ -91,7 +91,7 @@ export default{
             this.$http.get(tagUrl).then((response) => {
                 this.$set('tagList', response.data)
             })
-        },
+        }
     }
 }
 </script>

@@ -34,8 +34,9 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
     belongto = UserSerializer()
     category = CategorySerializer()
     tags = CategorySerializer(many=True, read_only=True)
+    backgroupnd_thumbnail = serializers.ImageField(read_only=True)
 
     class Meta:
         model = Article
         fields = ('belongto', 'title', 'content', 'category', 'tags',
-                  'update_date', 'id')
+                  'update_date', 'id', 'backgroupnd_thumbnail')

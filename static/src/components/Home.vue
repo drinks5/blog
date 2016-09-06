@@ -13,7 +13,6 @@
 
 
 <script>
-import Articles from './Articles'
 import SideBar from './SideBar'
 
 export default {
@@ -22,15 +21,8 @@ export default {
             search: ''
         }
     },
-    events: {
-        'search-msg': function(search) {
-            if (search.trim()) {
-                this.$broadcast('parent-search', search)
-            }
-        }
-    },
-  components: {
-    Articles, SideBar
-  }
+    components: {
+        SideBar
+    }
 }
 </script>

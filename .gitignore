@@ -4,4 +4,4 @@ db*
 *migrations
 .idea*
 *.sock
-
+*node_modules*

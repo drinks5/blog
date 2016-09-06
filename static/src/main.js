@@ -6,7 +6,7 @@ import Home from './components/Home'
 import About from './components/About'
 import Contact from './components/Contact'
 
-import Articles from './components/Articles'
+import ArticleList from './components/ArticleList'
 import ArticleDetail from './components/ArticleDetail'
 
 import VueRouter from 'vue-router'
@@ -22,9 +22,9 @@ router.map({
 		name: 'home',
         component: Home,
         subRoutes: {
-            '/list': {
+            '/list/:search': {
 				name: 'articleList',
-                component: Articles
+                component: ArticleList
                 },
             '/detail/:id': {
 				name: 'articleDetail',
@@ -39,11 +39,11 @@ router.map({
     '/contact': {
 		name: 'contact',
         component: Contact
-    }
+    },
 })
 router.redirect({
     '/home': '/home/list',
-    '*': '/home/list'
+    '/': '/about'
 })
 
 router.start(App, '#app')

@@ -6,6 +6,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 # from apps.accounts.models import User
 
 status_choices = ((0, 'deleted'), (1, 'active'))
@@ -37,6 +39,13 @@ class Article(models.Model):
     status = models.IntegerField(choices=status_choices, default=1)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now_add=True)
+
+    background = models.ImageField(upload_to='background')
+    backgroupnd_thumbnail = ImageSpecField(
+        source='background',
+        processors=[ResizeToFill(900, 300)],
+        format='JPEG',
+        options={'quality': 60})
 
     def get_absolute_url(self):
         return '/article/{0}/'.format(self.pk)
