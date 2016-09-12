@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from taggit.models import Tag
 from textrank4zh import TextRank4Keyword, TextRank4Sentence
 
-from .forms import CommentForm, ContactForm
+from .forms import CommentForm
 from .models import Article, Category, Comment
 from .serializers import ArticleSerializer, CategorySerializer, TagSerializer
 
@@ -52,8 +52,16 @@ class TagViewSet(viewsets.ViewSet):
         return Response(data.data)
 
 
-class ArticleViewSet(viewsets.ViewSet):
+def get_search_q_obj(request):
+    search = request.GET.get('search', '')
+    if not search:
+        return Q()
+    query_para = Q(content__contains=search) | Q(title__contains=search) | Q(
+        tags__name__contains=search) | Q(category__name__contains=search)
+    return query_para
 
+
+class ArticleViewSet(viewsets.ViewSet):
     def get_queryset(self):
         queryset = Article.objects.filter(status='1')
         return queryset
@@ -64,11 +72,9 @@ class ArticleViewSet(viewsets.ViewSet):
         return Response(article_serializer.data)
 
     def list(self, request):
-        search = request.GET.get('search', '')
-        query_para = search and Q(content__contains=search) | Q(
-            title__contains=search) or Q()
+        query_para = get_search_q_obj(request)
         article_serializer = ArticleSerializer(
-            self.get_queryset().filter(query_para), many=True)
+            self.get_queryset().filter(query_para).distinct(), many=True)
         return Response(article_serializer.data)
 
     def update(self, request, pk):

@@ -1,18 +1,18 @@
 <template>
 
-    <h2>
+    <h1 class="text-center">
         <a v-link="{ name: 'articleDetail', params: {id: post.id}}">{{ post.title }}</a>
-    </h2>
+    </h1>
     <p class="lead">
     by <a v-link="{ name: 'articleDetail', params: {id: post.id} }">{{ post.belongto.username }}</a>
     </p>
     <p><span class="glyphicon glyphicon-time"></span>  Posted on {{ post.update_date }}</p>
-    <p><span class="glyphicon glyphicon-certificate"></span><template v-for="tag in post.tags">  {{ tag.name }}</template></p>
+    <span class="label label-default" v-for="tag in post.tags">{{ tag.name }}</span>
     <p>{{  post.category.name  }}</p>
     <hr>
-    <img class="img-responsive" src="http://127.0.0.1:8000{{ post.backgroupnd_thumbnail }}" alt="">
+    <img class="img-responsive img-thumbnail" src="http://127.0.0.1:8000{{ post.backgroupnd_thumbnail }}" alt="">
     <hr>
-    {{ post.content }}
+    {{{ post.content | marked }}}
     <hr>
 
     <!-- Pager -->

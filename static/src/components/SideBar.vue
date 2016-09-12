@@ -16,18 +16,18 @@
 
         <!-- Blog Categories Well -->
         <div class="well">
-            <h4>Blog Categories</h4>
+            <h4 class="text-center">Blog Categories</h4>
             <div class="row">
                 <div class="col-lg-6">
                     <ul class="list-unstyled" v-for="category in categoryList | limitBy halfCategory">
-                        <li><a v-link="{name: 'articleList', params: { categoryId: category.id} }">{{ category.name }}</a>
+                        <li><a v-link="{name: 'articleList', params: { search: category.name} }">{{ category.name }}</a>
                         </li>
                     </ul>
                 </div>
                 <!-- /.col-lg-6 -->
                 <div class="col-lg-6">
                     <ul class="list-unstyled" v-for="category in categoryList | limitBy halfCategory halfCategory">
-                        <li><a href="#">{{ category.name }}</a></li>
+                        <li><a v-link="{ name: 'articleList', params: {search: category.name} }">{{ category.name }}</a></li>
                     </ul>
                 </div>
                 <!-- /.col-lg-6 -->
@@ -38,9 +38,9 @@
 
         <!-- Blog Tag Well -->
         <div class="well">
-            <h4>Blog Tag</h4>
+            <h4 class="text-center">Blog Tag</h4>
                     <ul class="list-unstyled" v-for="tag in tagList">
-                        <li><a href="#">{{ tag.name }}</a>
+                        <li><a v-link="{ name: 'articleList', params: {search: tag.name} }">{{ tag.name }}</a>
                         </li>
                     </ul>
             </div>
@@ -48,13 +48,14 @@
         </div>
         <!-- Side Widget Well -->
         <div class="well">
-            <h4>Side Widget Well</h4>
+            <h4 class="text-center">Side Widget Well</h4>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
         </div>
 </template>
 
 
 <script>
+
 export default{
     data: function() {
         return {

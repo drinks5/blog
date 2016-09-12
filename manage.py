@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 import os
 import sys
-from IPython import get_ipython
-ipython_shell = get_ipython()
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "conf.settings")

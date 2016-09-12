@@ -30,6 +30,7 @@ INSTALLED_APPS = ('django.contrib.admin',
                   'rest_framework',
                   'apps.article',
                   'imagekit',
+                  'pagedown',
                   'allauth',
                   'allauth.account',
                   'allauth.socialaccount',
@@ -57,6 +58,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
+
+    # pagination
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+
     'DATETIME_FORMAT': "%Y-%m-%d",
 }
 
@@ -122,7 +128,7 @@ SITE_ID = 1
 STATIC_URL = '/statics/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'statics')
 STATICDIR = os.path.join(BASE_DIR, 'static/dist')
-STATICFILES_DIRS = [STATICDIR, os.path.join(BASE_DIR, 'static/assets')]
+STATICFILES_DIRS = [STATICDIR]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(STATICDIR, 'media')
