@@ -5,19 +5,16 @@
 # @Last Modified by:   drinksober
 # @Last Modified time: 2016-04-28 11:52:15
 
-from django.db.models import Q
 # Create your views here.
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
-
-from braces.views import (AjaxResponseMixin, JSONResponseMixin,
-                          LoginRequiredMixin)
 from rest_framework import viewsets
 from rest_framework.response import Response
 from taggit.models import Tag
 from textrank4zh import TextRank4Keyword, TextRank4Sentence
 
-from .forms import CommentForm
-from .models import Article, Category, Comment
+from .models import Article, Category
 from .serializers import ArticleSerializer, CategorySerializer, TagSerializer
 
 
@@ -75,6 +72,8 @@ class ArticleViewSet(viewsets.ViewSet):
         query_para = get_search_q_obj(request)
         article_serializer = ArticleSerializer(
             self.get_queryset().filter(query_para).distinct(), many=True)
+        from ipdb import set_trace as trace
+        trace()
         return Response(article_serializer.data)
 
     def update(self, request, pk):

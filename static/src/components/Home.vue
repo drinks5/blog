@@ -1,11 +1,11 @@
 <template>
     <div class="row">
         <div class="col-md-9">
-            <router-view :search.sync=search></router-view>
+            <router-view></router-view>
         </div>
 
         <div class="col-md-3">
-            <side-bar :search.sync=search></side-bar>
+            <side-bar></side-bar>
         </div>
     </div>
     <hr>
@@ -16,11 +16,6 @@
 import SideBar from './SideBar'
 
 export default {
-    data: function() {
-        return {
-            search: ''
-        }
-    },
     components: {
         SideBar
     }
