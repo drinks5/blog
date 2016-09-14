@@ -6,11 +6,11 @@
 # @Last Modified time: 2016-04-28 11:52:15
 
 # Create your views here.
-from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 from taggit.models import Tag
 from textrank4zh import TextRank4Keyword, TextRank4Sentence
 
@@ -58,7 +58,27 @@ def get_search_q_obj(request):
     return query_para
 
 
-class ArticleViewSet(viewsets.ViewSet):
+class PageNumberPager(PageNumberPagination):
+    def get_paginated_response(self, data):
+        return Response(
+            dict([
+                ('page', self.page.number),
+                ('next', self.get_next_page()), (
+                    'previous', self.get_previous_page()), ('results', data)
+            ]))
+
+    def get_previous_page(self):
+        if not self.page.has_previous():
+            return None
+        return self.page.previous_page_number()
+
+    def get_next_page(self):
+        if not self.page.has_next():
+            return None
+        return self.page.next_page_number()
+
+
+class ArticleViewSet(PageNumberPager, viewsets.ViewSet):
     def get_queryset(self):
         queryset = Article.objects.filter(status='1')
         return queryset
@@ -70,11 +90,11 @@ class ArticleViewSet(viewsets.ViewSet):
 
     def list(self, request):
         query_para = get_search_q_obj(request)
-        article_serializer = ArticleSerializer(
-            self.get_queryset().filter(query_para).distinct(), many=True)
-        from ipdb import set_trace as trace
-        trace()
-        return Response(article_serializer.data)
+        queryset = self.get_queryset().filter(query_para).distinct()
+        queryset = self.paginate_queryset(queryset, request)
+        article_serializer = ArticleSerializer(queryset, many=True)
+        response = self.get_paginated_response(article_serializer.data)
+        return response
 
     def update(self, request, pk):
         return self._operate(request, pk)

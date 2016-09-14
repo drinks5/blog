@@ -20,17 +20,4 @@ export default {
 
 
 <style>
-
-.logo {
-  width: 100px;
-  height: 100px
-}
-
-body {
-    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
-}
-
-footer {
-    margin: 50px 0;
-}
 </style>

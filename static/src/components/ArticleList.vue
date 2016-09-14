@@ -7,9 +7,9 @@
         <p>
         <span class="glyphicon glyphicon-user"><a v-link="{ name: 'articleDetail', params: {id: post.id} }">{{  post.belongto.username }}</a>
         </span>
-        <span class="glyphicon glyphicon-time"></span>  Posted on {{ post.update_date }}&nbsp
+        <span class="glyphicon glyphicon-time">{{ post.update_date }}</span>
         <span class="glyphicon glyphicon-star"></span><a v-link="{ name: 'articleList', query: {search: post.category.name} }"> {{ post.category.name }}</a>
-        <span class="label" v-for="(index, tag) in post.tags" v-bind:class="getTagStyle(index)"><a v-link="{ name: 'articleList', query: {search: tag.name} }"> {{ tag.name }}</a></span>
+        <span class="tag" v-for="(index, tag) in post.tags" v-bind:class="getTagStyle(index, 'tag-')"><a v-link="{ name: 'articleList', query: {search: tag.name} }"> {{ tag.name }}</a></span>
         </p>
         <hr>
         <img class="img-responsive img-thumbnail" v-bind:src="getUrl(post.backgroupnd_thumbnail)" alt="">
@@ -20,14 +20,10 @@
     </template>
 
     <!-- Pager -->
-    <ul class="pager">
-        <li class="previous">
-            <a v-link="{ name: 'articleList', query:{ page: page - 1} }">&larr; Older</a>
-        </li>
-        <li class="next">
-            <a v-link="{ name: 'articleList', query: {page: page + 1} }">Newer &rarr;</a>
-        </li>
-    </ul>
+    <nav class="blog-pagination">
+        <a class="btn btn-outline-primary" v-link="{ name: 'articleList', query:{ page: previous} }" v-bind:class="{ 'disabled': !previous}">Older</a>
+        <a class="btn btn-outline-primary" v-link="{ name: 'articleList', query: {page: next} }" v-bind:class="{ 'disabled': !next }">Newer</a>
+    </nav>
 </template>
 
 <script>
@@ -38,15 +34,19 @@ export default{
         return {
             postList: [],
             apiUrl: articleUrl,
-            page: 0,
+            page: 1,
+            count: 0,
+            next: null,
+            previous: null,
         }
     },
     route: {
         data: function (transition) {
             var search = this.$route.query.search || '';
-            console.log(this.$route.query)
-            var url = this.apiUrl + '?search=' + search
-            return { postList: this.getPostList(url)}
+            var page = transition.to.query.page || this.page;
+            var url = this.apiUrl + '?search=' + search + '&page=' + page;
+            return this.getPostList(url).then(function(response) {
+            return {'postList': response.results, 'count': response.count, 'next': response.next, 'previous': response.previous}})
         }
     },
     methods: {
@@ -60,3 +60,19 @@ export default{
     }
 }
 </script>
+
+<style>
+a.disabled {
+    pointer-events: none;
+    color: inherit;
+}
+
+/* Pagination */
+.blog-pagination {
+  margin-bottom: 4rem;
+}
+.blog-pagination > .btn {
+  border-radius: 2rem;
+}
+
+</style>
