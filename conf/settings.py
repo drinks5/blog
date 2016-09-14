@@ -58,6 +58,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
+    'PAGE_SIZE': 1,
 
     'DATETIME_FORMAT': "%Y-%m-%d",
 }
@@ -135,3 +136,9 @@ WKHTMLTOPDF_CMD = '/usr/bin/wkhtmltopdf'
 #     '127.0.0.1:8080',
 # )
 CORS_ORIGIN_ALLOW_ALL = True
+
+from functools import partial
+from ipdb import set_trace
+import builtins
+trace = partial(set_trace, context=40)
+builtins.trace = trace

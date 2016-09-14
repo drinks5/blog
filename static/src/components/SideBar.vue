@@ -6,7 +6,7 @@
             <div class="input-group">
                 <input type="text" class="form-control" v-model="search">
                 <span class="input-group-btn">
-                    <a class="btn btn-default" v-link="{ name: 'articleList', query: {search: search}}">
+                    <a class="btn btn-primary btn-lg" v-link="{ name: 'articleList', query: {search: search}}">
                         <span class="glyphicon glyphicon-search"></span>
                     </a>
                 </span>

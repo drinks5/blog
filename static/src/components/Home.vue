@@ -1,10 +1,10 @@
 <template>
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-sm-9">
             <router-view></router-view>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-sm-3">
             <side-bar></side-bar>
         </div>
     </div>

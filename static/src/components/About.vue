@@ -1,10 +1,15 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="intro-text">
-                    <span class="skills">Web Developer - Machine Learning</span>
-                </div>
+    <div class="row flex-items-xs-right">
+        <div class="col-xs-4 col-xs-offsets-4">
+            <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Card title</h4>
+                <h6 class="card-subtitle text-muted">Support card subtitle</h6>
+            </div>
+            <img src="../assets/logo.png" alt="Card image">
+            <div class="card-block">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
             </div>
         </div>
     </div>
@@ -20,30 +25,4 @@ export default{
 
 <style>
 
-hr.star-light,
-hr.star-primary {
-  padding: 0;
-  border: none;
-  border-top: solid 5px;
-  text-align: center;
-  max-width: 250px;
-  margin: 25px auto 30px;
-}
-hr.star-light:after,
-hr.star-primary:after {
-  content: "\f005";
-  font-family: FontAwesome;
-  display: inline-block;
-  position: relative;
-  top: -0.8em;
-  font-size: 2em;
-  padding: 0 0.25em;
-}
-hr.star-light {
-  border-color: white;
-}
-hr.star-light:after {
-  background-color: #18BC9C;
-  color: white;
-}
 </style>
