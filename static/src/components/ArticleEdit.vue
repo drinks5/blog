@@ -8,7 +8,7 @@
     <label for="category">Category select</label>
     <select class="form-control" v-model="selectedCategory">
         <template v-for="category in categoryList">
-        <option :value="category.id">{{ category.name }}</option>
+        <option :value="category.id" selected=equal(category.name, selectedCategory)>{{ category.name }}</option>
         </template>
     </select>
   </fieldset>
@@ -95,6 +95,9 @@ export default {
             this.formData.append('title', this.title)
             this.formData.append('content', this.content)
             postData(this, url, this.formData).then((response) => (this.$router.go('/article/detail/' + this.$route.params.id)))
+        },
+        equal (left, right) {
+            return left === right
         }
     }
 }
