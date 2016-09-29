@@ -12,7 +12,7 @@
         <span class="tag" v-for="(index, tag) in post.tags" v-bind:class="getTagStyle(index, 'tag-')"><a v-link="{ name: 'articleList', query: {search: tag.name} }"> {{ tag.name }}</a></span>
         </p>
         <hr>
-        <img class="img-responsive img-thumbnail" v-bind:src="getUrl(post.backgroupnd_thumbnail)" alt="">
+        <img class="img-responsive img-thumbnail" v-bind:src="getUrl(post.background_thumbnail)" alt="">
         <hr>
         {{{ post.content | marked }}}
         <a class="btn btn-primary" v-link="{ name: 'articleDetail', params: {id: post.id} }">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
@@ -28,7 +28,7 @@
 
 <script>
 import { articleUrl, getUrl  } from '../utils/apiurls'
-import { getTagStyle} from '../utils/utils'
+import { getTagStyle } from '../utils/utils'
 export default{
     data: function() {
         return {
@@ -42,16 +42,16 @@ export default{
     },
     route: {
         data: function (transition) {
-            var search = this.$route.query.search || '';
-            var page = transition.to.query.page || this.page;
-            var url = this.apiUrl + '?search=' + search + '&page=' + page;
-            return this.getPostList(url).then(function(response) {
+            const search = this.$route.query.search || '';
+            const page = transition.to.query.page || this.page;
+            const params = {'search': search, 'page': page}
+            return this.getPostList(articleUrl, params).then(function(response) {
             return {'postList': response.results, 'count': response.count, 'next': response.next, 'previous': response.previous}})
         }
     },
     methods: {
-        getPostList: function(apiUrl) {
-            return this.$http.get(apiUrl).then((response) => {
+        getPostList: function(url, params) {
+            return this.$http.get(url, {'params':params}).then((response) => {
                 return response.data
             })
         },

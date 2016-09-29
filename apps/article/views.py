@@ -8,7 +8,7 @@
 # Create your views here.
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from taggit.models import Tag
@@ -44,6 +44,22 @@ class TagViewSet(viewsets.ViewSet):
         data = TagSerializer(data)
         return Response(data.data)
 
+    def update(self, request, pk=None):
+        return self._post(request, pk)
+
+    def create(self, request):
+        return self._post(request)
+
+    def _post(self, request, pk=None):
+        name = request.GET.get('name', '')
+        if not name:
+            content = {'detail': '名称不能为空'}
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+        tag = pk and get_object_or_404(
+            Tag, pk=pk) or Tag.objects.create(name=name)
+        data = TagSerializer(tag)
+        return Response(data.data)
+
     def list(self, queryset):
         data = TagSerializer(self.get_queryset(), many=True)
         return Response(data.data)
@@ -62,8 +78,7 @@ class PageNumberPager(PageNumberPagination):
     def get_paginated_response(self, data):
         return Response(
             dict([
-                ('page', self.page.number),
-                ('next', self.get_next_page()), (
+                ('page', self.page.number), ('next', self.get_next_page()), (
                     'previous', self.get_previous_page()), ('results', data)
             ]))
 
@@ -96,24 +111,26 @@ class ArticleViewSet(PageNumberPager, viewsets.ViewSet):
         response = self.get_paginated_response(article_serializer.data)
         return response
 
-    def update(self, request, pk):
-        return self._operate(request, pk)
+    def update(self, request, pk=None):
+        return self._operate(request, 'UPDATE', pk)
 
-    def create(self, request, pk=None):
-        return self._operate(request, pk)
+    def create(self, request):
+        return self._operate(request, 'POST')
 
-    def _operate(self, request, pk=None):
+    def _operate(self, request, method, pk=None):
         user = request.user
-        title = request.POST.get('title', '')
-        content = request.POST.get('content', '')
+        title = request.data.get('title', '')
+        title = request.data.get('title', '')
+        content = request.data.get('content', '')
+        background = request.FILES.get('background', '')
         tr4w = TextRank4Keyword()
         tr4w.analyze(text=content, lower=True, window=2)
         tags = []
         for item in tr4w.get_keywords(3, word_min_len=1):
-            tag = Tag.objects.get_or_create(belongto=user, name=item.word)[0]
+            tag = Tag.objects.get_or_create(name=item.word)[0]
             tags.append(tag)
-        category = Category.objects.get_or_create(
-            belongto=user, name=tags[0])[0]
+        category = tags and Category.objects.get_or_create(
+            belongto=user, name=tags[0])[0] or ''
         tr4s = TextRank4Sentence()
         tr4s.analyze(text=content, lower=True, source='all_filters')
         summary = []
@@ -125,11 +142,16 @@ class ArticleViewSet(PageNumberPager, viewsets.ViewSet):
                  'content': content,
                  'category': category,
                  'belongto': user}
+        background and paras.update(background=background)
         if pk:
-            old_article = get_object_or_404(Article, pk=pk)
-            old_article.tags.clear()
-            paras.update({'pk': pk})
-        article = Article(**paras)
+            article = get_object_or_404(Article, pk=pk)
+            article.tags.clear()
+            article.title = title
+            article.summary = summary
+            article.content = content
+            article.category = category
+        else:
+            article = Article(**paras)
         article.save()
         article.tags.add(*tags)
         return Response(ArticleSerializer(article).data)

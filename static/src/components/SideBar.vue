@@ -55,7 +55,7 @@
 
 <script>
 
-import { getTagStyle } from '../utils/utils'
+import { getTagStyle, getData, getHalf } from '../utils/utils'
 import { categoryUrl, tagsUrl } from '../utils/apiurls'
 
 export default{
@@ -63,35 +63,23 @@ export default{
         return {
             categoryList: [],
             tagList: [],
-            categoryUrl: categoryUrl,
-            tagsUrl: tagsUrl,
             search: '',
             username: 'Lin Lin'
         }
     },
     ready: function() {
-        this.getCategoryList(this.categoryUrl),
-        this.getTagList(this.tagUrl)
+        getData(this, tagsUrl, 'tagList'),
+        getData(this, categoryUrl, 'categoryList')
     },
     computed: {
         halfCategory: function() {
-            return Math.round(this.categoryList.length/2)
+            return getHalf(this.categoryList)
         },
-        halfTag: function() {
-            return Math.round(this.tagList.length/2)
+        halfTag: function(){
+            return getHalf(this.tagList)
         }
     },
     methods: {
-        getCategoryList: function(categoryUrl) {
-            this.$http.get(categoryUrl).then((response) => {
-                this.$set('categoryList', response.data)
-            })
-        },
-        getTagList: function(tagUrl) {
-            this.$http.get(tagsUrl).then((response) => {
-                this.$set('tagList', response.data)
-            })
-        },
         getTagStyle: getTagStyle
     }
 }

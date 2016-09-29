@@ -1,5 +1,5 @@
 function getUrl(path) {
-    var hostname = 'http://127.0.0.1:8000';
+    const hostname = 'http://127.0.0.1:8000';
     return hostname + path
 }
 exports.articleUrl = getUrl('/api/article/' )

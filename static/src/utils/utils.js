@@ -5,3 +5,20 @@ exports.getTagStyle = function(index, preStr){
     style = preStr + style;
     return style
 }
+
+exports.getData = function(vm, url, data=null) {
+    vm.$http.get(url).then((response) => {
+        data ? vm.$set(data, response.data) : response.data
+    })
+}
+
+exports.postData = function(vm, url, data) {
+    let method = vm.$route.params.id  ? 'put' : 'post'
+    return vm.$http[method](url, data).then((response) => {
+        response.data
+    })
+}
+
+exports.getHalf = function(list) {
+    return Math.round(list.length / 2)
+}

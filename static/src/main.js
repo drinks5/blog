@@ -8,7 +8,7 @@ import App from './App'
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
-
+Vue.http.headers.common['Authorization'] = 'Token da5306b3507304e95d6098204da1aa4549072dcc';
 const router = new VueRouter()
 
 
@@ -39,7 +39,19 @@ router.map({
                 component: function(resolve){
                     require(['./components/ArticleDetail.vue'],resolve);
                 }
-            }
+            },
+            '/edit': {
+                name: 'articleEdit',
+                component: function(resolve){
+                    require(['./components/ArticleEdit.vue'], resolve);
+                }
+            },
+            '/edit/:id': {
+                name: 'articleEdit',
+                component: function(resolve){
+                    require(['./components/ArticleEdit.vue'], resolve);
+                }
+            },
         }
     },
     '/about': {
@@ -49,6 +61,12 @@ router.map({
         }
     },
     '/contact': {
+		name: 'contact',
+        component: function(resolve){
+            require(['./components/Contact.vue'],resolve);
+        }
+    },
+    '/': {
 		name: 'contact',
         component: function(resolve){
             require(['./components/Contact.vue'],resolve);

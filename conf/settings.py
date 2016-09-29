@@ -19,26 +19,15 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend', )
 ANONYMOUS_USER_ID = -1
 
-INSTALLED_APPS = ('django.contrib.admin',
-                  'django.contrib.auth',
-                  'django.contrib.sites',
-                  'django.contrib.contenttypes',
-                  'django.contrib.sessions',
-                  'django.contrib.messages',
-                  'django.contrib.staticfiles',
-                  'django_nose',
-                  'rest_framework',
-                  'apps.article',
-                  'imagekit',
-                  'pagedown',
-                  'allauth',
-                  'allauth.account',
-                  'allauth.socialaccount',
-                  'allauth.socialaccount.providers.weibo',
-                  'allauth.socialaccount.providers.weixin',
-                  'allauth.socialaccount.providers.github',
-                  'corsheaders',
-                  'taggit')
+INSTALLED_APPS = (
+    'django.contrib.admin', 'django.contrib.auth', 'django.contrib.sites',
+    'django.contrib.contenttypes', 'django.contrib.sessions',
+    'django.contrib.messages', 'django.contrib.staticfiles', 'django_nose',
+    'rest_framework', 'rest_framework.authtoken', 'rest_auth', 'apps.article',
+    'imagekit', 'pagedown', 'allauth', 'allauth.account',
+    'allauth.socialaccount', 'allauth.socialaccount.providers.weibo',
+    'allauth.socialaccount.providers.weixin',
+    'allauth.socialaccount.providers.github', 'corsheaders', 'taggit')
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
@@ -55,11 +44,13 @@ DATABASES = {
 REST_FRAMEWORK = {
     # Use Django's standard 'django.contrib.auth' permissions ,
     # or allow read-only access for unauthenticated users.
+    'DEFAULT_AUTHENTICATION_CLASSES':
+    ('rest_framework.authentication.TokenAuthentication', ),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny', ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
-    'PAGE_SIZE': 1,
-
+    'PAGE_SIZE': 10,
     'DATETIME_FORMAT': "%Y-%m-%d",
 }
 

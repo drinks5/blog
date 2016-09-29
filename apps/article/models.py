@@ -41,7 +41,7 @@ class Article(models.Model):
     update_date = models.DateTimeField(auto_now_add=True)
 
     background = models.ImageField(upload_to='background')
-    backgroupnd_thumbnail = ImageSpecField(
+    background_thumbnail = ImageSpecField(
         source='background',
         processors=[ResizeToFill(900, 300)],
         format='JPEG',

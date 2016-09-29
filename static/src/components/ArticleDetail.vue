@@ -11,7 +11,7 @@
         <span class="label" v-for="(index, tag) in post.tags" v-bind:class="getTagStyle(index, 'tag-')"><a v-link="{ name: 'articleList', query: {search: tag.name} }"> {{ tag.name }}</a></span>
         </p>
         <hr>
-        <img class="img-responsive img-thumbnail" v-bind:src="getStaticUrl(post.backgroupnd_thumbnail)" alt="">
+        <img class="img-responsive img-thumbnail" v-bind:src="getStaticUrl(post.background_thumbnail)" alt="">
         <hr>
         {{{ post.content | marked }}}
 
