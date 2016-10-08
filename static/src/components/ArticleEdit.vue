@@ -8,7 +8,8 @@
     <label for="category">Category select</label>
     <select class="form-control" v-model="selectedCategory">
         <template v-for="category in categoryList">
-        <option :value="category.id" selected=equal(category.name, selectedCategory)>{{ category.name }}</option>
+            <!-- <option :value="category.id" selected="{{category.name | equal 'selectedCategory'}}">{{ category.name }}</option> -->
+            <option :value="category.id" selected="equal(selectedCategory, category.name)">{{ category.name }}</option>
         </template>
     </select>
   </fieldset>
@@ -25,11 +26,6 @@
   <fieldset class="form-group">
     <label for="content">Content</label>
     <textarea class="form-control" v-model="content" rows="20"></textarea>
-<div id="editor">function foo(items) {
-    var x = "All this is syntax highlighted";
-    return x;
-}</div>
-    
   </fieldset>
   <fieldset class="form-group">
     <label for="background">Background</label>
@@ -46,6 +42,9 @@ import Multiselect from 'vue-multiselect'
 import { getData, postData } from '../utils/utils'
 import { categoryUrl, tagsUrl, articleUrl } from '../utils/apiurls'
 
+const equal = function(left, right) {
+    return left === right
+}
 export default {
     components: { Multiselect },
     data () {
@@ -96,9 +95,6 @@ export default {
             this.formData.append('content', this.content)
             postData(this, url, this.formData).then((response) => (this.$router.go('/article/detail/' + this.$route.params.id)))
         },
-        equal (left, right) {
-            return left === right
-        }
     }
 }
 </script>

@@ -8,3 +8,7 @@ exports.marked = (text) => {
     return Markdown(text)
 
 }
+
+exports.equal = (left, right) => {
+    return left === right
+}

@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div class="row">
         <div class="col-sm-9">
             <router-view></router-view>
@@ -9,6 +10,7 @@
         </div>
     </div>
     <hr>
+    </div>
 </template>
 
 

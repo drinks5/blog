@@ -5,7 +5,7 @@ var projectRoot = path.resolve(__dirname, '../')
 
 module.exports = {
   entry: {
-    app: './src/main.js',
+    app: './src/main.js'
   },
   output: {
     path: config.build.assetsRoot,
@@ -16,6 +16,7 @@ module.exports = {
     extensions: ['', '.js', '.vue'],
     fallback: [path.join(__dirname, '../node_modules')],
     alias: {
+      'vue': 'vue/dist/vue.common.js',
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
       'components': path.resolve(__dirname, '../src/components')
@@ -25,8 +26,6 @@ module.exports = {
     fallback: [path.join(__dirname, '../node_modules')]
   },
   module: {
-    preLoaders: [
-    ],
     loaders: [
       {
         test: /\.vue$/,
@@ -41,10 +40,6 @@ module.exports = {
       {
         test: /\.json$/,
         loader: 'json'
-      },
-      {
-        test: /\.html$/,
-        loader: 'vue-html'
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -65,6 +60,11 @@ module.exports = {
     ]
   },
   vue: {
-    loaders: utils.cssLoaders()
+    loaders: utils.cssLoaders(),
+    postcss: [
+      require('autoprefixer')({
+        browsers: ['last 2 versions']
+      })
+    ]
   }
 }
