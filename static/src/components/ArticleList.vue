@@ -1,62 +1,49 @@
 <template>
-    <template v-for="post in postList">
-        <!-- First Blog Post -->
-        <h1 class="text-center">
-            <a v-link="{ name: 'articleDetail', params: {id: post.id}}">{{ post.title }}</a>
-        </h1>
-        <p>
-        <span class="glyphicon glyphicon-user"><a v-link="{ name: 'articleDetail', params: {id: post.id} }">{{  post.belongto.username }}</a>
-        </span>
-        <span class="glyphicon glyphicon-time">{{ post.update_date }}</span>
-        <span class="glyphicon glyphicon-star"></span><a v-link="{ name: 'articleList', query: {search: post.category.name} }"> {{ post.category.name }}</a>
-        <span class="tag" v-for="(index, tag) in post.tags" v-bind:class="getTagStyle(index, 'tag-')"><a v-link="{ name: 'articleList', query: {search: tag.name} }"> {{ tag.name }}</a></span>
-        </p>
-        <hr>
-        <img class="img-responsive img-thumbnail" v-bind:src="getUrl(post.background_thumbnail)" alt="">
-        <hr>
-        {{{ post.content | marked }}}
-        <a class="btn btn-primary" v-link="{ name: 'articleDetail', params: {id: post.id} }">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-        <hr>
-    </template>
+    <div>
+        <post-com v-for="post in postList" :post="post"></post-com>
 
     <!-- Pager -->
-    <nav class="blog-pagination">
-        <a class="btn btn-outline-primary" v-link="{ name: 'articleList', query:{ page: previous} }" v-bind:class="{ 'disabled': !previous}">Older</a>
-        <a class="btn btn-outline-primary" v-link="{ name: 'articleList', query: {page: next} }" v-bind:class="{ 'disabled': !next }">Newer</a>
-    </nav>
+        <nav class="blog-pagination">
+            <router-link class="btn btn-outline-primary" :to="{ name: 'articleList', query:{ page: previous} }" v-bind:class="{ 'disabled': !previous}">Older</router-link>
+            <router-link class="btn btn-outline-primary" :to="{ name: 'articleList', query: {page: next} }" v-bind:class="{ 'disabled': !next }">Newer</router-link>
+        </nav>
+    </div>
 </template>
 
 <script>
-import { articleUrl, getUrl  } from '../utils/apiurls'
-import { getTagStyle } from '../utils/utils'
+import { articleUrl } from '../utils/apiurls'
+import  PostCom from './Article.vue'
+
 export default{
     data: function() {
         return {
             postList: [],
-            apiUrl: articleUrl,
             page: 1,
             count: 0,
             next: null,
             previous: null,
         }
     },
-    route: {
-        data: function (transition) {
-            const search = this.$route.query.search || '';
-            const page = transition.to.query.page || this.page;
-            const params = {'search': search, 'page': page}
-            return this.getPostList(articleUrl, params).then(function(response) {
-            return {'postList': response.results, 'count': response.count, 'next': response.next, 'previous': response.previous}})
+    components: {
+        PostCom
+    },
+    created: function() {
+        return this.getPostList()
+    },
+    watch: function() {
+        return {
+            '$route': 'getPostList'
         }
     },
     methods: {
-        getPostList: function(url, params) {
-            return this.$http.get(url, {'params':params}).then((response) => {
-                return response.data
+        getPostList: function() {
+            return this.$http.get(articleUrl, {'params': this.$route.params, 'query': this.$route.query}).then((response) => {
+                this.postList = response.data.results;
+                this.count = response.data.count;
+                this.next = response.data.next;
+                this.previous = response.data.previous
             })
         },
-        getTagStyle: getTagStyle,
-        getUrl: getUrl
     }
 }
 </script>

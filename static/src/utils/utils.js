@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 exports.getTagStyle = function(index, preStr){
     var tagStyles = {0: 'default', 1: 'primary', 2: 'success', 3: 'info', 4: 'warning', 5: 'danger'}
     index = index % 6;
@@ -8,7 +10,11 @@ exports.getTagStyle = function(index, preStr){
 
 exports.getData = function(vm, url, data=null) {
     vm.$http.get(url).then((response) => {
-        data ? vm.$set(data, response.data) : response.data
+        if(data){
+            vm.data = response.data;
+        }else{
+            response.data;
+        }
     })
 }
 

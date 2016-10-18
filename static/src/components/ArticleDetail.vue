@@ -1,35 +1,23 @@
 <template>
-
-        <h1 class="text-center">
-            <a v-link="{ name: 'articleDetail', params: {id: post.id}}">{{ post.title }}</a>
-        </h1>
-        <p>
-        <span class="glyphicon glyphicon-user"><a v-link="{ name: 'articleDetail', params: {id: post.id} }">{{  post.belongto.username }}</a>
-        </span>
-        <span class="glyphicon glyphicon-time">{{ post.update_date }}</span>
-        <span class="glyphicon glyphicon-star"></span><a v-link="{ name: 'articleList', query: {search: post.category.name} }"> {{ post.category.name }}</a>
-        <span class="label" v-for="(index, tag) in post.tags" v-bind:class="getTagStyle(index, 'tag-')"><a v-link="{ name: 'articleList', query: {search: tag.name} }"> {{ tag.name }}</a></span>
-        </p>
-        <hr>
-        <img class="img-responsive img-thumbnail" v-bind:src="getStaticUrl(post.background_thumbnail)" alt="">
-        <hr>
-        {{{ post.content | marked }}}
-
+    <div>
+        <post-com :post="post"></post-com>
     <!-- Pager -->
     <ul class="pager">
         <li class="previous">
-            <a v-link="{ name: 'articleDetail', params: {id: post.id - 1} }">&larr; Older</a>
+            <router-link :to="{ name: 'articleDetail', params: {id: post.id - 1} }">&larr; Older</router-link>
         </li>
         <li class="next">
-            <a v-link="{ name: 'articleDetail', params: {id: post.id + 1} }">Newer &rarr;</a>
+            <router-link :to="{ name: 'articleDetail', params: {id: post.id + 1} }">Newer &rarr;</router-link>
         </li>
     </ul>
+    </div>
 </template>
 
 
 <script>
-import { articleUrl, getUrl  } from '../utils/apiurls'
-import { getTagStyle} from '../utils/utils'
+import { articleUrl } from '../utils/apiurls'
+import PostCom from './Article.vue'
+
 export default{
     data: function() {
         return {
@@ -37,20 +25,24 @@ export default{
             apiUrl: articleUrl
         }
     },
-    route: {
-        data: function (transition) {
-            var apiUrl =  this.apiUrl + this.$route.params.id + '/'
-            return { post: this.getPost(apiUrl)}
+    components: {
+        PostCom
+    },
+    created: function() {
+        this.getPost()
+    },
+    watch: function() {
+        return {
+            '$route': 'getPostList'
         }
     },
     methods: {
-        getPost: function(apiUrl) {
-            return this.$http.get(apiUrl).then((response) => {
-                return response.data
+        getPost: function() {
+            let url = articleUrl + (this.$route.params.id || 0) + '/';
+            return this.$http.get(url).then((response) => {
+                this.post = response.data
             })
         },
-        getTagStyle: getTagStyle,
-        getStaticUrl: getUrl
     }
 }
 </script>

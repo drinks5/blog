@@ -1,3 +1,5 @@
+/* @flow */
+
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
@@ -9,72 +11,58 @@ import App from './App'
 Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.http.headers.common['Authorization'] = 'Token da5306b3507304e95d6098204da1aa4549072dcc';
-const router = new VueRouter()
 
 
-//实例化Vue的filter
-Object.keys(filters).forEach(k => Vue.filter(k, filters[k]));
-
-router.map({
-    '/': {
+const Home = resolve => require(['./components/Home.vue'], resolve)
+const ArticleList = resolve => require(['./components/ArticleList.vue'], resolve)
+const ArticleDetail = resolve => require(['./components/ArticleDetail.vue'], resolve)
+const ArticleEdit = resolve => require(['./components/ArticleEdit.vue'], resolve)
+const About = resolve => require(['./components/About.vue'], resolve)
+const Contact = resolve => require(['./components/Contact.vue'], resolve)
+const routes = [
+    { 
+        path: '/',
         name: 'home',
-        component: function(resolve){
-            require(['./components/Home.vue'],resolve);
-        }
+        component: Home,
+        redirect: { name: 'articleList' }
     },
-    '/article': {
+    {
+        path: '/article',
         name: 'article',
-        component: function(resolve){
-            require(['./components/Home.vue'],resolve);
-        },
-        subRoutes: {
-            '/list': {
+        component: Home,
+        children: [
+            {
+                path: '/article/list',
                 name: 'articleList',
-                component: function(resolve){
-                    require(['./components/ArticleList.vue'],resolve);
-                }
+                component: ArticleList
             },
-            '/detail/:id': {
+            {
+                path: 'detail/:id(\\d+)',
                 name: 'articleDetail',
-                component: function(resolve){
-                    require(['./components/ArticleDetail.vue'],resolve);
-                }
+                component: ArticleDetail
             },
-            '/edit': {
-                name: 'articleEdit',
-                component: function(resolve){
-                    require(['./components/ArticleEdit.vue'], resolve);
-                }
-            },
-            '/edit/:id': {
-                name: 'articleEdit',
-                component: function(resolve){
-                    require(['./components/ArticleEdit.vue'], resolve);
-                }
-            },
-        }
+        ]
     },
-    '/about': {
+    {
+        path: '/article/edit/:id(\\d+)?',
+        name: 'articleEdit',
+        component: ArticleEdit
+    },
+    {
+        path: '/about',
 		name: 'about',
-        component: function(resolve){
-            require(['./components/About.vue'],resolve);
-        }
+        component: About
     },
-    '/contact': {
+    {
+        path: '/contact',
 		name: 'contact',
-        component: function(resolve){
-            require(['./components/Contact.vue'],resolve);
-        }
-    },
-    '/': {
-		name: 'contact',
-        component: function(resolve){
-            require(['./components/Contact.vue'],resolve);
-        }
-    },
-})
-router.redirect({
-    '/': '/article/list'
-})
+        component: Contact
+    }
+]
 
-router.start(App, '#app')
+const router = new VueRouter({ routes: routes })
+
+const app = new Vue({
+    router,
+    render: h => h(App)
+}).$mount('#app')

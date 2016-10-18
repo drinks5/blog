@@ -1,4 +1,5 @@
 <template>
+    <div>
     <!-- Blog Sidebar Widgets Column -->
         <!-- Blog Search Well -->
         <div class="well">
@@ -6,9 +7,9 @@
             <div class="input-group">
                 <input type="text" class="form-control" v-model="search">
                 <span class="input-group-btn">
-                    <a class="btn btn-primary btn-lg" v-link="{ name: 'articleList', query: {search: search}}">
+                    <router-link class="btn btn-primary btn-lg" :to="{ name: 'articleList', query: {search: search}}">
                         <span class="glyphicon glyphicon-search"></span>
-                    </a>
+                    </router-link>
                 </span>
             </div>
             <!-- /.input-group -->
@@ -19,15 +20,15 @@
             <h4 class="text-center">Blog Categories</h4>
             <div class="row">
                 <div class="col-lg-6">
-                    <ul class="list-unstyled" v-for="category in categoryList | limitBy halfCategory">
-                        <li><a v-link="{name: 'articleList', query: { search: category.name} }">{{ category.name }}</a>
+                    <ul class="list-unstyled" v-for="category in categoryList">
+                        <li><router-link-link :to="{name: 'articleList', query: { search: category.name} }">{{ category.name }}</router-link>
                         </li>
                     </ul>
                 </div>
                 <!-- /.col-lg-6 -->
                 <div class="col-lg-6">
-                    <ul class="list-unstyled" v-for="category in categoryList | limitBy halfCategory halfCategory">
-                        <li><a v-link="{ name: 'articleList', query: {search: category.name} }">{{ category.name }}</a></li>
+                    <ul class="list-unstyled" v-for="category in categoryList">
+                        <li><router-link :to="{ name: 'articleList', query: {search: category.name} }">{{ category.name }}</router-link></li>
                     </ul>
                 </div>
                 <!-- /.col-lg-6 -->
@@ -39,8 +40,9 @@
         <!-- Blog Tag Well -->
         <div class="well">
             <h4 class="text-center">Blog Tag</h4>
-                    <li class="list-unstyled tag-cloud" v-bind:class="getTagStyle(index, 'tag-cloud-')" v-for="(index, tag) in tagList">
-                        <a v-link="{ name: 'articleList', query: {search: tag.name} }">{{ tag.name }}</a>
+            <div class="row">
+                    <li class="list-unstyled tag-cloud" v-bind:class="getTagStyle(index, 'tag-cloud-')" v-for="(tag, index) in tagList">
+                        <router-link :to="{ name: 'articleList', query: {search: tag.name} }">{{ tag.name }}</router-link>
                     </li>
             </div>
             <!-- /.row -->
@@ -50,6 +52,7 @@
             <h4 class="text-center">Side Widget Well</h4>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
         </div>
+    </div>
 </template>
 
 
@@ -67,7 +70,7 @@ export default{
             username: 'Lin Lin'
         }
     },
-    ready: function() {
+    mounted: function() {
         getData(this, tagsUrl, 'tagList'),
         getData(this, categoryUrl, 'categoryList')
     },

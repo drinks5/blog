@@ -7,6 +7,7 @@
     "test": "tests"
   },
   "dependencies": {
+    "path-to-regexp": "^1.6.0",
     "vue-router": "^0.7.13"
   },
   "devDependencies": {},

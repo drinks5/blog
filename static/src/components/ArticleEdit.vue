@@ -8,16 +8,15 @@
     <label for="category">Category select</label>
     <select class="form-control" v-model="selectedCategory">
         <template v-for="category in categoryList">
-            <!-- <option :value="category.id" selected="{{category.name | equal 'selectedCategory'}}">{{ category.name }}</option> -->
             <option :value="category.id" selected="equal(selectedCategory, category.name)">{{ category.name }}</option>
         </template>
     </select>
   </fieldset>
   <fieldset class="form-group">
     <label for="tags">Tags select</label>
-    <multiselect :selected="selectedTagList" :options="tagList" 
+    <multiselect :value="selectedTagList" :options="tagList" 
         :multiple="true" :searchable="searchable" :taggable="true" 
-        @tag="addTag" @update="updateSelectedTagging" 
+        @tag="addTag" @input="updateSelectedTagging" 
         tag-placeholder="Add this as new tag" 
         placeholder="Type to search or add tag" label="name" key="id">
     </multiselect>
@@ -29,7 +28,7 @@
   </fieldset>
   <fieldset class="form-group">
     <label for="background">Background</label>
-    <input type="file" class="form-control-file" v-el:background>
+    <input type="file" class="form-control-file" ref="background">
     <small class="text-muted" v-if="!background"></small>
   </fieldset>
   <button type="submit" class="btn btn-primary" @click="editArticle">Submit</button>
@@ -56,17 +55,19 @@ export default {
         categoryList: [],
         selectedTagList: [],
         selectedCategory: '',
+        searchable: true,
+        background: {}
         }
     },
 
-    ready: function() {
+    mounted: function() {
         if(this.$route.params.id){
             const url = articleUrl + this.$route.params.id + '/'
             this.$http.get(url).then(function(response){
-                this.$set('title', response.data.title);
-                this.$set('content', response.data.content)
-                this.$set('selectedTagList', response.data.tags.map(tag => tag.name))
-                this.$set('selectedCategory', response.data.category.name)
+                this.title = response.data.title;
+                this.content = response.data.content;
+                this.selectedTagList = response.data.tags.map(tag => tag.name);
+                this.selectedCategory = response.data.category.name
             }
             )
         }
@@ -90,7 +91,7 @@ export default {
             if(this.$route.params.id) {
                 url = url + this.$route.params.id + '/'
             }
-            this.formData.append('background', this.$els.background.files[0])
+            this.formData.append('background', this.$refs.background.files[0])
             this.formData.append('title', this.title)
             this.formData.append('content', this.content)
             postData(this, url, this.formData).then((response) => (this.$router.go('/article/detail/' + this.$route.params.id)))

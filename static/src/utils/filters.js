@@ -1,3 +1,5 @@
+/* @flow */
+
 import Markdown from 'marked'
 Markdown.setOptions({
   highlight: function (code) {

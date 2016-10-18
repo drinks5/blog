@@ -1,17 +1,19 @@
 <template>
+    <div>
     <nav class="navbar navbar-dark bg-inverse">
     <ul class="nav navbar-nav">
         <li class="nav-item active">
-            <a class="nav-link" v-link="{ name: 'articleList' }">{{ username }}<span class="sr-only">(current)</span></a>
+            <router-link :to="{ name: 'articleList' }" class="nav-link">{{ username }}<span class="sr-only">(current)</span></router-link>
         </li>
         <li class="nav-item">
-        <a class="nav-link" v-link="{ name: 'about' }">About</a>
+            <router-link :to="{ name: 'about' }" class="nav-link">About</router-link>
         </li>
         <li class="nav-item">
-        <a class="nav-link" v-link="{ name: 'contact' }">Contact</a>
+            <router-link :to="{ name: 'contact' }" class="nav-link">Contact</router-link>
         </li>
     </ul>
     </nav>
+    </div>
 </template>
 
 <script>
