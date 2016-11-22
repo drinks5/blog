@@ -28,7 +28,7 @@ DJANGO_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles', )
-THIRD_PARTY_APPS = ('rest_framework', )
+THIRD_PARTY_APPS = ('rest_framework', 'imagekit', 'django_nose', 'taggit', 'corsheaders')
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
