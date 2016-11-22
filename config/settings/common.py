@@ -14,7 +14,9 @@ PROJECT_NAME = 'blog'
 ROOT_DIR = environ.Path(
     __file__) - 3  # (blog/config/settings/common.py - 3 = blog/)
 APPS_DIR = ROOT_DIR.path('blog')
-STATIC_DIR = ROOT_DIR.path('front-end/dist')
+STATIC_DIR = APPS_DIR.path('static')
+FE_DIR = ROOT_DIR.path('front-end/dist')
+
 
 env = environ.Env()
 env.read_env()
@@ -28,24 +30,25 @@ DJANGO_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles', )
-THIRD_PARTY_APPS = ('rest_framework', 'imagekit', 'django_nose', 'taggit', 'corsheaders')
+THIRD_PARTY_APPS = ('rest_framework', 'imagekit', 'django_nose', 'taggit',
+                    'corsheaders')
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
     # Your stuff: custom apps go here
-    'blog.article',
-)
+    'blog.article', )
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------
-MIDDLEWARE = ('django.contrib.sessions.middleware.SessionMiddleware',
-              # 'django.middleware.common.CommonMiddleware',  # 是否使用etags?
-              'django.contrib.auth.middleware.AuthenticationMiddleware',
-              'django.contrib.messages.middleware.MessageMiddleware',
-              # 'cas.middleware.CASMiddleware',
-              'config.aspect.middleware.AspectMiddleware')
+MIDDLEWARE = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.middleware.common.CommonMiddleware',  # 是否使用etags?
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    # 'cas.middleware.CASMiddleware',
+    'config.aspect.middleware.AspectMiddleware')
 
 # SITE CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -120,9 +123,7 @@ TEMPLATES = [
         # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
-        'DIRS': [
-            str(APPS_DIR.path('templates')),
-        ],
+        'DIRS': [str(APPS_DIR.path('templates')), ],
         'OPTIONS': {
             # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
             'debug': DEBUG,
@@ -137,7 +138,6 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.i18n',
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
@@ -152,13 +152,13 @@ TEMPLATES = [
 # STATIC FILE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = str(STATIC_DIR.path('static'))
+STATIC_ROOT = str(FE_DIR.path('static'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = (str(STATIC_DIR.path('staticfiles')), )
+STATICFILES_DIRS = (str(STATIC_DIR.path('static')), )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (
@@ -193,3 +193,14 @@ AUTHENTICATION_BACKENDS = (
 
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+REST_FRAMEWORK = {
+    # Use Django's standard 'django.contrib.auth' permissions ,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_AUTHENTICATION_CLASSES':
+    ('rest_framework.authentication.TokenAuthentication', ),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny', ),
+    'DEFAULT_PERMISSION_CLASSES':
+    ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'],
+    'PAGE_SIZE': 10,
+    'DATETIME_FORMAT': "%Y-%m-%d",
+}

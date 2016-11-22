@@ -106,16 +106,14 @@ class ArticleViewSet(PageNumberPager, viewsets.ViewSet):
     def list(self, request):
         query_para = get_search_q_obj(request)
         queryset = self.get_queryset().filter(query_para).distinct()
-        queryset = self.paginate_queryset(queryset, request)
         article_serializer = ArticleSerializer(queryset, many=True)
-        response = self.get_paginated_response(article_serializer.data)
+        response = self.get_paginated_response(self.paginate_queryset(article_serializer.data, request))
         return response
 
     def update(self, request, pk=None):
         return self._operate(request, 'UPDATE', pk)
 
     def create(self, request):
-        trace()
         return self._operate(request, 'POST')
 
     def _operate(self, request, method, pk=None):

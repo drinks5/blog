@@ -5,3 +5,5 @@ db*
 .idea*
 *.sock
 *node_modules*
+*.pid
+*.log

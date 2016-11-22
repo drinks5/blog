@@ -26,23 +26,20 @@ def start():
 
 
 def stop():
-    uwsgi = 'uwsgi --stop {}/dashboard.pid'.format(CONFIG_PATH)
+    uwsgi = 'uwsgi --stop {}/{}.pid'.format(CONFIG_PATH, PROJECT_NAME)
     r = _call(uwsgi)
     r and _call('killall -9 uwsgi')
 
 
 def restart():
     render()
-    uwsgi = 'uwsgi --reload {}/dashboard.pid'.format(CONFIG_PATH)
+    uwsgi = 'uwsgi --reload {}/{}.pid'.format(CONFIG_PATH, PROJECT_NAME)
     r = _call(uwsgi)
     r and start()  # pid不存在时, 即没有启动uwsgi 返回1
 
 
 def _call(command):
-    print(command)
     result = subprocess.call(command, shell=True)
-    print(result)
-    print('')
     return result
 
 
@@ -53,7 +50,7 @@ def _render(filename):
     for num, line in filter(lambda x: _re.findall(x[1]), enumerate(lines)):
         line = line.format(**g)
         lines[num] = line
-        print('format line {} to {}'.format(num, line), end='')
+        print('format line {} to {}'.format(num, line), end='',)
     text = ''.join(lines)
     f.seek(0)
     f.write(text)
@@ -62,8 +59,7 @@ def _render(filename):
 
 
 def render():
-    print()
-    print('render config file:')
+    print('\nrender config file:')
     print('PROJECT_PATH is {}'.format(PROJECT_PATH))
     print('VIR_PATH is {}'.format(VIR_PATH))
     rendered_list = [x for x in os.listdir('config/')

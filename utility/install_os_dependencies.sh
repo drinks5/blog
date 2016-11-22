@@ -50,7 +50,7 @@ function install_packages()
 {
     add-apt-repository ppa:fkrull/deadsnakes
     apt update
-    apt install python3.5 python3.5-pip
+    apt install python3.5 python3.5-pip redis-server
     list_packages | xargs apt-get --no-upgrade install -y;
 }
 

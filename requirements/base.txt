@@ -29,7 +29,7 @@ django-cors-headers
 django-allauth
 django-imagekit
 django_nose
-ipdb
 colorfulprinter
 django-redis-sessions
 django-redis
+django-redis-cache
