@@ -20,19 +20,19 @@ _re = re.compile(r'\{(.*?)\}')
 def start():
     source = 'source {}/bin/activate'.format(VIR_PATH)
     _call(source)
-    uwsgi = 'uwsgi --ini {}/uwsgi.ini'.format(CONFIG_PATH)
+    uwsgi = 'uwsgi --ini {}/uwsgi.ini'.format(CONFIG_DIR)
     _call(uwsgi)
 
 
 def stop():
-    uwsgi = 'uwsgi --stop {}/{}.pid'.format(CONFIG_PATH, PROJECT_NAME)
+    uwsgi = 'uwsgi --stop {}/{}.pid'.format(CONFIG_DIR)
     r = _call(uwsgi)
     r and _call('killall -9 uwsgi')
 
 
 def restart():
     render()
-    uwsgi = 'uwsgi --reload {}/{}.pid'.format(CONFIG_PATH, PROJECT_NAME)
+    uwsgi = 'uwsgi --reload {}/{}.pid'.format(CONFIG_DIR)
     r = _call(uwsgi)
     r and start()  # pid不存在时, 即没有启动uwsgi 返回1
 
