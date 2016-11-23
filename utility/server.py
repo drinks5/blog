@@ -32,9 +32,18 @@ def stop():
 
 def restart():
     render()
-    uwsgi = 'uwsgi --reload {}/{}.pid'.format(CONFIG_DIR)
+    uwsgi = 'uwsgi --reload {}/{}.pid'.format(CONFIG_DIR, PROJECT_NAME)
     r = _call(uwsgi)
     r and start()  # pid不存在时, 即没有启动uwsgi 返回1
+
+
+def build():
+    name = 'linlin'
+    port = 28308 + 1
+    ip = '45.78.39.72'
+    _cmd = 'ssh {}@{} -p {} "cd /home/linlin/blog/src; git pull; python3 cli.py server.restart"'.format(
+        name, ip, port)
+    _call(_cmd)
 
 
 def _call(command):
@@ -66,7 +75,3 @@ def render():
     rendered_list = [x for x in os.listdir('config/')
                      if x.endswith('.ini') or x.endswith('.conf')]
     [_render(str(CONFIG_DIR.path(x))) for x in rendered_list]
-
-
-def printer():
-    print(g)
