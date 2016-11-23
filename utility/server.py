@@ -49,7 +49,9 @@ def _render(filename):
     for num, line in filter(lambda x: _re.findall(x[1]), enumerate(lines)):
         line = line.format(**g)
         lines[num] = line
-        print('format line {} to {}'.format(num, line), end='',)
+        print(
+            'format line {} to {}'.format(num, line),
+            end='', )
     text = ''.join(lines)
     f.seek(0)
     f.write(text)
@@ -63,7 +65,8 @@ def render():
     print('VIR_PATH is {}'.format(VIR_PATH))
     rendered_list = [x for x in os.listdir('config/')
                      if x.endswith('.ini') or x.endswith('.conf')]
-    [_render(os.path.join(CONFIG_PATH, x)) for x in rendered_list]
+    [_render(str(CONFIG_DIR.path(x))) for x in rendered_list]
+
 
 def printer():
     print(g)
