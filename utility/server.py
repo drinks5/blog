@@ -2,7 +2,7 @@ import os
 import re
 import subprocess
 
-from config.settings.common import PROJECT_NAME, ROOT_DIR, STATIC_DIR
+from config.settings.common import PROJECT_NAME, ROOT_DIR, FE_DIR
 dirname = os.path.dirname
 PROJECT_PATH = ROOT_DIR
 VIR_PATH = dirname(PROJECT_PATH)
@@ -13,7 +13,7 @@ g = dict(
     PROJECT_PATH=PROJECT_PATH,
     CONFIG_PATH=CONFIG_PATH,
     PROJECT_NAME=PROJECT_NAME,
-    FE_DIR=STATIC_DIR)
+    FE_DIR=FE_DIR)
 
 _re = re.compile(r'\{(.*?)\}')
 
