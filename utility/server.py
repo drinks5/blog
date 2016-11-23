@@ -2,16 +2,15 @@ import os
 import re
 import subprocess
 
-from config.settings.common import PROJECT_NAME, ROOT_DIR, FE_DIR
+from config.settings.common import PROJECT_NAME, ROOT_DIR, FE_DIR, CONFIG_DIR
 dirname = os.path.dirname
 PROJECT_PATH = ROOT_DIR
 VIR_PATH = dirname(PROJECT_PATH)
-CONFIG_PATH = os.path.join(str(PROJECT_PATH), 'config')
 
 g = dict(
     VIR_PATH=VIR_PATH,
     PROJECT_PATH=PROJECT_PATH,
-    CONFIG_PATH=CONFIG_PATH,
+    CONFIG_PATH=CONFIG_DIR,
     PROJECT_NAME=PROJECT_NAME,
     FE_DIR=FE_DIR)
 
@@ -65,3 +64,6 @@ def render():
     rendered_list = [x for x in os.listdir('config/')
                      if x.endswith('.ini') or x.endswith('.conf')]
     [_render(os.path.join(CONFIG_PATH, x)) for x in rendered_list]
+
+def printer():
+    print(g)
