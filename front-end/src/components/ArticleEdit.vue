@@ -18,7 +18,7 @@
         :multiple="true" :searchable="searchable" :taggable="true" 
         @tag="addTag" @input="updateSelectedTagging" 
         tag-placeholder="Add this as new tag" 
-        placeholder="Type to search or add tag" label="name" key="id">
+        placeholder="Type to search or add tag" label="name" :track_by="id">
     </multiselect>
   </fieldset>
 

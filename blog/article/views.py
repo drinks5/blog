@@ -12,9 +12,11 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from taggit.models import Tag
+from rest_framework.views import APIView
 from textrank4zh import TextRank4Keyword, TextRank4Sentence
 
-from .models import Article, Category
+from rest_framework.authtoken.models import Token
+from .models import Article, Category, User
 from .serializers import ArticleSerializer, CategorySerializer, TagSerializer
 
 
@@ -77,10 +79,8 @@ def get_search_q_obj(request):
 class PageNumberPager(PageNumberPagination):
     def get_paginated_response(self, data):
         return Response(
-            dict([
-                ('page', self.page.number), ('next', self.get_next_page()), (
-                    'previous', self.get_previous_page()), ('results', data)
-            ]))
+            dict([('page', self.page.number), ('next', self.get_next_page()), (
+                'previous', self.get_previous_page()), ('results', data)]))
 
     def get_previous_page(self):
         if not self.page.has_previous():
@@ -107,7 +107,8 @@ class ArticleViewSet(PageNumberPager, viewsets.ViewSet):
         query_para = get_search_q_obj(request)
         queryset = self.get_queryset().filter(query_para).distinct()
         article_serializer = ArticleSerializer(queryset, many=True)
-        response = self.get_paginated_response(self.paginate_queryset(article_serializer.data, request))
+        response = self.get_paginated_response(
+            self.paginate_queryset(article_serializer.data, request))
         return response
 
     def update(self, request, pk=None):
@@ -119,38 +120,67 @@ class ArticleViewSet(PageNumberPager, viewsets.ViewSet):
     def _operate(self, request, method, pk=None):
         user = request.user
         title = request.data.get('title', '')
-        title = request.data.get('title', '')
         content = request.data.get('content', '')
         background = request.FILES.get('background', '')
-        tr4w = TextRank4Keyword()
-        tr4w.analyze(text=content, lower=True, window=2)
-        tags = []
-        for item in tr4w.get_keywords(3, word_min_len=1):
-            tag = Tag.objects.get_or_create(name=item.word)[0]
-            tags.append(tag)
-        category = tags and Category.objects.get_or_create(
-            belongto=user, name=tags[0])[0] or ''
-        tr4s = TextRank4Sentence()
-        tr4s.analyze(text=content, lower=True, source='all_filters')
-        summary = []
-        for item in tr4s.get_key_sentences(num=3):
-            summary.append(item.sentence)
-        summary = ','.join(summary)
-        paras = {'title': title,
-                 'summary': summary,
-                 'content': content,
-                 'category': category,
-                 'belongto': user}
-        background and paras.update(background=background)
-        if pk:
-            article = get_object_or_404(Article, pk=pk)
-            article.tags.clear()
-            article.title = title
-            article.summary = summary
-            article.content = content
-            article.category = category
+        return operate(user, title, content, background)
+
+
+def operate(user, title, content, background=None, pk=None):
+    tr4w = TextRank4Keyword()
+    tr4w.analyze(text=content, lower=True, window=2)
+    tags = []
+    for item in tr4w.get_keywords(3, word_min_len=1):
+        tag = Tag.objects.get_or_create(name=item.word)[0]
+        tags.append(tag)
+    category = tags and Category.objects.get_or_create(
+        belongto=user, name=tags[0])[0] or ''
+    tr4s = TextRank4Sentence()
+    tr4s.analyze(text=content, lower=True, source='all_filters')
+    summary = []
+    for item in tr4s.get_key_sentences(num=3):
+        summary.append(item.sentence)
+    summary = ','.join(summary)
+    paras = {
+        'title': title,
+        'summary': summary,
+        'content': content,
+        'category': category,
+        'belongto': user
+    }
+    background and paras.update(background=background)
+    if pk:
+        article = get_object_or_404(Article, pk=pk)
+        article.tags.clear()
+        article.title = title
+        article.summary = summary
+        article.content = content
+        article.category = category
+    else:
+        article = Article(**paras)
+    article.save()
+    article.tags.add(*tags)
+    return Response(ArticleSerializer(article).data)
+
+
+class TokenViewSet(viewsets.ViewSet):
+    permission_classes = []
+
+    def get_queryset(self):
+        queryset = Token.objects.none()
+        return queryset
+
+    def list(self, request):
+        if not request.user.is_authenticated():
+            return Response({'detail': 'not authenticaed', 'code': '401'})
+        token = Token.objects.get(user=request.user)
+        return Response({'token': token})
+
+    def create(self, request):
+        if not request.user.is_authenticated():
+            username = request.META.get('REMOTE_ADDR', 'visitor')
+            user, ok = User.objects.get_or_create(
+                username=username, role='visitor')
         else:
-            article = Article(**paras)
-        article.save()
-        article.tags.add(*tags)
-        return Response(ArticleSerializer(article).data)
+            user = request.user
+        token, ok = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})

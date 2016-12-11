@@ -5,7 +5,7 @@ import sys
 if __name__ == '__main__':
     path = 'config.settings.local'
     if 'test' in sys.argv:
-    #     sys.argv.extend(['-d', '-s'])
+        #     sys.argv.extend(['-d', '-s'])
         path = 'config.settings.test'
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', path)
 
@@ -21,7 +21,6 @@ if __name__ == '__main__':
             raise ImportError(
                 "Couldn't import Django. Are you sure it's installed and "
                 "available on your PYTHONPATH environment variable? Did you "
-                "forget to activate a virtual environment?"
-            )
+                "forget to activate a virtual environment?")
         raise
     execute_from_command_line(sys.argv)

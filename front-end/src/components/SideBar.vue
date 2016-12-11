@@ -8,10 +8,11 @@
                 <input type="text" class="form-control" v-model="search">
                 <span class="input-group-btn">
                     <router-link class="btn btn-primary btn-lg" :to="{ name: 'articleList', query: {search: search}}">
-                        <span class="glyphicon glyphicon-search"></span>
+                        <span class="fa fa-search-minus"></span>
                     </router-link>
                 </span>
             </div>
+
             <!-- /.input-group -->
         </div>
 

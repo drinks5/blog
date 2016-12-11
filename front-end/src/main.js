@@ -4,14 +4,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 
-
-import filters from './utils/filters';
+import filters from './utils/filters'
 import App from './App'
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
-Vue.http.headers.common['Authorization'] = 'Token da5306b3507304e95d6098204da1aa4549072dcc';
-
 
 const Home = resolve => require(['./components/Home.vue'], resolve)
 const ArticleList = resolve => require(['./components/ArticleList.vue'], resolve)
@@ -60,7 +57,7 @@ const routes = [
     }
 ]
 
-const router = new VueRouter({ routes: routes })
+const router = new VueRouter({ mode: 'history', routes: routes })
 
 const app = new Vue({
     router,

@@ -2,7 +2,7 @@
 
 function getUrl(path) {
     const hostname = 'http://127.0.0.1:8000';
-    return hostname + path
+    return path
 }
 exports.articleUrl = getUrl('/api/article/' )
 exports.categoryUrl = getUrl('/api/category/')

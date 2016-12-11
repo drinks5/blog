@@ -1,9 +1,9 @@
 <template>
-    <footer>
-        <div class="row">
-            <div class="col-lg-12">
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">
                 <p class="text-center">Copyright &copy; drinksober 2016</p>
-            </div>
+            </span>
             <!-- /.col-lg-12 -->
         </div>
         <!-- /.row -->

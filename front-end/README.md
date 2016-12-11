@@ -1,6 +1,6 @@
-# static
+# front-end
 
-> A Vue.js project
+> the front-end of my blog
 
 ## Build Setup
 

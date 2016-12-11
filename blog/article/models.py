@@ -4,7 +4,7 @@
 # @Last Modified by:   drinksober
 # @Last Modified time: 2016-04-26 21:59:26
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from taggit.managers import TaggableManager
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
@@ -12,6 +12,8 @@ from imagekit.processors import ResizeToFill
 
 status_choices = ((0, 'deleted'), (1, 'active'))
 
+class User(AbstractUser):
+    role = models.CharField(max_length=20, default='visitor')
 
 class Category(models.Model):
     belongto = models.ForeignKey(User)
@@ -72,6 +74,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return '<{0}: {1}>'.format(self.belongto, self.post.article)
-
-class Test(models.Model):
-    text = models.TextField()

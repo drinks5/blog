@@ -5,7 +5,7 @@
 # @Last Modified time: 2016-04-26 22:27:14
 
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from blog.article.models import User
 from .models import Article, Category
 from taggit.models import Tag
 

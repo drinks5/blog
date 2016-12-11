@@ -1,5 +1,5 @@
 import factory
-from django.contrib.auth.models import User
+from blog.article.models import User
 from blog.article.models import Article, Category
 
 

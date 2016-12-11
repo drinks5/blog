@@ -33,4 +33,4 @@ class TestArticle(BaseTestCase):
 
     def test_get_list(self):
         response = self.c.get(self.url)
-        print(response.content)
+        raise ValueError()

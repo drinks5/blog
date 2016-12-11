@@ -30,8 +30,7 @@ DJANGO_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles', )
-THIRD_PARTY_APPS = ('rest_framework', 'imagekit', 'django_nose', 'taggit',
-                    'corsheaders')
+THIRD_PARTY_APPS = ('rest_framework', 'imagekit', 'django_nose', 'taggit')
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
@@ -201,6 +200,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny', ),
     'DEFAULT_PERMISSION_CLASSES':
     ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'],
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 5,
     'DATETIME_FORMAT': "%Y-%m-%d",
 }
+AUTH_USER_MODEL = 'article.User'

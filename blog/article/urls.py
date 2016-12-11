@@ -6,10 +6,12 @@
 # @Last Modified time: 2016-04-26 14:57:27
 
 from rest_framework import routers
-from .views import ArticleViewSet, TagViewSet, CategoryViewSet
+from django.conf.urls import url
+from .views import ArticleViewSet, TagViewSet, CategoryViewSet, TokenViewSet
 router = routers.DefaultRouter()
 router.register(r'article', ArticleViewSet, base_name='article')
 router.register(r'tags', TagViewSet, base_name='tags')
 router.register(r'category', CategoryViewSet, base_name='category')
+router.register(r'token', TokenViewSet, base_name='token')
 
 urlpatterns = router.urls

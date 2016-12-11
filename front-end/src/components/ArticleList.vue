@@ -1,7 +1,6 @@
 <template>
     <div>
         <post-com v-for="post in postList" :post="post"></post-com>
-
     <!-- Pager -->
         <nav class="blog-pagination">
             <router-link class="btn btn-outline-primary" :to="{ name: 'articleList', query:{ page: previous} }" v-bind:class="{ 'disabled': !previous}">Older</router-link>
