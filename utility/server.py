@@ -2,18 +2,17 @@ import os
 import re
 import subprocess
 
-from config.settings.common import PROJECT_NAME, ROOT_DIR, STATIC_DIR
+from config.settings.common import PROJECT_NAME, ROOT_DIR, FE_DIR, CONFIG_DIR
 dirname = os.path.dirname
 PROJECT_PATH = ROOT_DIR
 VIR_PATH = dirname(PROJECT_PATH)
-CONFIG_PATH = os.path.join(str(PROJECT_PATH), 'config')
 
 g = dict(
     VIR_PATH=VIR_PATH,
     PROJECT_PATH=PROJECT_PATH,
-    CONFIG_PATH=CONFIG_PATH,
+    CONFIG_PATH=CONFIG_DIR,
     PROJECT_NAME=PROJECT_NAME,
-    FE_DIR=STATIC_DIR)
+    FE_DIR=FE_DIR)
 
 _re = re.compile(r'\{(.*?)\}')
 
@@ -21,21 +20,30 @@ _re = re.compile(r'\{(.*?)\}')
 def start():
     source = 'source {}/bin/activate'.format(VIR_PATH)
     _call(source)
-    uwsgi = 'uwsgi --ini {}/uwsgi.ini'.format(CONFIG_PATH)
+    uwsgi = 'uwsgi --ini {}/uwsgi.ini'.format(CONFIG_DIR)
     _call(uwsgi)
 
 
 def stop():
-    uwsgi = 'uwsgi --stop {}/{}.pid'.format(CONFIG_PATH, PROJECT_NAME)
+    uwsgi = 'uwsgi --stop {}/{}.pid'.format(CONFIG_DIR)
     r = _call(uwsgi)
     r and _call('killall -9 uwsgi')
 
 
 def restart():
     render()
-    uwsgi = 'uwsgi --reload {}/{}.pid'.format(CONFIG_PATH, PROJECT_NAME)
+    uwsgi = 'uwsgi --reload {}/{}.pid'.format(CONFIG_DIR, PROJECT_NAME)
     r = _call(uwsgi)
     r and start()  # pid不存在时, 即没有启动uwsgi 返回1
+
+
+def build():
+    name = 'linlin'
+    port = 28308 + 1
+    ip = '45.78.39.72'
+    _cmd = 'ssh {}@{} -p {} "cd /home/linlin/blog/src; git pull; python3 cli.py server.restart"'.format(
+        name, ip, port)
+    _call(_cmd)
 
 
 def _call(command):
@@ -50,7 +58,9 @@ def _render(filename):
     for num, line in filter(lambda x: _re.findall(x[1]), enumerate(lines)):
         line = line.format(**g)
         lines[num] = line
-        print('format line {} to {}'.format(num, line), end='',)
+        print(
+            'format line {} to {}'.format(num, line),
+            end='', )
     text = ''.join(lines)
     f.seek(0)
     f.write(text)
@@ -64,4 +74,4 @@ def render():
     print('VIR_PATH is {}'.format(VIR_PATH))
     rendered_list = [x for x in os.listdir('config/')
                      if x.endswith('.ini') or x.endswith('.conf')]
-    [_render(os.path.join(CONFIG_PATH, x)) for x in rendered_list]
+    [_render(str(CONFIG_DIR.path(x))) for x in rendered_list]

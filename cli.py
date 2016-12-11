@@ -3,8 +3,8 @@ import os
 import importlib
 import argparse
 parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('path', help='方法指向的路径， 如 foo.bar  即 foo文件的bar函数')
-parser.add_argument('--args', help='函数的参数', default='')
+parser.add_argument('path', help=u'方法指向的路径， 如 foo.bar  即 foo文件的bar函数')
+parser.add_argument('--args', help=u'函数的参数', default='')
 parser = parser.parse_args()
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.production')
 
@@ -19,7 +19,7 @@ def import_module(dotted_path):
 def main():
     path, args = parser.path, parser.args or []
     if not os.environ.get('VIRTUAL_ENV'):
-        print('\n没有进入虚拟环境!!!\n')
+        print(u'\n没有进入虚拟环境!!!\n')
     if 'server' not in path:
         from django import setup
         setup()

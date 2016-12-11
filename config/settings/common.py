@@ -13,6 +13,7 @@ import environ
 PROJECT_NAME = 'blog'
 ROOT_DIR = environ.Path(
     __file__) - 3  # (blog/config/settings/common.py - 3 = blog/)
+CONFIG_DIR = ROOT_DIR.path('config')
 APPS_DIR = ROOT_DIR.path('blog')
 STATIC_DIR = APPS_DIR.path('static')
 FE_DIR = ROOT_DIR.path('front-end/dist')
@@ -69,21 +70,27 @@ EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND',
 # DATABASE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
+# DATABASES = {
+#     'default': {
+#         'NAME': env('MYSQL_NAME') or 'blog',
+#         'HOST': env('MYSQL_HOST') or '127.0.0.1',
+#         'USER': env('MYSQL_USER') or 'root',
+#         'PASSWORD': env('MYSQL_PASSWORD') or '123456',
+#         'PORT': env('MYSQL_PORT') or '3306',
+#         'ENGINE': 'django.db.backends.mysql',
+#         'OPTIONS': {
+#             'autocommit': True,
+#         },
+#     }
+# }
+# DATABASES['default']['ATOMIC_REQUESTS'] = False  # 每个view 是否用 事务
+
 DATABASES = {
     'default': {
-        'NAME': env('MYSQL_NAME') or 'blog',
-        'HOST': env('MYSQL_HOST') or '127.0.0.1',
-        'USER': env('MYSQL_USER') or 'root',
-        'PASSWORD': env('MYSQL_PASSWORD') or '123456',
-        'PORT': env('MYSQL_PORT') or '3306',
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'autocommit': True,
-        },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': str(CONFIG_DIR.path('db.sqlite3')),
     }
 }
-DATABASES['default']['ATOMIC_REQUESTS'] = False  # 每个view 是否用 事务
-
 # CACHES
 CACHES = {
     "default": {
