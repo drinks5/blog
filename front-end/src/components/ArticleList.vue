@@ -34,7 +34,6 @@ export default{
     },
     methods: {
         getPostList: function() {
-            console.log(this.$route.params, this.$route.query);
             return this.$http.get(articleUrl, {'params': this.$route.query}).then((response) => {
                 this.postList = response.data.results;
                 this.count = response.data.count;
