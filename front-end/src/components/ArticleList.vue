@@ -3,8 +3,8 @@
         <post-com v-for="post in postList" :post="post"></post-com>
     <!-- Pager -->
         <nav class="blog-pagination">
-            <router-link class="btn btn-outline-primary" :to="{ name: 'articleList', query:{ page: previous} }" v-bind:class="{ 'disabled': !previous}">Older</router-link>
-            <router-link class="btn btn-outline-primary" :to="{ name: 'articleList', query: {page: next} }" v-bind:class="{ 'disabled': !next }">Newer</router-link>
+            <router-link class="btn btn-outline-primary" :to="{ name: 'articleList', query:{ page: previous} }" :class="{ 'disabled': !previous}">Older</router-link>
+            <router-link class="btn btn-outline-primary" :to="{ name: 'articleList', query: {page: next} }" :class="{ 'disabled': !next }">Newer</router-link>
         </nav>
     </div>
 </template>
@@ -29,14 +29,13 @@ export default{
     created: function() {
         return this.getPostList()
     },
-    watch: function() {
-        return {
+    watch:{
             '$route': 'getPostList'
-        }
     },
     methods: {
         getPostList: function() {
-            return this.$http.get(articleUrl, {'params': this.$route.params, 'query': this.$route.query}).then((response) => {
+            console.log(this.$route.params, this.$route.query);
+            return this.$http.get(articleUrl, {'params': this.$route.query}).then((response) => {
                 this.postList = response.data.results;
                 this.count = response.data.count;
                 this.next = response.data.next;
