@@ -6,7 +6,7 @@ parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('path', help=u'方法指向的路径， 如 foo.bar  即 foo文件的bar函数')
 parser.add_argument('--args', help=u'函数的参数', default='')
 parser = parser.parse_args()
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.production')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')
 
 
 def import_module(dotted_path):

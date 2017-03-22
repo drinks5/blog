@@ -2,13 +2,12 @@
     <div>
     <!-- Blog Sidebar Widgets Column -->
         <!-- Blog Search Well -->
-        <div class="well">
-            <h4 class="text-center">Blog Search</h4>
+        <div class="alert alert-info" role="alert">
             <div class="input-group">
                 <input type="text" class="form-control" v-model="search">
                 <span class="input-group-btn">
                     <router-link class="btn btn-primary btn-lg" :to="{ name: 'articleList', query: {search: search}}">
-                        <span class="fa fa-search-minus"></span>
+                        <span class="fa fa-search-minus fa-1g"></span>
                     </router-link>
                 </span>
             </div>
@@ -17,41 +16,25 @@
         </div>
 
         <!-- Blog Categories Well -->
-        <div class="well">
-            <h4 class="text-center">Blog Categories</h4>
-            <div class="row">
-                <div class="col-lg-6">
-                    <ul class="list-unstyled" v-for="category in categoryList">
-                        <li><router-link :to="{name: 'articleList', query: { search: category.name} }">{{ category.name }}</router-link>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                    <ul class="list-unstyled" v-for="category in categoryList">
-                        <li><router-link :to="{ name: 'articleList', query: {search: category.name} }">{{ category.name }}</router-link></li>
-                    </ul>
-                </div>
-                <!-- /.col-lg-6 -->
-            </div>
-            <!-- /.row -->
-        </div>
-
+                <h4 class="text-center">Blog Categories</h4>
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="category in categoryList">
+                        <span class="tag tag-default tag-pill float-xs-right"><router-link :to="{ name: 'articleList', query: {search: category.name} }">1</router-link></span>{{category.name}}
+                    </li>
+                </ul>
 
         <!-- Blog Tag Well -->
-        <div class="well">
-            <h4 class="text-center">Blog Tag</h4>
-            <div class="row">
-                    <li class="list-unstyled tag-cloud" v-bind:class="getTagStyle(index, 'tag-cloud-')" v-for="(tag, index) in tagList">
-                        <router-link :to="{ name: 'articleList', query: {search: tag.name} }">{{ tag.name }}</router-link>
+                <h4 class="text-center">Blog Tag</h4>
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="tag in tagList">
+                        <span class="tag tag-default tag-pill float-xs-right"><router-link :to="{ name: 'articleList', query: {search: tag.name} }">1</router-link></span>{{tag.name}}
                     </li>
-            </div>
+                </ul>
             <!-- /.row -->
-        </div>
         <!-- Side Widget Well -->
-        <div class="well">
+        <div class="alert alert-info" role="alert">
             <h4 class="text-center">Side Widget Well</h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
+            <p>个人博客</p>
         </div>
     </div>
 </template>
@@ -88,58 +71,3 @@ export default{
     }
 }
 </script>
-
-<style>
-#tag-cloud {
-	width: 200px;
-	margin-left: 0;
-}
-.tag-cloud {
-    background-color: #999999;
-    -webkit-border-radius: 3px;
-	   -moz-border-radius: 3px;
-	        border-radius: 3px;
-    color: #FFFFFF;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 11.844px;
-    font-weight: bold;
-    line-height: 21px;
-    margin: 2px 3px 2px 2px;
-    padding: 1px 4px 2px;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    vertical-align: baseline;
-}
-.tag-cloud:after {
-    color: #000000;
-    content: " ×";
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 16px;
-    opacity: 0.2;
-	position: relative;
-    text-shadow: 0 1px 0 #FFFFFF;
-	top: 1px;
-}
-
-	/* Colors */
-
-.tag-cloud.tag-cloud-default {
-    background-color: #3A87AD;
-}
-.tag-cloud.tag-cloud-primary {
-    background-color: #56789D;
-}
-.tag-cloud.tag-cloud-success {
-    background-color: #468847;
-}
-.tag-cloud.tag-cloud-info {
-    background-color: #333333;
-}
-.tag-cloud.tag-cloud-warning {
-    background-color: #F89406;
-}
-.tag-cloud.tag-cloud-danger {
-    background-color: #B94A48;
-}
-</style>
