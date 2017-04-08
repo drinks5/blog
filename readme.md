@@ -16,7 +16,7 @@
 
 *   使用gitflow分支管理策略
 
-####Configuration
+#### Configuration
 
 * Clone this project
 
@@ -35,5 +35,5 @@
     cd utility
 
     ./install_os_dependencies.sh
-    
+
     ./install_python_dependencies.sh
