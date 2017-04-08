@@ -27,7 +27,7 @@
         pip install virtualenv                   #install virtualenv
         virtualenv -p blog ENV       #create the virtualenv for project
         cd blog                               #enter the software directory
-        source /blog/bin/activate    #activate the virtualenv 
+        source /blog/bin/activate    #activate the virtualenv
 
 
 *  Install `Django and the deepdency.`
